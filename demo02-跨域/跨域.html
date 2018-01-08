@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>跨域</title>
+  <script src="../libs/jquery.min.js"></script>
+  <script>
+    'use strict';
+    let callBackFunc = function (result) {
+      alert(result.name)
+    };
+    let url = '../demo01-cookie/test.js?callBack=callBackFunc';
+    let script = document.createElement('script');
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script)
+  </script>
+</head>
+<body>
+<!--<iframe id="frame" src="../demo01-cookie/cookie.html"></iframe>-->
+<label><input type="file" id="file"></label>
+</body>
+<script>
+  'use strict';
+  //  利用window.name + iframe实现跨域
+  //  let frame = document.querySelector('#frame');
+  //  frame.onload = function () {
+  //    frame.src = 'about:blank';
+  //    frame.onload = function () {
+  //      console.log(frame.contentWindow.name)
+  //    }
+  //  };
+  //  利用JSONP跨域
+  //  $.getJSON('http://f.apiplus.net/time.json?callback=?', function (value) {
+  //    console.log(value)
+  //  });
+  let jsonpCallback = function () {
+    console.log('jsonpCallback')
+  };
+  $.ajax({
+    type: 'GET',
+    url: 'http://f.apiplus.net/time.json?callback=?',
+    dataType: 'jsonp',
+    jsonpCallback: 'jsonpCallback',
+    success: function (value) {
+      console.log(value)
+    }
+  });
+
+  //  跨域发送cookies
+  //  let request = new XMLHttpRequest();
+  //  request.open('GET', 'xx.com/a.html');
+  //  request.withCredentials = true;
+  //  request.send(null);//支持跨域发送cookies
+  //
+  //  $.ajax({
+  //    type:'GET',
+  //    url: 'http://www.test.com',
+  //    dataType: 'json',
+  //    xhrFields:{
+  //      withCredentials: true
+  //    },
+  //    success: function (res) {
+  //      console.log(res)
+  //    },
+  //    crossDomain: true
+  //  });
+
+</script>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片预览</title>
+  <script src="../libs/jquery.min.js"></script>
+  <style>
+    .wrapper {
+      width: 400px;
+      height: 300px;
+      border-radius: 5px;
+    }
+    .wrapper img {
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+<label><input type="file" id="file" multiple></label>
+<div id="preview"></div>
+</body>
+<script>
+  'use strict';
+  let input = document.querySelector('#file'),
+    wrapper = document.querySelector('#preview');
+
+  input.onchange = function (e) {
+    let files = e.target.files;
+    Object.keys(files).forEach(function (file) {
+      let fileReader = new FileReader();
+      fileReader.readAsDataURL(files[file]);
+      fileReader.onload = function () {
+        wrapper.innerHTML += `<img src=${fileReader.result} title=${files[file].name} >`;
+      };
+    })
+  }
+</script>
+</html>
