@@ -39,3 +39,4 @@ async function fetch2() {
   console.log(result2);
   console.timeEnd(1)
 }
+

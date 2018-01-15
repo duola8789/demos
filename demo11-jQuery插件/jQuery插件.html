@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jQuery插件</title>
+  <script src="../libs/jquery.min.js"></script>
+</head>
+<body>
+<p class="text">THIS IS TEXT1.</p>
+<p class="text">THIS IS TEXT2.</p>
+<script>
+  'use strict';
+  $.extend({
+    sayHello: function (name) {
+      name = name || 'who are you';
+      alert('Hello ' + name)
+    }
+  });
+  //  $.sayHello('Jay');
+
+  $.fn.changeColor = function (option) {
+    let setting = {
+      color: 'blue',
+      fontSize: '20px'
+    };
+    $.extend(setting, option);
+    this.css(setting);
+    return this;
+  };
+  $('.text').changeColor({
+    color: 'red',
+    fontSize: '30px'
+  }).fadeOut();
+
+</script>
+</body>
+</html>
