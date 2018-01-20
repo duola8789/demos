@@ -113,7 +113,6 @@
   function throttle(func, context, ms) {
     clearTimeout(func.timer);
     func.timer = null;
-
     func.timer = setTimeout(function () {
       func.call(context)
     }, ms)
