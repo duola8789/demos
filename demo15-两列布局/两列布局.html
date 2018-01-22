@@ -72,6 +72,7 @@
     }
     */
     /*使用float + 负的margin-right实现*/
+    /*
     .left {
       float: left;
       margin-right: -200px;
@@ -87,11 +88,18 @@
       margin-left: 200px;
       background: olive;
     }
+    */
+    /*利用gird布局*/
+    body{
+      display: grid;
+      grid-template-columns: 200px 1fr
+    }
   </style>
 </head>
 <body>
 <div class="left">固定宽度200px</div>
 <div class="right">
-  <p>宽度自适应</p></div>
+  <p>宽度自适应</p>
+</div>
 </body>
 </html>
