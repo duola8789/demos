@@ -64,6 +64,17 @@
   //    },
   //    crossDomain: true
   //  });
-
+  //  利用script标签实现豆瓣API跨域
+  function getJSON(url, callBack) {
+    let src = `${url}?callback=${callBack}`;
+    let script = document.createElement('script');
+    script.src = src;
+    document.body.appendChild(script);
+  }
+  function handleFunc(e) {
+    console.log(e);
+  }
+  let url = 'https://api.douban.com/v2/book/user/119280372/collections';
+  getJSON(url, 'handleFunc');
 </script>
 </html>

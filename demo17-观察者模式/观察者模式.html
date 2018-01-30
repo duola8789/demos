@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>观察者模式</title>
+</head>
+<body>
+
+</body>
+<script>
+  let Events = {
+    handlers: {},
+    on(eventName, fn){
+      if (!this.handlers[eventName]) {
+        this.handlers[eventName] = []
+      }
+      this.handlers[eventName].push(fn);
+    },
+    emit(eventName, ...argus){
+      let handler = this.handlers[eventName];
+      if (!handler || handler.length === 0) {
+        return false;
+      }
+      for (let fn of handler) {
+        fn(...argus)
+      }
+    }
+  };
+
+  Events.on('msg', (...argus) => console.log(`Hello World ${argus[1]}`));
+  Events.emit('msg', '44', '55')
+</script>
+</html>
