@@ -5,46 +5,75 @@
   <title>图片预览</title>
   <script src="../libs/jquery.min.js"></script>
   <style>
-    .wrapper {
-      width: 100%;
-      border-radius: 5px;
+    .preview {
+      margin-top: 20px;
+      width: 500px;
+      height: 310px;
+      border: 1px solid grey;
+      border-radius: 10px;
+      overflow-y: hidden;
     }
-    .wrapper img {
+    .preview img {
       max-width: 100%;
-    }
-    .square {
-      width: 30%;
-      background: red;
-    }
-    .square:after {
-      content: '';
-      display: block;
-      padding: 50% 0
+      min-height: 100%;
     }
   </style>
 </head>
 <body>
 <label><input type="file" id="file" multiple></label>
-<div id="preview"></div>
-<div class="wrapper">
-  <div class="square"></div>
+<div id="preview" class="preview">
+  <img id="img" src="default.png">
 </div>
-
 </body>
 <script>
   'use strict';
   let input = document.querySelector('#file'),
-    wrapper = document.querySelector('#preview');
+    wrapper = document.querySelector('#preview'),
+    img = document.querySelector('#img');
 
-  input.onchange = function (e) {
-    let files = e.target.files;
+  document.addEventListener("drop", function (e) {  //释放
+    e.preventDefault();
+  });
+
+  document.addEventListener("dragenter", function (e) {  //拖进
+    e.preventDefault();
+  });
+
+  document.addEventListener("dragleave", function (e) {  //拖离
+    e.preventDefault();
+  });
+
+  document.addEventListener("dragover", function (e) {  //拖来拖去
+    e.preventDefault();
+  });
+
+  // 使用 fileReader
+  function preview(files) {
     Object.keys(files).forEach(function (file) {
       let fileReader = new FileReader();
       fileReader.readAsDataURL(files[file]);
       fileReader.onload = function () {
-        wrapper.innerHTML += `<img src=${fileReader.result} title=${files[file].name} >`;
+        img.src = fileReader.result;
+        img.title = files[file].name;
       };
     })
   }
+
+  // 使用 createObjectURL
+  function preview2(files) {
+    Object.keys(files).forEach(function (file) {
+      img.src = window.URL.createObjectURL(files[file]);
+    })
+  }
+
+  input.onchange = function (e) {
+    let files = e.target.files;
+    preview(files)
+  };
+
+  wrapper.addEventListener('drop', function (e) {
+    let files = e.dataTransfer.files;
+    preview2(files)
+  });
 </script>
 </html>
