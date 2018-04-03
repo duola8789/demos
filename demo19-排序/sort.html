@@ -2,25 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>函数节流</title>
+  <title>排序算法</title>
 </head>
 <body>
 
 </body>
 <script>
-  let number = 0;
-  window.onresize = function () {
-    throttle(showNumber, window, 1000);
-  };
-  function showNumber() {
-    console.log(number++)
+let arr = [7, 28, -1, 0, 7, 33];
+//绝对值冒泡排序
+function sort(arr, absNum) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    for (let j = 0; j < arr.length - 1 - i; j++) {
+      if (Math.abs(arr[j] - absNum) > Math.abs(arr[j + 1] - absNum)) {
+        let temp = arr[j + 1];
+        arr[j + 1] = arr[j];
+        arr[j] = temp
+      }
+    }
   }
-  function throttle(func, context, time) {
-    clearTimeout(func.timer);
-    func.timer = null;
-    func.timer = setTimeout(function () {
-      func.call(context)
-    }, time)
-  }
+  return arr;
+}
+console.log(sort(arr, 0))
 </script>
 </html>
