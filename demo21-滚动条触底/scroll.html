@@ -15,7 +15,15 @@
     .wrap img {
       width: 100%;
     }
+    .newContent {
+      width: 100%;
+      background: red;
+      padding: 10px 0;
+      margin: 0;
+    }
   </style>
+  <script src="../libs/jquery.min.js"></script>
+  <script src="test.js"></script>
 </head>
 <body>
 <div id="wrap" class="wrap">
@@ -23,21 +31,35 @@
   <img src="../demo03-上传图片预览/default.png">
 </div>
 <script>
+  let ele = document.querySelector('#wrap');
   window.onload = function () {
-    let ele = document.querySelector('#wrap');
     ele.addEventListener('scroll', function () {
       throttle(scroll, ele, 500)
-    })
+    });
   };
+
   function scroll() {
     console.log(this.scrollHeight - this.scrollTop, '滚动条距离顶部的位置');
     console.log(this.scrollHeight, '内容区域的真实高度（也就是滚动区域）');
     console.log(this.clientHeight, '内容区域的可见高度');
     // 由于this.scrollHeight不是整数，会有零点几的误差，所以和1px进行比较
     if (this.scrollHeight - this.scrollTop - this.clientHeight < 1) {
-      alert('到底了')
+      console.log('到底了');
+      getData()
     }
   }
+
+  function getData() {
+    $.ajax({
+      url: 'data.json',
+      type: 'GET'
+    }).then((val) => {
+      let temp = document.createElement('div');
+      temp.innerHTML = `<p class="newContent">${val.result}</p>`;
+      ele.appendChild(temp)
+    })
+  }
+
   function throttle(func, context, time) {
     clearTimeout(func.timer);
     func.timer = null;
