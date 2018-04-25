@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>generator函数异步</title>
+</head>
+<body>
+
+</body>
+<script>
+  // generator函数自动执行
+  let gen = function* () {
+    yield 11;
+    yield 22;
+    yield 33;
+  };
+  let g = gen();
+  let r = g.next();
+  while (!r.done) {
+    console.log(r.value);
+    r = g.next()
+  }
+</script>
+</html>
