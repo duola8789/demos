@@ -9035,160 +9035,473 @@ module.exports = function (regExp, replace) {
  */
 
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+var _dec, _class;
 
-var fetch = function () {
+// 继发操作
+// async function fn() {
+//   console.log('计时开始')
+//   console.time('操作')
+//   let result1 = await timeout1();
+//   let result2 = await timeout2();
+// }
+
+// 并发操作1
+// async function fn() {
+//   console.log('计时开始')
+//   console.time('操作')
+//   let t1 = timeout1();
+//   let t2 = timeout2();
+//   let result1 = await t1;
+//   let result2 = await t2;
+// }
+
+// 并发操作2
+// async function fn() {
+//   console.log('计时开始')
+//   console.time('操作')
+//   let result = await Promise.all([timeout1(), timeout2()]);
+// }
+
+// 继发操作2
+var fn = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-    var result, i, ms, _i;
+    var array, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, val;
 
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            console.time(1);
-            result = [];
+            console.log('计时开始');
+            console.time('操作');
+            array = [timeout1(), timeout2()];
+            _iteratorNormalCompletion = true;
+            _didIteratorError = false;
+            _iteratorError = undefined;
+            _context.prev = 6;
+            _iterator = array[Symbol.iterator]();
 
-            for (i = 1; i < 4; i++) {
-              ms = 5;
-
-              result[i] = time(ms, i + " is complete", i + " is start");
-            }
-            _i = 1;
-
-          case 4:
-            if (!(_i < 4)) {
-              _context.next = 13;
+          case 8:
+            if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
+              _context.next = 15;
               break;
             }
 
-            _context.t0 = console;
+            val = _step.value;
+            _context.next = 12;
+            return val;
+
+          case 12:
+            _iteratorNormalCompletion = true;
             _context.next = 8;
-            return result[_i];
-
-          case 8:
-            _context.t1 = _context.sent;
-
-            _context.t0.log.call(_context.t0, _context.t1);
-
-          case 10:
-            _i++;
-            _context.next = 4;
             break;
 
-          case 13:
-            console.timeEnd(1);
+          case 15:
+            _context.next = 21;
+            break;
 
-          case 14:
+          case 17:
+            _context.prev = 17;
+            _context.t0 = _context["catch"](6);
+            _didIteratorError = true;
+            _iteratorError = _context.t0;
+
+          case 21:
+            _context.prev = 21;
+            _context.prev = 22;
+
+            if (!_iteratorNormalCompletion && _iterator.return) {
+              _iterator.return();
+            }
+
+          case 24:
+            _context.prev = 24;
+
+            if (!_didIteratorError) {
+              _context.next = 27;
+              break;
+            }
+
+            throw _iteratorError;
+
+          case 27:
+            return _context.finish(24);
+
+          case 28:
+            return _context.finish(21);
+
+          case 29:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, this);
+    }, _callee, this, [[6, 17, 21, 29], [22,, 24, 28]]);
   }));
 
-  return function fetch() {
+  return function fn() {
     return _ref.apply(this, arguments);
   };
 }();
 
-var fetch1 = function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-    var result1, result2;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            result1 = time(2, 1 + " is complete", 1 + " is start");
-            result2 = time(4, 2 + " is complete", 2 + " is start");
-            _context2.t0 = console;
-            _context2.next = 5;
-            return result1;
+// 不正常操作
+// async function fn() {
+//   console.log('计时开始')
+//   console.time('操作')
+//   let array = [timeout1, timeout2];
+//   array.forEach( async (val) => {
+//     await val()
+//   })
+// }
+//
+// fn().then(() => {
+//   console.log('计时结束')
+//   console.timeEnd('操作')
+// })
 
-          case 5:
-            _context2.t1 = _context2.sent;
 
-            _context2.t0.log.call(_context2.t0, _context2.t1);
+var _debounce = __webpack_require__(329);
 
-            _context2.t2 = console;
-            _context2.next = 10;
-            return result2;
+var _debounce2 = _interopRequireDefault(_debounce);
 
-          case 10:
-            _context2.t3 = _context2.sent;
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-            _context2.t2.log.call(_context2.t2, _context2.t3);
-
-          case 12:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, this);
-  }));
-
-  return function fetch1() {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-var fetch2 = function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var _ref4, _ref5, result1, result2;
-
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            console.time(1);
-            _context3.next = 3;
-            return Promise.all([time(2, 1 + " is complete", 1 + " is start"), time(4, 2 + " is complete", 2 + " is start")]);
-
-          case 3:
-            _ref4 = _context3.sent;
-            _ref5 = _slicedToArray(_ref4, 2);
-            result1 = _ref5[0];
-            result2 = _ref5[1];
-
-            console.log(result1);
-            console.log(result2);
-            console.timeEnd(1);
-
-          case 10:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3, this);
-  }));
-
-  return function fetch2() {
-    return _ref3.apply(this, arguments);
-  };
-}();
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-__webpack_require__(329);
+__webpack_require__(330);
 __webpack_require__(90);
 
-function time(ms, message, index) {
-  console.log(index);
+// 移植到Vue2之后直接使用lodash中的_.debounce替换即可
+
+
+// function time(ms, message, index) {
+//   console.log(index);
+//   return new Promise(function (resolve) {
+//     setTimeout(resolve, ms * 1000, message)
+//   })
+// }
+//
+// async function fetch() {
+//   console.time(1);
+//   let result = [];
+//   for (let i = 1; i < 4; i++) {
+//     let ms = 5;
+//     result[i] = time(ms, `${i} is complete`, `${i} is start`);
+//   }
+//   for (let i = 1; i < 4; i++) {
+//     console.log(await result[i] )
+//   }
+//   console.timeEnd(1);
+// }
+//
+// async function fetch1() {
+//   let result1 = time(2, `${1} is complete`, `${1} is start`);
+//   let result2 = time(4, `${2} is complete`, `${2} is start`);
+//   console.log( await result1);
+//   console.log( await result2);
+// }
+//
+// async function fetch2() {
+//   console.time(1);
+//   let [result1, result2] = await Promise.all([time(2, `${1} is complete`, `${1} is start`),  time(4, `${2} is complete`, `${2} is start`)])
+//   console.log(result1);
+//   console.log(result2);
+//   console.timeEnd(1)
+// }
+
+// async函数进行AJAX操作
+// const URL = 'https://api.github.com/users/github';
+//
+// async function getDate(){
+//   let res = await fetch(URL);
+//   let result = await res.json();
+//   console.log('fetch finish -----------------', result.message)
+//   return result
+// }
+// console.log('fetch start');
+// getDate().then(val => console.log('++++++++++++++', val));
+// console.log('fetch processing');
+
+// 2s后打印字符
+// function timeout(text, ms){
+//   return new Promise((resolve, reject) => {
+//     setTimeout(resolve, ms, text)
+//   })
+// }
+// async function print(text,ms){
+//   return timeout(text, ms);
+// }
+// print('hello world', 2000).then(val => console.log(val))
+
+// 捕获错误
+// const color = 'background: #aaa;color: red'
+// async function f() {
+//   let a = await 111;
+//   try {
+//     throw new Error('wrong hahaha');
+//   } catch (e) {
+//     console.log('inside error', e)
+//   }
+//   let b = await 222;
+//   return a;
+// }
+//
+// f().then(v => console.log('outside success', v))
+//   .catch(v => console.log('outside wrong', v))
+
+var timeout1 = function timeout1() {
   return new Promise(function (resolve) {
-    setTimeout(resolve, ms * 1000, message);
+    setTimeout(resolve, 3000, 'timeout1');
   });
+};
+var timeout2 = function timeout2() {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, 2000, 'timeout2');
+  });
+};
+var timeout3 = function timeout3() {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, 4000, 'timeout3');
+  });
+};var arr = [timeout1, timeout2, timeout3];
+
+// 同时发出，按顺序输出
+// async function f(urls) {
+//   let res = urls.map((url) => url())
+//   for(let i of res){
+//     console.log(await i)
+//   }
+// }
+
+// 同时发出，谁先完成输出谁
+// async function f(urls) {
+//   let res = urls.map(async (url) => {
+//     console.log(await url())
+//   })
+// }
+
+// 依次发出，依次输出
+// async function f(urls) {
+//   for (let url of urls) {
+//     console.log(await url())
+//   }
+// }
+//
+// f(arr)
+
+function mixin() {
+  for (var _len = arguments.length, argus = Array(_len), _key = 0; _key < _len; _key++) {
+    argus[_key] = arguments[_key];
+  }
+
+  return function (target) {
+    return Object.assign(target, argus);
+  };
 }
+
+var foo = { name: 'jay' };
+
+var Person = (_dec = mixin(foo), _dec(_class = function Person() {
+  _classCallCheck(this, Person);
+}) || _class);
+
+console.log(Person.name);
 
 /***/ }),
 /* 329 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* eslint max-len: 0 */
-// TODO: eventually deprecate this console.trace("use the `babel-register` package instead of `babel-core/register`");
-module.exports = __webpack_require__(330);
+"use strict";
 
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.debounce = debounce;
+// 将lodash中的debounce单独提取出来
+// 移植到Vue2之后直接使用lodash中的_.debounce替换即可
+function debounce(func, wait, options) {
+  var nativeMax = Math.max,
+      nativeMin = Math.min;
+
+  function toNumber(value) {
+    if (typeof value == 'number') {
+      return value;
+    }
+    if (isSymbol(value)) {
+      return NAN;
+    }
+    if (isObject(value)) {
+      var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+      value = isObject(other) ? other + '' : other;
+    }
+    if (typeof value != 'string') {
+      return value === 0 ? value : +value;
+    }
+    value = value.replace(reTrim, '');
+    var isBinary = reIsBinary.test(value);
+    return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+  }
+
+  var lastArgs,
+      lastThis,
+      maxWait,
+      result,
+      timerId,
+      lastCallTime,
+
+  // func 上一次执行的时间
+  lastInvokeTime = 0,
+      leading = false,
+      maxing = false,
+      trailing = true;
+
+  // func必须是函数
+  if (typeof func != 'function') {
+    throw new TypeError(FUNC_ERROR_TEXT);
+  }
+
+  // 对间隔时间的处理
+  wait = toNumber(wait) || 0;
+
+  // 对options中传入参数的处理
+  if (isObject(options)) {
+    leading = !!options.leading;
+    maxing = 'maxWait' in options;
+    maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+    trailing = 'trailing' in options ? !!options.trailing : trailing;
+  }
+
+  // 执行要被触发的函数
+  function invokeFunc(time) {
+    var args = lastArgs,
+        thisArg = lastThis;
+    lastArgs = lastThis = undefined;
+    lastInvokeTime = time;
+    result = func.apply(thisArg, args);
+    return result;
+  }
+
+  // 在leading edge阶段执行函数
+  function leadingEdge(time) {
+    // Reset any `maxWait` timer.
+    lastInvokeTime = time;
+    // 为 trailing edge 触发函数调用设定定时器
+    timerId = setTimeout(timerExpired, wait);
+    // leading = true 执行函数
+    return leading ? invokeFunc(time) : result;
+  }
+
+  // 剩余时间
+  function remainingWait(time) {
+    // 距离上次debounced函数被调用的时间
+    var timeSinceLastCall = time - lastCallTime,
+
+    // 距离上次函数被执行的时间
+    timeSinceLastInvoke = time - lastInvokeTime,
+
+    // 用 wait 减去 timeSinceLastCall 计算出下一次trailing的位置
+    result = wait - timeSinceLastCall;
+    // 两种情况
+    // 有maxing: 比较出下一次maxing和下一次trailing的最小值，作为下一次函数要执行的时间
+    // 无maxing: 在下一次trailing时执行timerExpired
+    return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
+  }
+
+  // 根据时间判断 func 能否被执行
+  function shouldInvoke(time) {
+    var timeSinceLastCall = time - lastCallTime,
+        timeSinceLastInvoke = time - lastInvokeTime;
+    // 几种满足条件的情况
+    return lastCallTime === undefined // 首次执行
+    || timeSinceLastCall >= wait // 距离上次被调用已经超过 wait
+    || timeSinceLastCall < 0 // 系统时间倒退
+    || maxing && timeSinceLastInvoke >= maxWait; //超过最大等待时间
+  }
+
+  // 在 trailing edge 且时间符合条件时，调用 trailingEdge函数，否则重启定时器
+  function timerExpired() {
+    var time = now();
+    if (shouldInvoke(time)) {
+      return trailingEdge(time);
+    }
+    // 重启定时器
+    timerId = setTimeout(timerExpired, remainingWait(time));
+  }
+
+  // 在trailing edge阶段执行函数
+  function trailingEdge(time) {
+    timerId = undefined;
+    // 有lastArgs才执行，
+    // 意味着只有 func 已经被 debounced 过一次以后才会在 trailing edge 执行
+    if (trailing && lastArgs) {
+      return invokeFunc(time);
+    }
+    // 每次 trailingEdge 都会清除 lastArgs 和 lastThis，目的是避免最后一次函数被执行了两次
+    // 举个例子：最后一次函数执行的时候，可能恰巧是前一次的 trailing edge，函数被调用，而这个函数又需要在自己时延的 trailing edge 触发，导致触发多次
+    lastArgs = lastThis = undefined;
+    return result;
+  }
+
+  // cancel方法
+  function cancel() {
+    if (timerId !== undefined) {
+      clearTimeout(timerId);
+    }
+    lastInvokeTime = 0;
+    lastArgs = lastCallTime = lastThis = timerId = undefined;
+  }
+
+  // flush方法--立即调用
+  function flush() {
+    return timerId === undefined ? result : trailingEdge(now());
+  }
+
+  function debounced() {
+    var time = now(),
+
+    //是否满足时间条件
+    isInvoking = shouldInvoke(time);
+    lastArgs = arguments;
+    lastThis = this;
+    lastCallTime = time; //函数被调用的时间
+    // 无timerId的情况有两种：
+    // 1.首次调用
+    // 2.trailingEdge执行过函数
+    if (isInvoking) {
+      if (timerId === undefined) {
+        return leadingEdge(lastCallTime);
+      }
+      if (maxing) {
+        // Handle invocations in a tight loop.
+        timerId = setTimeout(timerExpired, wait);
+        return invokeFunc(lastCallTime);
+      }
+    }
+    // 负责一种case：trailing 为 true 的情况下，在前一个 wait 的 trailingEdge 已经执行了函数；
+    // 而这次函数被调用时 shouldInvoke 不满足条件，因此要设置定时器，在本次的 trailingEdge 保证函数被执行
+    if (timerId === undefined) {
+      timerId = setTimeout(timerExpired, wait);
+    }
+    return result;
+  }
+
+  debounced.cancel = cancel;
+  debounced.flush = flush;
+  return debounced;
+}
 
 /***/ }),
 /* 330 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* eslint max-len: 0 */
+// TODO: eventually deprecate this console.trace("use the `babel-register` package instead of `babel-core/register`");
+module.exports = __webpack_require__(331);
+
+
+/***/ }),
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
