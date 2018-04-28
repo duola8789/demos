@@ -7,6 +7,7 @@ require("babel-polyfill");
 
 // 移植到Vue2之后直接使用lodash中的_.debounce替换即可
 import debounce from './debounce'
+import _ from 'lodash'
 
 // function time(ms, message, index) {
 //   console.log(index);
@@ -177,24 +178,41 @@ let arr = [timeout1, timeout2, timeout3]
 //
 // f(arr)
 
-function mixin(...argus) {
-  return function (target) {
-    return Object.assign(target, argus)
-  }
+
+// decorator
+// function mixin(...argus) {
+//   return function (target) {
+//     return Object.assign(target, argus)
+//   }
+// }
+//
+// const foo = {name: 'jay'}
+//
+// @mixin(foo)
+// class Person {
+// }
+//
+// console.log(Person.name)
+
+
+// debounce相关
+function main() {
+  obj.say()
 }
-
-const foo = {name: 'jay'}
-
-@mixin(foo)
-class Person {
-
-}
-
-console.log(Person.name)
 
 function test() {
-  alert(1)
+  console.log(123)
+}
+
+let obj = {
+  say: _.debounce(function () {
+    console.log(456)
+  }, 500)
 }
 
 let btn = document.querySelector('#btn');
-btn.addEventListener('click', debounce(test, 1250, {maxWait: 1000}))
+btn.addEventListener('click', main())
+setInterval(main, 222)
+
+
+
