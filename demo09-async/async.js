@@ -9,6 +9,9 @@ require("babel-polyfill");
 import debounce from './debounce'
 import _ from 'lodash'
 
+import w from './test'
+import {b} from './test'
+
 // function time(ms, message, index) {
 //   console.log(index);
 //   return new Promise(function (resolve) {
@@ -215,4 +218,11 @@ btn.addEventListener('click', main())
 setInterval(main, 222)
 
 
-
+console.log(w)
+setTimeout(function () {
+  console.log(w)
+}, 3000)
+let a = {
+  a: 123,
+  b: 333,
+}
