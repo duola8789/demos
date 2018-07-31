@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片处理</title>
+  <style>
+    .canvas {
+      display: none;
+      float: right;
+      border: 1px solid gray;
+    }
+    .container {
+      float: left;
+    }
+    .preview {
+      /*width: 300px;*/
+    }
+    .img {
+      /*width: 400px;*/
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <label>上传图片<input type="file" id="input"></label>
+    <img id="preview" class="preview">
+    <img id="img" class="img">
+  </div>
+  <canvas id="canvas" class="canvas"></canvas>
+</body>
+  <script>
+    // 加载图片
+    function loadImage(src) {
+      return new Promise((resolve, reject) => {
+        let img = new Image();
+        // 在线图片设置crossOrigin跨域
+        if (src.indexOf(src) === 0) {
+          img.crossOrigin = '*';
+        }
+        img.src = src;
+        img.onload = () => {
+          resolve(img)
+        };
+        img.onerror = () => {
+          reject(new Error('图片解析失败'))
+        }
+      })
+    }
+
+    window.onload = async function () {
+      // 创建图片
+      const src = 'http://pblesaqy5.bkt.clouddn.com/18-7-27/52991435.jpg';
+      const img = await loadImage(src);
+
+      const input = document.querySelector('#input');
+      const preview = document.querySelector('#preview');
+
+      // 绘制并显示图片
+      // drawImage(img);
+
+      // 预览图片
+      // previewImage2(input, preview)
+
+      // 剪裁图片
+      // preview.src = clipImage(img, {
+      //   width: 1800,
+      //   height: 1800
+      // })
+    };
+
+    // 通过canvas绘制图片
+    function drawImage(img) {
+      // 计算画布尺寸
+      const canvas = document.querySelector('#canvas');
+      const imgRatio = img.naturalWidth / img.naturalHeight;
+      const ctxWidth = 300;
+      const ctxHeight = ctxWidth / imgRatio;
+
+      // 绘制图片
+      const ctx = canvas.getContext("2d");
+      let x = 0;
+      let y = 0;
+      ctx.drawImage(img, x, y, ctxWidth, ctxHeight);
+
+      // 转为base64
+      const b64 = canvas.toDataURL('image/jpeg', 0.9);
+
+      // 查看图片
+      const result = document.querySelector('#img');
+      result.src = b64;
+    }
+
+    // 利用fileReader预览图片
+    function previewImage(inputEle, preview) {
+      inputEle.onchange = function (e) {
+        const file = e.target.files[0];
+        if (!file) {
+          preview.src = '';
+          return
+        }
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = t => {
+          preview.src = t.target.result;
+        }
+      }
+    }
+
+    // 利用URL.createObjectURL预览图片
+    function previewImage2(inputEle, preview) {
+      inputEle.onchange = function (e) {
+        const file = e.target.files[0];
+        if (!file) {
+          preview.src = '';
+          return
+        }
+        preview.src = window.URL.createObjectURL(file)
+      }
+    }
+
+    // 居中剪裁
+    function clipImage(img, ops) {
+      // 图片原始尺寸
+      const imgNaturalWidth = img.naturalWidth;
+      const imgNaturalHeight = img.naturalHeight;
+
+      // 剪切尺寸，默认值为原图狂傲
+      let clippedWidth = ops.width || imgNaturalWidth;
+      let clippedHeight = ops.height || imgNaturalHeight;
+      let clippedRatio = clippedWidth / clippedHeight;
+
+      // 居中剪裁的坐标
+      let dx = (imgNaturalWidth - clippedWidth) / 2;
+      let dy = (imgNaturalHeight - clippedHeight) / 2;
+
+      // 创建画布，并设定尺寸为剪切后的尺寸
+      let cvs = document.createElement('canvas');
+      const ctxWidth = 300;
+      const ctxHeight = ctxWidth / clippedRatio;
+      cvs.width = ctxWidth;
+      cvs.height = ctxHeight;
+
+      // 绘制图片
+      let ctx = cvs.getContext('2d');
+      let x = 0;
+      let y = 0;
+
+      ctx.drawImage(img, dx, dy, clippedWidth, clippedHeight, x, y, ctxWidth, ctxHeight);
+
+      // 返回base64图片
+      return cvs.toDataURL('image/jpeg', 0.9)
+    }
+
+  </script>
+</html>
