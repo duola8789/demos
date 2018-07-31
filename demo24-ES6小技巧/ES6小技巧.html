@@ -156,15 +156,16 @@
     console.log(this.height);
     console.log(this.weight);
   }
+
   const testObj = {
     weight: 72,
     height: 180
   };
 
   // ES5的实现
-  Function.prototype.bind1 =  function (context) {
+  Function.prototype.bind1 = function (context) {
     var self = this;
-    return function() {
+    return function () {
       self.apply(context, [].slice.call(arguments))
     }
   };
@@ -180,5 +181,12 @@
   const newTest2 = test.bind2(testObj);
   newTest2('chow');
 
+  // 将多层数组转换成一层数组
+  const nestedArr = [1, 2, [3, 4, [5, 6]]];
+
+  const flatten = arr => arr.reduce(
+    (total, currentVal) => total.concat(Array.isArray(currentVal) ? flatten(currentVal) : currentVal)
+    , []);
+  console.log(flatten(nestedArr))
 </script>
 </html>
