@@ -108,6 +108,9 @@
 </head>
 <body>
 <div class="wrapper">
+  <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${width}">
+    <text x="50%" y="50%" dy="12px" text-anchor="middle" stroke="#000000" stroke-width="1" stroke-opacity="${opacity}" fill="none" transform="rotate(-45, 120 120)" style="font-size: ${fontSize};">${content}</text>
+  </svg>
   <table class="table">
     <tr>
       <td><span>1</span></td>
@@ -164,6 +167,19 @@
     <div class="grid-cell">8</div>
     <div class="grid-cell">9</div>
   </div>
+  <input id="input" value="123">
 </div>
+  <script>
+    const number = 123456789876543212345678987654321;
+    const findN = (number, n) => number.toString().split('')[n];
+
+    console.log(findN(number, 0))
+
+    const input = document.querySelector('#input');
+    input.oninput = function(e) {
+      console.log(typeof input.value)
+    }
+
+  </script>
 </body>
 </html>
