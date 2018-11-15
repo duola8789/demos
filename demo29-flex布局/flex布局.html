@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>flex布局</title>
+  <style>
+    form {
+      display: flex;
+      width: 500px;
+      align-items: center;
+    }
+    input {
+      flex-grow: 1;
+      /*align-self: center;*/
+    }
+    span {
+      /*align-self: center;*/
+    }
+  </style>
+</head>
+<body>
+  <!--http://www.ruanyifeng.com/blog/2018/10/flexbox-form.html-->
+  <form>
+    <input type="email" name="email" placeholder="Enter your email">
+    <p>123</p>
+    <button type="submit"><img src="http://www.w3cplus.com/sites/default/files/blogs/2014/1411/girls.svg" width="50"/>
+    </button>
+  </form>
+  <script>
+    const array = [-1, 2, 199, 22, 12, -20, 12, 8, 55];
+
+    function sort(arr) {
+      // 冒泡
+      // for (let i = 0; i < arr.length; i++) {
+      //   for (let j = 0; j < arr.length - i; j++) {
+      //     if (arr[j] > arr[j + 1]) {
+      //       [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]
+      //     }
+      //   }
+      // }
+
+      // 冒泡优化
+      // let isFinish = true;
+      // for (let i = 0; i < arr.length; i++) {
+      //   isFinish = true;
+      //   for (let j = 0; j < arr.length - i; j++) {
+      //     if (arr[j] > arr[j + 1]) {
+      //       [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+      //       isFinish = false;
+      //     }
+      //   }
+      //   if (isFinish) {
+      //     return arr;
+      //   }
+      // }
+
+      // 选择排序
+      // for (let i = 0; i < arr.length; i++) {
+      //   let minIndex = i;
+      //   for (let j = i + 1; j < arr.length; j++) {
+      //     if (arr[j] < arr[minIndex]) {
+      //       minIndex = j
+      //     }
+      //   }
+      //   [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]]
+      // }
+      //
+
+      // 插入排序
+      // for (let i = 0; i < arr.length; i++) {
+      //   for (let j = i + 1; j > 0; j--) {
+      //     if (arr[j] < arr[j - 1]) {
+      //       [arr[j], arr[j - 1]] = [arr[j - 1], arr[j]]
+      //     }
+      //   }
+      // }
+
+      // 快速排序
+
+      if (arr.length <= 1) {
+        return arr;
+      }
+
+      let baseIndex = Math.floor(arr.length / 2);
+      let [base] = arr.splice(baseIndex, 1);
+      let left = [], right = [];
+
+      for (let i = 0; i < arr.length; i++) {
+        (arr[i] > base ? right : left).push(arr[i])
+      }
+
+      return sort(left).concat([base], sort(right));
+    }
+
+    console.log(sort(array))
+  </script>
+</body>
+</html>
