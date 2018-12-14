@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>跨文档通信-1</title>
+</head>
+<body>
+  <a href="demo30-2.html#hello" target="_blank">打开页面</a>
+  <script>
+    const btn1 = document.querySelector('#btn1');
+    const btn2 = document.querySelector('#btn2');
+    const h1 = document.querySelector('#h1');
+    let otherWindow;
+
+    /**
+     * postMessage
+     *
+     // 打开Tab2
+     btn1.addEventListener('click', () => {
+      otherWindow = window.open('./demo30-2.html');
+    });
+
+     // 向Tab2发送消息
+     btn2.addEventListener('click', () => {
+      // postMessage的调用者是其他窗口的引用，比如iframe的contentWindow属性，window.open返回的窗口对象
+      // 指定目标窗口的targetOrigin
+      otherWindow.postMessage('hello from tab 1', window.location.origin);
+      console.log('发送成功')
+    });
+
+     // 监听message事件
+     window.addEventListener('message', e => {
+      // 判断消息来源
+      if (e.origin !== window.location.origin) {
+        return
+      }
+      h1.innerHTML += e.data.value + '<br>';
+    })
+     */
+
+    /**
+     * MessageChannel
+     *
+     const channel = new MessageChannel();
+     const {port1, port2} = channel;
+
+     btn1.addEventListener('click', () => {
+      // 新建页面
+      otherWindow = window.open('./demo30-2.html');
+    });
+
+     btn2.addEventListener('click', () => {
+      // 将port2传递给目标文档
+      otherWindow.postMessage('try to connect', window.location.origin, [port2])
+    });
+
+     // 监听port的message事件
+     port1.onmessage = function (e) {
+      h1.innerHTML += e.data + '<br>';
+      setTimeout(() => {
+        // 通过管道发送消息
+        port1.postMessage('Hello form tab1')
+      }, 2000);
+    }
+     */
+
+    /**
+     * Cookie
+     *
+     btn1.addEventListener('click', () => {
+      document.cookie += 'value1=hello1'
+    })
+     */
+  </script>
+</body>
+</html>
