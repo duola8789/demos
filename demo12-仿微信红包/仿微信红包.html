@@ -40,9 +40,7 @@
     }
   });
 
-
   function distributeMoney(money, personNum) {
-
     //  money输入单位为元，计算时转换为分
     money = Number(money) * 100;
     personNum = Number(personNum);
@@ -67,12 +65,12 @@
     for (let i = 0; i < personNum; i++) {
       // 当前最大可分配金额是总金额减去已分配金额，再减去保留的剩余人数最小分配金额之和
       maxAvailableMoney = money - spendMoney - unDistributePersonNum * minMoney;
-      //  仅剩最后一人时，将剩余金额全部分配
+      // 仅剩最后一人时，将剩余金额全部分配
       if (unDistributePersonNum === 0) {
         randomMoney = maxAvailableMoney;
       }
       else {
-        //  在最低金额和可分配最大金额之间取随机数
+        // 在最低金额和可分配最大金额之间取随机数
         randomMoney = Math.round(Math.random() * (maxAvailableMoney - minMoney) + minMoney)
       }
       resultArr.push(Number((randomMoney / 100).toFixed(2)));
