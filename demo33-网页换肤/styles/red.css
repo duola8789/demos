@@ -1,0 +1,13 @@
+/**
+ * Created by zh on 2019/5/13.
+ */
+/**
+ * Created by zh on 2019/5/13.
+ */
+.theme {
+  color: navajowhite;
+  background: red;
+}
+.theme .text {
+  border: 1px solid pink;
+}

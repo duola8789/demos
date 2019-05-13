@@ -1,0 +1,41 @@
+/**
+ * Created by zh on 2019/5/13.
+ */
+.container > div {
+  width: 200px;
+  padding: 20px 0;
+}
+.text {
+  width: 50%;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+.input-container {
+  margin-top: 20px;
+}
+input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  background: none;
+  border: none
+}
+.input input {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 2px;
+  background: #ddd;
+  box-sizing: border-box;
+}
+.input input[value=green] {
+  background: green;
+}
+.input input[value=red] {
+  background: red;
+}
+.input input:checked {
+  border: 2px solid deepskyblue;
+}
