@@ -27,9 +27,8 @@
   const changeSkin = theme => {
     [...links].forEach(link => {
       link.disabled = true;
-      link.disabled = link.id ===`theme-${theme}`;
+      link.disabled = link.id !== `theme-${theme}`;
     });
-    console.log(links)
   };
 
   inputContainer.addEventListener('change', (e) => {
