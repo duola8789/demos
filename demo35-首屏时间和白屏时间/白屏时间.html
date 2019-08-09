@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>白屏时间</title>
+  <script>
+  // 不兼容 performance.timing 的浏览器
+  window.pageStartTime = Date.now()
+  </script>
+  <!-- 页面 CSS 资源 -->
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/default.css">
+  <script>
+  // 白屏结束时间
+  window.firstPaint = Date.now();
+
+  // 白屏时间
+  const paintDuration  = performance ? performance.now() : firstPaint - pageStartTime;
+  // performance.now() 就相当于 firstPaint - performance.timeOrigin
+
+  console.log(paintDuration);
+  </script>
+</head>
+<body>
+<h1>Hello World</h1>
+</body>
+</html>
