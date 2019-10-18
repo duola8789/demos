@@ -8,88 +8,79 @@
       margin: 0;
       padding: 0;
     }
-    html, body {
-      height: 100%;
-    }
     .left {
       width: 200px;
-      height: 100%;
-      background: navajowhite;
+      height: 100px;
+      background: darkcyan;
     }
     .right {
-      height: 100%;
-      background: olive;
+      height: 200px;
+      background: red;
     }
-    /*使用flex布局*/
+
+    /* float + margin */
     /*
-    body {
-      display: flex;
-      flex-wrap: nowrap;
+    .left1 {
+      float: left
     }
-    .left {
-      flex-grow: 0;
-    }
-    .right {
-      flex-grow: 1
+    .right1 {
+      margin-left: 200px;
     }
     */
 
-    /*使用inline-block布局 + calc属性*/
+    /* float + BFC */
     /*
-    body {
-      font-size: 0;
+    .left1 {
+      float: left
     }
-    .left {
-      font-size: 14px;
-      display: inline-block;
-    }
-    .right {
-      width: calc( 100% - 200px);
-      font-size: 14px;
-      display: inline-block;
+    .right1 {
+      overflow: hidden;
     }
     */
 
-    /*使用float布局 + margin-left实现*/
+    /* 绝对定位 + margin */
     /*
-    .left{
-      float:left;
-    }
-    .right{
-      margin-left:200px;
-    }
-    */
-
-    /*使用position:absolute + margin-left实现*/
-    /*
-    .left {
+    .left1 {
       position: absolute;
       left: 0;
       top: 0;
     }
-    .right {
+    .right1 {
       margin-left: 200px;
     }
     */
-    /*使用float + 负的margin-right实现*/
+
+    /* flex */
     /*
-    .left {
-      float: left;
-      margin-right: -200px;
-      z-index: 100;
+    body {
+      display: flex;
     }
-    .right {
-      width: 100%;
-      float: right;
-      background: none;
+    .left1 {
+      flex: 0 1 500px;
+      width: 300px;
     }
-    .right p {
-      height: 100%;
-      margin-left: 200px;
-      background: olive;
+    .right1 {
+      flex: 1;
     }
     */
-    /*利用gird布局*/
+
+    /* inline-block + calc */
+    /*
+    body {
+      font-size: 0;
+    }
+    .left1 {
+      display: inline-block;
+      font-size: 14px;
+    }
+    .right1 {
+      display: inline-block;
+      width: calc( 100% - 200px);
+      font-size: 14px;
+    }
+    */
+
+    /* 利用gird布局 */
     body {
       display: grid;
       grid-template-columns: 200px 1fr
@@ -97,8 +88,8 @@
   </style>
 </head>
 <body>
-<div class="left">固定宽度200px</div>
-<div class="right">
+<div class="left left1">固定宽度200px</div>
+<div class="right right1">
   <p>宽度自适应</p>
 </div>
 </body>
