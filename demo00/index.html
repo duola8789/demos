@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+<script>
+let a = [1, [2, [3, [4], 5], 6], 7];
+
+
+function flatDeep(arr) {
+  return arr.reduce((total, current) => total.concat(Array.isArray(current) ? flatDeep(current) : current), [])
+}
+
+function flatDeep2_1(arr) {
+  const stack = [...arr];
+  const result = [];
+  while (stack.length > 0) {
+    const target = stack.pop();
+    if (Array.isArray(target)) {
+      stack.push(...target);
+    } else {
+      result.unshift(target);
+    }
+  }
+  return result;
+}
+
+function flatDeep2_2(arr) {
+  const stack = [].concat(arr);
+  const result = [];
+  while (stack.length > 0) {
+    const target = stack.pop();
+    if (Object.prototype.toString.call(target) === '[object Array]') {
+      [].push.apply(stack, target);
+    } else {
+      result.unshift(target);
+    }
+  }
+  return result;
+}
+
+function flatDeep3(arr) {
+  const result = [];
+  (function _flat(array) {
+    array.forEach(v => {
+      if (Array.isArray(v)) {
+        _flat(v)
+      } else {
+        result.push(v);
+      }
+    })
+  })(arr);
+  return result;
+}
+
+function flatDeep4(arr) {
+  function* _flatDeep(array) {
+    for (const current of array) {
+      if (Array.isArray(current)) {
+        yield* _flatDeep(current);
+      } else {
+        yield current
+      }
+    }
+  }
+  return [..._flatDeep(arr)];
+}
+
+function flatDeep5(arr) {
+  return arr.flat(Infinity);
+}
+
+
+console.log(flatDeep(a));
+console.log(flatDeep2_1(a));
+console.log(flatDeep2_2(a));
+console.log(flatDeep3(a));
+console.log(flatDeep4(a));
+console.log(flatDeep5(a));
+
+</script>
+</body>
+</html>
