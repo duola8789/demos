@@ -8,21 +8,20 @@
 <div id="target"></div>
 <button id="button">click</button>
 <script>
+const worker = new Worker('worker.js');
+worker.addEventListener('message', e => {
+  if (e.type === 'calculate') {
+    console.log(e.data);
+  }
+});
+
 function changeText() {
   document.querySelector('#target').textContent = '555';
 }
 
-function calculate() {
-  const start = Date.now();
-  while(Date.now() - start < 3000) {}
-  console.log('done')
-}
-
 document.querySelector('#button').addEventListener('click', () => {
   changeText();
-  setTimeout(() => {
-    calculate();
-  })
+  worker.postMessage({type: 'calculate', data: {time: 3000}});
 });
 </script>
 </body>
