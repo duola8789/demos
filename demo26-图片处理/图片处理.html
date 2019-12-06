@@ -13,10 +13,10 @@
       float: left;
     }
     .preview {
-      /*width: 300px;*/
+      width: 300px;
     }
     .img {
-      /*width: 400px;*/
+      width: 400px;
     }
   </style>
 </head>
@@ -34,7 +34,7 @@
       return new Promise((resolve, reject) => {
         let img = new Image();
         // 在线图片设置crossOrigin跨域
-        if (src.indexOf(src) === 0) {
+        if (src.indexOf('http') === 0) {
           img.crossOrigin = '*';
         }
         img.src = src;
@@ -49,23 +49,23 @@
 
     window.onload = async function () {
       // 创建图片
-      const src = 'http://pblesaqy5.bkt.clouddn.com/18-7-27/52991435.jpg';
+      const src = 'http://image.oldzhou.cn/18-7-27/52991435.jpg';
       const img = await loadImage(src);
 
       const input = document.querySelector('#input');
       const preview = document.querySelector('#preview');
 
       // 绘制并显示图片
-      // drawImage(img);
+      drawImage(img);
 
       // 预览图片
-      // previewImage2(input, preview)
+      previewImage2(input, preview);
 
       // 剪裁图片
-      // preview.src = clipImage(img, {
-      //   width: 1800,
-      //   height: 1800
-      // })
+      preview.src = clipImage(img, {
+        width: 1800,
+        height: 1800
+      })
     };
 
     // 通过canvas绘制图片
