@@ -3,27 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0
+    }
+    .list {
+      position: relative;
+      width: 300px;
+      height: 150px;
+      margin: 20px;
+      border: 1px solid firebrick;
+      overflow-y: auto;
+    }
+    .list li {
+      height: 50px;
+      line-height: 50px;
+      list-style: none;
+    }
+    .list li:nth-child(even) {
+      background: darkcyan;
+    }
+    .list li:nth-child(odd) {
+      background: honeydew;
+    }
+  </style>
 </head>
 <body>
-<div id="target"></div>
-<button id="button">click</button>
+<div class="scroll">
+  <ul class="list">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6</li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+  </ul>
+</div>
+
 <script>
-function changeText() {
-  document.querySelector('#target').textContent = '555';
-}
-
-function calculate() {
-  const start = Date.now();
-  while(Date.now() - start < 3000) {}
-  console.log('done')
-}
-
-document.querySelector('#button').addEventListener('click', () => {
-  changeText();
-  setTimeout(() => {
-    calculate();
-  })
-});
 </script>
 </body>
 </html>
