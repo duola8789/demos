@@ -1,96 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>两列布局</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>水波纹效果</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    .left {
-      width: 200px;
-      height: 100px;
-      background: darkcyan;
-    }
-    .right {
-      height: 200px;
-      background: red;
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  @keyframes wateranimate {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
     }
 
-    /* float + margin */
-    /*
-    .left1 {
-      float: left
+    100% {
+      transform: scale(2);
+      opacity: 0;
     }
-    .right1 {
-      margin-left: 200px;
-    }
-    */
+  }
 
-    /* float + BFC */
-    /*
-    .left1 {
-      float: left
-    }
-    .right1 {
-      overflow: hidden;
-    }
-    */
+  .water {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background: darkgreen;
+    margin: 100px;
+  }
 
-    /* 绝对定位 + margin */
-    /*
-    .left1 {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    .right1 {
-      margin-left: 200px;
-    }
-    */
+  .water1 {
+    animation: wateranimate 1.5s 0s ease-out;
+  }
 
-    /* flex */
-    /*
-    body {
-      display: flex;
-    }
-    .left1 {
-      flex: 0 1 500px;
-      width: 300px;
-    }
-    .right1 {
-      flex: 1;
-    }
-    */
+  .water2 {
+    animation: wateranimate 1.5s 0.5s ease-out;
+  }
 
-    /* inline-block + calc */
-    /*
-    body {
-      font-size: 0;
-    }
-    .left1 {
-      display: inline-block;
-      font-size: 14px;
-    }
-    .right1 {
-      display: inline-block;
-      width: calc( 100% - 200px);
-      font-size: 14px;
-    }
-    */
+  .water3 {
+    animation: wateranimate 1.5s 1s ease-out;
+  }
 
-    /* 利用gird布局 */
-    body {
-      display: grid;
-      grid-template-columns: 200px 1fr
-    }
+  .water2,
+  .water3,
+  .water1 {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 0 5px #0bc1ff;
+    border-radius: 100%;
+    z-index: 1;
+    opacity: 0;
+  }
   </style>
 </head>
 <body>
-<div class="left left1">固定宽度200px</div>
-<div class="right right1">
-  <p>宽度自适应</p>
+<div class="water">
+  <div class="water1"></div>
+  <div class="water2"></div>
+  <div class="water3"></div>
 </div>
 </body>
 </html>

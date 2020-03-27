@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>圆环进度条</title>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  html, body {
+    height: 100%;
+    background: darkcyan;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .outer {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: darkgoldenrod;
+  }
+
+  .outer:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border: 10px solid lightgray;
+    border-radius: 50%;
+  }
+
+  .inner-left {
+    position: absolute;
+    left: -10px;
+    top: -10px;
+    width: calc(50% + 10px);
+    height: calc(100% + 20px);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .inner-left:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid aqua;
+    box-sizing: border-box;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    transform: rotate(45deg);
+    animation: loading linear 3000ms forwards infinite;
+  }
+  @keyframes loading {
+    0% {
+      transform: rotate(45deg);
+    }
+    50% {
+      transform: rotate(45deg);
+    }
+    100% {
+      transform: rotate(225deg);
+    }
+  }
+
+  .inner-right {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    width: calc(50% + 10px);
+    height: calc(100% + 20px);
+    overflow: hidden;
+    z-index: 2;
+  }
+
+  .inner-right:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid aqua;
+    box-sizing: border-box;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    transform: rotate(-135deg);
+    animation: loading2 linear 3000ms forwards infinite;
+  }
+  @keyframes loading2 {
+    0% {
+      transform: rotate(-135deg);
+    }
+    50% {
+      transform: rotate(45deg);
+    }
+    100% {
+      transform: rotate(45deg);
+    }
+  }
+
+
+  </style>
+</head>
+<body>
+<div class="outer">
+  <div class="inner-left"></div>
+  <div class="inner-right"></div>
+</div>
+<script>
+</script>
+</body>
+</html>
