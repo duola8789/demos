@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/duola8789/demos#readme",
   "dependencies": {
+    "prettier": "^2.0.2",
     "webpack": "^3.10.0"
   },
   "devDependencies": {
