@@ -38,6 +38,46 @@ const defineReactive = (data, key, value) => {
   });
 };
 
+const seenObjects = new Set();
+
+// 递归收集依赖
+function traverse(val) {
+  _traverse(val, seenObjects);
+  seenObjects.clear();
+}
+
+function _traverse(val, seen) {
+  let i, keys;
+  const isA = Array.isArray(val);
+
+  if ((!isA && !isObject(val)) || Object.isFrozen(val)) {
+    return;
+  }
+
+  if (val.__ob__) {
+    const depId = val.__ob__.dep.is;
+    if (seen.has(depId)) {
+      return;
+    }
+    seen.add(depId);
+  }
+
+  if (isA) {
+    i = val.length;
+    while (i--) {
+      _traverse(val[i], seen);
+    }
+  } else {
+    keys = Object.keys(val);
+    i = keys.length;
+    while (i--) {
+      _traverse(val[[keys[i]]], seen);
+    }
+  }
+}
+
+let uid = 0;
+
 class Dep {
   constructor() {
     this.id = uid++;
@@ -172,6 +212,4 @@ Vue.prototype.$watch = function (expOrFn, cb, options) {
   return function unwatch() {
     watcher.teardown();
   };
-};
-
-const seenObjects = new Set();
+};;
