@@ -114,7 +114,7 @@ const defineReactive = (data, key, value) => {
     configurable: true,
     get() {
       dep.depend();
-      //
+      // 收集数组的依赖到 Observer 实例上
       if (childOb) {
         childOb.dep.depend();
       }
