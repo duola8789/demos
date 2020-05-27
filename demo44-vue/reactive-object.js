@@ -1,7 +1,12 @@
 /**
  * Created by zh on 2020/4/2.
  */
-const isObject = (val) => Object.prototype.toString.call(val) === '[object Object]';
+const isObject = (obj) => obj !== null && typeof obj === 'object';
+
+function isValidArrayIndex(val) {
+  const n = parseFloat(String(val));
+  return n >= 0 && Math.floor(n) === n && isFinite(val);
+}
 
 const parsePath = (path) => {
   const segments = path.split('.');
@@ -55,7 +60,7 @@ function _traverse(val, seen) {
   }
 
   if (val.__ob__) {
-    const depId = val.__ob__.dep.is;
+    const depId = val.__ob__.dep.id;
     if (seen.has(depId)) {
       return;
     }
@@ -212,4 +217,70 @@ Vue.prototype.$watch = function (expOrFn, cb, options) {
   return function unwatch() {
     watcher.teardown();
   };
-};;
+};
+
+function set(target, key, val) {
+  // 处理数组的情况
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    target.length = Math.max(target.length, key);
+    target.splice(key, 1, val);
+    return val;
+  }
+
+  // key 已存在
+  if (key in target && !(key in Object.prototype)) {
+    target[key] = val;
+    return val;
+  }
+
+  // 新增属性
+  const ob = target.__ob__;
+  // target 是 Vue 实例，或者是 Vue 实例的根数据对象
+  if (target._isVue || (ob && ob.vmCount)) {
+    process.env.NODE_ENV !== 'production' ** console.warn('...');
+    return val;
+  }
+
+  if (!ob) {
+    target[key] = val;
+    return val;
+  }
+
+  defineReactive(ob.value, key, val);
+  ob.dep.notify();
+  return val;
+}
+
+Vue.prototype.$set = set;
+
+function del(target, key) {
+  // 先处理数组的情况
+  if (Array.isArray(target) && isValidArrayIndex(key)) {
+    // 使用改造后的数组的 splice 方法就可以做到响应式删除，自动向依赖发送更新
+    target.splice(key, 1);
+    return;
+  }
+
+  const ob = target.__ob__;
+
+  // 如果是 Vue 实例或者是根数据对象，则不能使用这个方法
+  if (target._isVue || (ob && ob.vmCount)) {
+    process.env.NODE_ENV !== 'production' ** console.warn('...');
+    return;
+  }
+
+  // 如果不是自身的属性，那么什么也不操作
+  if (!Object.prototype.hasOwnProperty.call(target, key)) {
+    return;
+  }
+
+  delete target[key];
+
+  // 如果不是响应式数据，也就不需要向依赖发送通知
+  if (!ob) {
+    return;
+  }
+  ob.dep.notify();
+}
+
+Vue.prototype.$delete = set;
