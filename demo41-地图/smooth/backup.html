@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>百度地图</title>
+  <script
+    type="text/javascript"
+    src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"
+  ></script>
+  <style>
+  * {
+    padding: 0;
+    margin: 0;
+  }
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  .map {
+    width: 100%;
+    height: 100%;
+  }
+  </style>
+</head>
+<body>
+<div id="map" class="map"></div>
+<script>
+let timer;
+let tasks = [];
+
+var map = new BMap.Map('map');
+
+map.enableScrollWheelZoom();
+
+const size = new BMap.Size(32, 61);
+const icon = new BMap.Icon('../../assets/icon-map-car-free@2x.png', size);
+icon.setImageSize(size);
+
+const pt1 = new BMap.Point(116.3805, 39.913392);
+const pt2 = new BMap.Point(116.421373, 39.903977);
+const pt3 = new BMap.Point(116.426978, 39.904641);
+const pt4 = new BMap.Point(116.43862, 39.901071);
+const pt5 = new BMap.Point(116.465641, 39.910923);
+
+map.centerAndZoom(pt1, 15);
+
+const marker = new BMap.Marker(pt1, {icon: icon});
+marker.setRotation(90);
+map.addOverlay(marker);
+
+const pts = [pt2, pt3, pt4, pt5];
+let count = 0;
+let t = setInterval(() => {
+  if (!pts[count]) {
+    clearTimeout(t);
+    t = null;
+    return;
+  }
+  queue({endPoint: pts[count++]});
+}, 3500);
+
+function mathRound(num, digit) {
+  const digitalNum = Math.pow(10, digit);
+  return Math.round(num * digitalNum) / digitalNum;
+}
+
+function getPoints(startPoint, endPoint, steps) {
+  const {x: x1, y: y1} = map.pointToPixel(startPoint);
+  const {x: x2, y: y2} = map.pointToPixel(endPoint);
+
+  const xSign = x2 > x1;
+  const ySign = y2 > y1;
+
+  const distanceX = Math.abs(x2 - x1);
+  const distanceY = Math.abs(y2 - y1);
+  const tan = distanceY / distanceX;
+
+  const distanceAll = Math.sqrt(Math.pow(distanceX, 2) + Math.pow(distanceY, 2));
+  const MIN_DISTANCE = 1;
+  const amendStep = Math.min(Math.round(distanceAll / MIN_DISTANCE), steps);
+
+  const middlePoints = Array.from({length: amendStep - 1}).map((v, index) => {
+    const distance = (index + 1) * (distanceAll / amendStep);
+    const x = mathRound(distance / Math.sqrt(1 + Math.pow(tan, 2)), 8);
+    const y = mathRound(x * tan, 8);
+    const xPos = x1 + (xSign ? 1 : -1) * x;
+    const yPos = y1 + (ySign ? 1 : -1) * y;
+    console.log(xPos);
+    const pixel = new BMap.Pixel(mathRound(xPos, 3), mathRound(yPos, 3));
+    return map.pixelToPoint(pixel);
+  });
+
+  return [startPoint, ...middlePoints, endPoint];
+}
+
+async function queue(newTask) {
+  tasks.push(newTask);
+  if (!timer) {
+    while (true) {
+      const task = tasks.shift();
+      if (!task) {
+        break;
+      }
+      await smoothMove(marker, task.endPoint);
+    }
+  }
+}
+
+function smoothMove(marker, endPoint) {
+  const startPoint = marker.getPosition();
+
+  const DURATION = 2000;
+  const INTERVAL = 20;
+
+  const step = Math.round(DURATION / INTERVAL);
+  const points = getPoints(startPoint, endPoint, step);
+  const interval = Math.round(DURATION / points.length);
+
+  // console.log([...points]);
+
+  let polyline;
+
+  return new Promise((resolve) => {
+    (function _render() {
+      if (timer) {
+        clearTimeout(timer);
+        timer = null;
+      }
+      timer = setTimeout(() => {
+        const point = points.shift();
+        if (point) {
+          marker.setPosition(point);
+          map.setCenter(point);
+          if (!polyline) {
+            polyline = new BMap.Polyline([startPoint, point]);
+            map.addOverlay(polyline);
+          } else {
+            const path = polyline.getPath();
+            const newPath = [...path, point];
+            polyline.setPath(newPath);
+          }
+          _render();
+        } else {
+          clearTimeout(timer);
+          timer = null;
+          resolve();
+        }
+      }, interval);
+    })();
+  });
+}
+</script>
+</body>
+</html>
