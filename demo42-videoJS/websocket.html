@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JSDecoder Demo</title>
+  <style>
+  * {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+  }
+
+  #playWind {
+    float: left;
+    display: inline-block;
+  }
+  body {
+    margin: 10px;
+  }
+  button {
+    margin: 10px 10px;
+    padding:2px 5px;
+  }
+  .button_box {
+    float: left;
+  }
+  .button_box div {
+    margin: 10px 10px;
+  }
+  #volume {
+    position: relative;
+    top: 5px;
+  }
+  .items {
+    border: 1px solid #444444;
+  }
+
+  .container {
+    position: relative;
+  }
+
+  .control-container {
+    position: relative;
+  }
+
+  .playButton {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="playWind" style="width: 600px; height: 400px;"></div>
+  <div class="control-container">
+    <div class="playButton"></div>
+  </div>
+</div>
+
+<div class="button_box">
+  <div class="items">
+    <div>加密类型：<select name="" id="secretKeyType">
+      <option value="0">不加密</option>
+      <option value="1">AES加密</option>
+    </select>  秘钥：<input type="text" id="secretKey" id="secretKey"/>
+      <button type="button" onClick="SetSecretKey()">加密</button>
+      <button onClick="Destroy()">销毁worker（插件）</button>
+      <button onClick="getVersion()">获取版本</button>
+    </div>
+  </div>
+  <!--<div class="items">
+      <div>设备认证</div>
+      &nbsp;&nbsp;host: <input type="text" id="loginAddr" value="10.6.38.103:80" /><br />
+      &nbsp;&nbsp;user: <input type="text" id="loginUser" value="admin" />&nbsp;&nbsp;password <input type="text" id="loginPassword" value="12345qwe" />
+      <button type="button" onclick="login()">认证</button>
+  </div>-->
+  <div class="items">
+    <div>url:<input style="width: 300px;" id="url" type="text" value="ws://10.19.141.64:7314/EUrl/ybcwxHO" /></div>
+    <button type="button" onClick="realplay()">预览</button>
+    <button type="button" onClick="stop()">停止预览</button>
+    <button type="button" onClick="GetOSDTime()">获取OSD</button>
+    <button type="button" onclick="record()">开始录像</button>
+    <button type="button" onclick="stopRecord()">停止录像</button>
+    <button type="button" onClick="CapturePicture('BMP')">抓图(BMP)</button>
+    <button type="button" onClick="CapturePicture('JPEG')">抓图(JPEG)</button>
+    <button type="button" onClick="StopRealPlayAll()">关闭所有预览</button>
+    <button type="button" onClick="selectWnd()">选中窗口</button>
+    <button type="button" onClick="startTalk()">对讲</button>
+  </div>
+  <div class="items">
+    <div>url:<input style="width: 300px;" id="urlPlayback" type="text" value="ws://10.19.141.64:7314/EUrl/ybcwxHO"/>
+      <div>开始时间 <input type="text" id="sDate" value="2019-08-22T00:00:00Z" /> -
+        结束时间 <input type="text" id="eDate" value="2019-08-22T23:59:59Z" /></div>
+      <button type="button" onClick="playback()">回放</button>
+      <button type="button" onClick="Pause()">暂停</button>
+      <button type="button" onClick="Resume()">恢复</button>
+      <button type="button" onClick="stop()">停止回放</button>
+      <button type="button" onClick="Fast()">快放</button>
+      <button type="button" onClick="Slow()">慢放</button>
+      <button type="button" onClick="FrameForward()">单帧</button>
+      <button type="button" onclick="record()">开始剪辑</button>
+      <button type="button" onclick="stopRecord()">停止剪辑</button><br />
+      &nbsp;&nbsp;开始时间 <input type="text" id="sDate1" value="2019-08-22T00:00:00Z" /> -
+      结束时间 <input type="text" id="eDate1" value="2019-08-22T23:59:59Z" />
+      <button type="button" onclick="playbackLocation()">定位</button>
+    </div>
+    <div class="items">
+      <button type="button" onClick="EnableZoom()">开启电子放大</button>
+      <button type="button" onClick="DisableZoom()">关闭电子放大</button>
+      <button type="button" onClick="Enable3DZoom()">开启3D放大</button>
+      <button type="button" onClick="Disable3DZoom()">关闭3D放大</button>
+    </div>
+    <div class="items">
+      <button type="button" onClick="OpenSound()">开启声音</button>
+      <button type="button" onClick="GetVolume()">获取声音</button>
+      <button type="button" onClick="SetVolume()">设置声音</button>
+      <button type="button" onClick="CloseSound()">关闭声音</button>
+    </div>
+    <div class="items">
+      <div>画面分割</div>
+      <button type="button" onClick="arrangeWindow(1)">1x1</button>
+      <button type="button" onClick="arrangeWindow(2)">2x2</button>
+      <button type="button" onClick="arrangeWindow(3)">3x3</button>
+      <button type="button" onClick="arrangeWindow(4)">4x4</button>
+      <button type="button" onClick="fullScreenSingle()">单窗口全屏</button>
+      <button type="button" onClick="fullSreen()">插件全屏</button>
+    </div>
+    <!--<div class="items">
+        <div>跨域测试</div>
+        &nbsp;&nbsp;<input type="text" id="corsAddr" value="10.6.38.103:80" />
+        <button type="button" onclick="corsTest()">测试</button>
+    </div>
+
+    <div class="items">
+        <div>录像搜索摘要测试</div>
+        &nbsp;&nbsp;地址: <input type="text" id="recordDigest" value="10.5.147.204:80" />
+        &nbsp;&nbsp;用户名 <input type="text" id="recordDigestUser" value="admin" />
+        &nbsp;&nbsp;密码 <input type="text" id="recordDigestPassword" value="web12345" />
+        <button type="button" onclick="search()">测试</button>
+    </div>-->
+    <div class="items">
+      <div>websocket透传</div>
+      <button type="button" onclick="transmission()">测试</button>
+    </div>
+  </div>
+  <script src="../libs/jsPlugin-1.2.0.min.js"></script>
+  <script>
+  //amd方式
+  //    requirejs.config({
+  //        baseUrl: './dist',
+  //        paths: {
+  //            JSPlugin: './jsPlugin-1.0.0.min'
+  //        }
+  //    });
+
+  //requirejs(["JSPlugin"],function (a) {
+  //    var b = new a.JSPlugin();
+  //})
+
+  var szWebsocketSessionID = "4cc81824281f214eceb5";  //设备直连取流uuid， 流媒体取流不需要该参数
+  var iWind = 0;  //窗口索引
+
+  //初始化插件
+  var oPlugin = new JSPlugin({
+    szId: "playWind",
+    iWidth: 600,
+    iHeight: 400,
+    iMaxSplit: 1,
+    iCurrentSplit: 1,
+    szBasePath: "./dist",
+    oStyle: {
+      background: "#4C4B4B"
+    }
+  });
+
+  function initPlugin() {
+    oPlugin.JS_SetWindowControlCallback({
+      windowEventSelect: function (iWndIndex) {  //插件选中窗口回调
+        iWind = iWndIndex;
+        console.log(iWndIndex);
+      },
+      pluginErrorHandler: function (iWndIndex, iErrorCode, oError) {  //插件错误回调
+        console.log(iWndIndex, iErrorCode, oError);
+      },
+      windowEventOver: function (iWndIndex) {  //鼠标移过回调
+        //console.log(iWndIndex);
+      },
+      windowEventOut: function (iWndIndex) {  //鼠标移出回调
+        //console.log(iWndIndex);
+      },
+      windowEventUp: function (iWndIndex) {  //鼠标mouseup事件回调
+        //console.log(iWndIndex);
+      },
+      windowFullCcreenChange: function (bFull) {  //全屏切换回调
+        console.log(bFull);
+      },
+      firstFrameDisplay: function (iWndIndex, iWidth, iHeight) {  //首帧显示回调
+        console.log(iWndIndex, iWidth, iHeight);
+      },
+      performanceLack: function () {  //性能不足回调
+
+      }
+    });
+    oPlugin.JS_SetOptions({
+      bSupportSound: false  //是否支持音频，默认支持
+      //bSupporDoubleClickFull: false  //是否双击窗口全屏，默认支持
+      //bOnlySupportMSE: true  //只支持MSE
+      //bOnlySupportJSDecoder: true  //只支持JSDecoder
+    }).then(function () {
+      console.log("JS_SetOptions");
+    });
+  }
+  initPlugin();
+
+  function getVersion () {
+    oPlugin.JS_GetPluginVersion().then(function (szVersion) {
+      console.log(szVersion);
+    });
+  }
+  function Destroy() {
+    oPlugin.JS_DestroyWorker().then(function () {
+      console.log("destroyWorker success");
+    });
+  }
+  function SetSecretKey() {
+    var secretKey =  document.getElementById("secretKey").value;
+    oPlugin.JS_SetSecretKey(iWind, secretKey).then(function () {
+      console.log("JS_SetSecretKey success");
+    }, function () {
+      console.log("JS_SetSecretKey failed");
+    });
+  }
+  /*
+      //流媒体
+      //playURL: "hikvision://10.19.80.53:8000:0:0",
+      //auth: "admin:web12345",  //认证信息, 流媒体
+      //token: "EAAAAAAQAADV4gVBxl8hE/ZK9jrXVnCGLON+eIJu5YmbmWYLz8sWXJXhnFTxEFex4a+yzAGDdc4="  //token 流媒体
+      //标准设备直连
+      //sessionID: szWebsocketSessionID  //sessionID 标准设备
+      //token: szWebsocketSessionID  //标准设备 2.0 token方式
+      //定制设备直连
+      session: szWebsocketSessionID  //定制设备
+      //本地服务
+      //deviceSerial: "451961500",
+      //verificationCode: "DKGSBJ",
+      //代理配置
+      //proxy: "10.5.6.8"  //proxy后面的属性为代理的目标地址，根据实际情况配置
+  */
+  function realplay () {
+    var url = document.getElementById("url").value;  //"ws://10.19.141.64:7314/EUrl/ybcwxHO"; 联网共享下该url和playurl是一样的
+    oPlugin.JS_Play(url, {
+      //流媒体
+      playURL: url
+      //proxy: "10.5.6.8:559",  //proxy后面的属性为代理的目标地址，根据实际情况配置，联网共享https下需要用到该参数
+      //mode: "media"  //建立连接的url新增一个media节点, 联网共享https下需要用到该参数
+    }, iWind).then(function() {
+      console.log("realplay success");
+    },function () {
+      console.log("realplay failed");
+    });
+  }
+  function playback () {
+    var url = document.getElementById("urlPlayback").value;  //"ws://10.19.141.64:7314/EUrl/ybcwxHO";
+    var szStartDate = document.getElementById("sDate").value;
+    var szEndDate = document.getElementById("eDate").value;
+    if (document.getElementById("urlPlayback").value && szStartDate && szEndDate) {
+      oPlugin.JS_Play(url, {
+        //流媒体
+        playURL: url  //联网共享的取流url
+        //proxy: "10.5.6.8",  //proxy后面的属性为代理的目标地址，根据实际情况配置，联网共享https下需要用到该参数
+        //mode: "media"  //建立连接的url新增一个media节点, 联网共享https下需要用到该参数
+      }, iWind, szStartDate, szEndDate).then(function() {
+        console.log("playback success");
+      },function () {
+        console.log("playback failed");
+      });
+    } else {
+      return;
+    }
+  }
+  function playbackLocation () {
+    var szStartDate = document.getElementById("sDate1").value;
+    var szEndDate = document.getElementById("eDate1").value;
+    oPlugin.JS_Seek(iWind, szStartDate, szEndDate).then(function () {
+      console.log("playbackLocation success");
+    }, function () {
+      console.log("playbackLocation failed");
+    });
+  }
+  function stop () {
+    oPlugin.JS_Stop(iWind).then(function () {
+      console.log("stop success");
+    }, function () {
+      console.log("stop failed");
+    });
+  }
+  function arrangeWindow (i) {
+    oPlugin.JS_ArrangeWindow(i).then(function () {
+      console.log("JS_ArrangeWindow success");
+    });
+  }
+  function Stop () {
+    oPlugin.JS_Stop(iWind).then(function () {
+      console.log("JS_Stop success");
+    }, function () {
+      console.log("JS_Stop failed");
+    });
+  }
+  function Pause () {
+    oPlugin.JS_Pause(iWind).then(function () {
+      console.log("Pause success");
+    }, function () {
+      console.log("Pause failed");
+    });
+  }
+  function Resume () {
+    oPlugin.JS_Resume(iWind).then(function () {
+      console.log("Resume success");
+    }, function () {
+      console.log("Resume failed");
+    });
+  }
+  function Slow (i) {
+    oPlugin.JS_Slow(iWind).then(function () {
+      console.log("Slow success");
+    }, function () {
+      console.log("Slow failed");
+    });
+  }
+  function Fast (i) {
+    oPlugin.JS_Fast(iWind,i).then(function () {
+      console.log("Fast success");
+    }, function () {
+      console.log("Fast failed");
+    });
+  }
+  function FrameForward() {
+    oPlugin.JS_FrameForward(iWind).then(function () {
+      console.log("FrameForward success");
+    }, function () {
+      console.log("FrameForward failed");
+    });
+  }
+  function GetOSDTime () {
+    oPlugin.JS_GetOSDTime(iWind).then(function(time) {
+      console.log(new Date(time));
+    });
+  }
+  function OpenSound () {
+    var iRet = oPlugin.JS_OpenSound (iWind).then(function () {
+      console.log("JS_OpenSound success");
+    }, function () {
+      console.log("JS_OpenSound failed");
+    });
+  }
+  function CloseSound () {
+    oPlugin.JS_CloseSound(iWind).then(function () {
+      console.log("JS_CloseSound success");
+    }, function () {
+      console.log("JS_CloseSound failed");
+    });
+  }
+  function EnableZoom () {
+    oPlugin.JS_EnableZoom(iWind).then(function () {
+      console.log("EnableZoom success");
+    });
+  }
+  function DisableZoom () {
+    oPlugin.JS_DisableZoom(iWind).then(function () {
+      console.log("DisableZoom success");
+    });
+  }
+  function Enable3DZoom () {
+    oPlugin.JS_Enable3DZoom(iWind, function (oRect) {
+      console.log(oRect);
+    })
+  }
+  function Disable3DZoom () {
+    oPlugin.JS_Disable3DZoom(iWind).then(function () {
+      console.log("JS_Disable3DZoom success");
+    }, function () {
+      console.log("JS_Disable3DZoom failed");
+    });
+  }
+  function SetVolume () {
+    oPlugin.JS_SetVolume (iWind, 50).then(function () {
+      console.log("JS_SetVolume success");
+    }, function () {
+      console.log("JS_SetVolume failed");
+    });
+  }
+  function selectWnd () {
+    oPlugin.JS_SelectWnd(3).then(function () {
+      console.log("JS_SelectWnd success");
+    }, function () {
+      console.log("JS_SelectWnd failed");
+    });
+  }
+  function GetVolume () {
+    oPlugin.JS_GetVolume (iWind).then(function (i) {
+      console.log(i);
+    });
+  }
+  function CapturePicture(szType) {
+    oPlugin.JS_CapturePicture (iWind, "img", szType).then(function () {
+      console.log("CapturePicture success");
+    }, function () {
+      console.log("CapturePicture failed");
+    });
+  }
+  function StopRealPlayAll () {
+    oPlugin.JS_StopRealPlayAll().then(function () {
+      console.log("JS_StopRealPlayAll success");
+    }, function () {
+      console.log("JS_StopRealPlayAll failed");
+    });
+  }
+  function dateFormat(oDate, fmt) {
+    var o = {
+      "M+": oDate.getMonth() + 1, //月份
+      "d+": oDate.getDate(), //日
+      "h+": oDate.getHours(), //小时
+      "m+": oDate.getMinutes(), //分
+      "s+": oDate.getSeconds(), //秒
+      "q+": Math.floor((oDate.getMonth() + 3) / 3), //季度
+      "S": oDate.getMilliseconds()//毫秒
+    };
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (oDate.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+      if (new RegExp("(" + k + ")").test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      }
+    }
+    return fmt;
+  }
+  function record() {
+    var szTime = dateFormat(new Date(), "yyyyMMddhhmmssS");
+    oPlugin.JS_StartSave(iWind,"10.17.137.229_01_" + szTime + ".mp4").then(function () {
+      console.log("record success");
+    }, function () {
+      console.log("record failed");
+    });;
+  }
+  function stopRecord() {
+    oPlugin.JS_StopSave(iWind).then(function () {
+      console.log("stopRecord success");
+    }, function () {
+      console.log("stopRecord failed");
+    });;
+  }
+  function fullSreen() {
+    oPlugin.JS_FullScreenDisplay(true).then(function () {
+      console.log("JS_FullScreenDisplay success");
+    }, function () {
+      console.log("JS_FullScreenDisplay failed");
+    });
+  }
+  function fullScreenSingle () {
+    oPlugin.JS_FullScreenSingle(iWind).then(function () {
+      console.log("JS_FullScreenSingle success");
+    }, function () {
+      console.log("JS_FullScreenSingle failed");
+    });
+  }
+  function transmission() {
+    oPlugin.JS_Transmission(0, "{currentTime: '2017-08-17T00:00:56'}").then(function () {
+      console.log("JS_Transmission success");
+    }, function () {
+      console.log("JS_Transmission failed");
+    });
+  }
+  function startTalk () {
+    oPlugin.JS_StartTalk("wss://10.19.133.143:6014/proxy/10.19.133.143:7314/dac/talk/55bab5bba9654ab9818fa265f3139019/TCP", 1, 1, 16000, 16000, 16).then(function () {
+      console.log("startTalk success");
+    }, function () {
+      console.log("startTalk failed");
+    });
+  }
+  window.onresize = function () {
+    oPlugin.JS_Resize(600, 400).then(function () {
+      console.log("JS_Resize success");
+    }, function () {
+      console.log("JS_Resize failed");
+    });
+  }
+
+  </script>
+
+</body>
+</html>
