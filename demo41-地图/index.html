@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>百度地图</title>
-  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=6Bu8kKbTI4OW7cfpIpVh1bg8jRyz50Zt"></script>
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"></script>
   <script type="text/javascript" src="./libs/TextIconOverlay.js"></script>
   <script type="text/javascript" src="./libs/MarkerClusterer.js"></script>
   <style>
@@ -23,6 +23,7 @@
     position: absolute;
     left: 50%;
     top: 50%;
+  }
 
   .water-animation1,
   .water-animation2,
@@ -49,21 +50,15 @@
   .water-animation3 {
     animation: water-animate 3.5s 2.5s ease-out;
   }
-
   </style>
 </head>
 <body>
-<div class="water-animation-in-map" style="width: ${width}px; height: ${height}px">
+<div class="water-animation-in-map" style="width: 50px; height: 50px">
   <div class="water-animation1"></div>
-  ' +
   <div class="water-animation2"></div>
-  ' +
   <div class="water-animation3"></div>
-  ' +
 </div>
-';
 <script>
-
 
 var map = new BMap.Map("test");
 // 创建地图实例
