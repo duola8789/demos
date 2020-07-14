@@ -3,24 +3,24 @@
  * 主入口类是<a href="symbols/BMapLib.TextIconOverlay.html">TextIconOverlay</a>，
  * 基于Baidu Map API 1.2。
  *
- * @author Baidu Map Api Group 
+ * @author Baidu Map Api Group
  * @version 1.2
  */
- 
 
- /** 
+
+ /**
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
 var BMapLib = window.BMapLib = BMapLib || {};
 
-(function () { 
-   
+(function () {
+
     /**
      * 声明baidu包
      */
     var T,
-    baidu = T = baidu || {version: "1.3.8"}; 
-    
+    baidu = T = baidu || {version: "1.3.8"};
+
     (function (){
         //提出guid，防止在与老版本Tangram混用时
         //在下一行错误的修改window[undefined]
@@ -30,13 +30,13 @@ var BMapLib = window.BMapLib = BMapLib || {};
         //一些页面级别唯一的属性，需要挂载在window[baidu.guid]上
         window[baidu.guid] = window[baidu.guid] || {};
 
-        /**         
+        /**
         * @ignore
         * @namespace baidu.dom 操作dom的方法。
         */
         baidu.dom = baidu.dom || {};
-    
-        
+
+
         /**
          * 从文档中获取指定的DOM元素
          * @name baidu.dom.g
@@ -46,7 +46,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @shortcut g,T.G
          * @meta standard
          * @see baidu.dom.q
-         *             
+         *
          * @returns {HTMLElement|null} 获取的元素，查找不到时返回null,如果参数不合法，直接返回参数
          */
         baidu.dom.g = function (id) {
@@ -69,7 +69,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {HTMLElement|string} element 目标元素或目标元素的id
          * @meta standard
          * @see baidu.dom.getWindow
-         *             
+         *
          * @returns {HTMLDocument} 目标元素所属的document对象
          */
         baidu.dom.getDocument = function (element) {
@@ -92,7 +92,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @shortcut isString
          * @meta standard
          * @see baidu.lang.isObject,baidu.lang.isNumber,baidu.lang.isArray,baidu.lang.isElement,baidu.lang.isBoolean,baidu.lang.isDate
-         *             
+         *
          * @returns {boolean} 类型判断结果
          */
         baidu.lang.isString = function (source) {
@@ -105,7 +105,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         /**
          * 从文档中获取指定的DOM元素
          * **内部方法**
-         * 
+         *
          * @param {string|HTMLElement} id 元素的id或DOM元素
          * @meta standard
          * @return {HTMLElement} DOM元素，如果不存在，返回null，如果参数不合法，直接返回参数
@@ -135,7 +135,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
              * @grammar baidu.browser.ie
              * @meta standard
              * @shortcut ie
-             * @see baidu.browser.firefox,baidu.browser.safari,baidu.browser.opera,baidu.browser.chrome,baidu.browser.maxthon 
+             * @see baidu.browser.firefox,baidu.browser.safari,baidu.browser.opera,baidu.browser.chrome,baidu.browser.maxthon
              */
            baidu.browser.ie = baidu.ie = document.documentMode || + RegExp['\x241'];
         }
@@ -151,7 +151,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {string} key 要获取的样式名
          *
          * @see baidu.dom.getStyle
-         *             
+         *
          * @returns {string} 目标元素的computed style值
          */
 
@@ -165,7 +165,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                     return styles[key] || styles.getPropertyValue(key);
                 }
             }
-            return ''; 
+            return '';
         };
 
         /**
@@ -207,7 +207,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @remark
          * 支持单词以“-_”分隔
          * @meta standard
-         *             
+         *
          * @returns {string} 驼峰化处理后的字符串
          */
         baidu.string.toCamelCase = function (source) {
@@ -228,14 +228,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {HTMLElement|string} element 目标元素或目标元素的id
          * @param {string} key 要获取的样式名
          * @remark
-         * 
+         *
          * 为了精简代码，本模块默认不对任何浏览器返回值进行归一化处理（如使用getStyle时，不同浏览器下可能返回rgb颜色或hex颜色），也不会修复浏览器的bug和差异性（如设置IE的float属性叫styleFloat，firefox则是cssFloat）。<br />
          * baidu.dom._styleFixer和baidu.dom._styleFilter可以为本模块提供支持。<br />
-         * 其中_styleFilter能对颜色和px进行归一化处理，_styleFixer能对display，float，opacity，textOverflow的浏览器兼容性bug进行处理。	
+         * 其中_styleFilter能对颜色和px进行归一化处理，_styleFixer能对display，float，opacity，textOverflow的浏览器兼容性bug进行处理。
          * @shortcut getStyle
          * @meta standard
          * @see baidu.dom.setStyle,baidu.dom.setStyles, baidu.dom.getComputedStyle
-         *             
+         *
          * @returns {string} 目标元素的样式值
          */
         baidu.dom.getStyle = function (element, key) {
@@ -245,7 +245,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             key = baidu.string.toCamelCase(key);
             //computed style, then cascaded style, then explicitly set style.
             var value = element.style[key] ||
-                        (element.currentStyle ? element.currentStyle[key] : "") || 
+                        (element.currentStyle ? element.currentStyle[key] : "") ||
                         dom.getComputedStyle(element, key);
 
             // 在取不到值的时候，用fixer进行修正
@@ -255,7 +255,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                     value = fixer.get ? fixer.get(element) : baidu.dom.getStyle(element, fixer);
                 }
             }
-    
+
             /* 检查结果过滤器 */
             if (fixer = dom._styleFilter) {
                 value = fixer.filter(key, value, 'get');
@@ -274,14 +274,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @property opera opera版本号
          * @grammar baidu.browser.opera
          * @meta standard
-         * @see baidu.browser.ie,baidu.browser.firefox,baidu.browser.safari,baidu.browser.chrome 
+         * @see baidu.browser.ie,baidu.browser.firefox,baidu.browser.safari,baidu.browser.chrome
          */
             baidu.browser.opera = + RegExp['\x241'];
         }
 
         /**
          * 判断是否为webkit内核
-         * @property isWebkit 
+         * @property isWebkit
          * @grammar baidu.browser.isWebkit
          * @meta standard
          * @see baidu.browser.isGecko
@@ -290,7 +290,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
         /**
          * 判断是否为gecko内核
-         * @property isGecko 
+         * @property isGecko
          * @grammar baidu.browser.isGecko
          * @meta standard
          * @see baidu.browser.isWebkit
@@ -299,7 +299,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
         /**
          * 判断是否严格标准的渲染模式
-         * @property isStrict 
+         * @property isStrict
          * @grammar baidu.browser.isStrict
          * @meta standard
          */
@@ -312,19 +312,19 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @grammar baidu.dom.getPosition(element)
          * @param {HTMLElement|string} element 目标元素或目标元素的id
          * @meta standard
-         *             
+         *
          * @returns {Object} 目标元素的位置，键值为top和left的Object。
          */
         baidu.dom.getPosition = function (element) {
             element = baidu.dom.g(element);
-            var doc = baidu.dom.getDocument(element), 
+            var doc = baidu.dom.getDocument(element),
                 browser = baidu.browser,
                 getStyle = baidu.dom.getStyle,
             // Gecko 1.9版本以下用getBoxObjectFor计算位置
             // 但是某些情况下是有bug的
             // 对于这些有bug的情况
             // 使用递归查找的方式
-                BUGGY_GECKO_BOX_OBJECT = browser.isGecko > 0 && 
+                BUGGY_GECKO_BOX_OBJECT = browser.isGecko > 0 &&
                                          doc.getBoxObjectFor &&
                                          getStyle(element, 'position') == 'absolute' &&
                                          (element.style.top === '' || element.style.left === ''),
@@ -332,20 +332,20 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 viewport = (browser.ie && !browser.isStrict) ? doc.body : doc.documentElement,
                 parent,
                 box;
-    
+
             if(element == viewport){
                 return pos;
             }
 
             if(element.getBoundingClientRect){ // IE and Gecko 1.9+
-        
+
                 //当HTML或者BODY有border width时, 原生的getBoundingClientRect返回值是不符合预期的
                 //考虑到通常情况下 HTML和BODY的border只会设成0px,所以忽略该问题.
                 box = element.getBoundingClientRect();
 
                 pos.left = Math.floor(box.left) + Math.max(doc.documentElement.scrollLeft, doc.body.scrollLeft);
                 pos.top  = Math.floor(box.top)  + Math.max(doc.documentElement.scrollTop,  doc.body.scrollTop);
-        
+
                 // IE会给HTML元素添加一个border，默认是medium（2px）
                 // 但是在IE 6 7 的怪异模式下，可以被html { border: 0; } 这条css规则覆盖
                 // 在IE7的标准模式下，border永远是2px，这个值通过clientLeft 和 clientTop取得
@@ -353,7 +353,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 // clientTop和clientLeft不会更新
                 pos.left -= doc.documentElement.clientLeft;
                 pos.top  -= doc.documentElement.clientTop;
-        
+
                 var htmlDom = doc.body,
                     // 在这里，不使用element.style.borderLeftWidth，只有computedStyle是可信的
                     htmlBorderLeftWidth = parseInt(getStyle(htmlDom, 'borderLeftWidth')),
@@ -362,21 +362,21 @@ var BMapLib = window.BMapLib = BMapLib || {};
                     pos.left -= isNaN(htmlBorderLeftWidth) ? 2 : htmlBorderLeftWidth;
                     pos.top  -= isNaN(htmlBorderTopWidth) ? 2 : htmlBorderTopWidth;
                 }
-            } else { 
+            } else {
                 // safari/opera/firefox
                 parent = element;
 
                 do {
                     pos.left += parent.offsetLeft;
                     pos.top  += parent.offsetTop;
-      
+
                     // safari里面，如果遍历到了一个fixed的元素，后面的offset都不准了
                     if (browser.isWebkit > 0 && getStyle(parent, 'position') == 'fixed') {
                         pos.left += doc.body.scrollLeft;
                         pos.top  += doc.body.scrollTop;
                         break;
                     }
-            
+
                     parent = parent.offsetParent;
                 } while (parent && parent != element);
 
@@ -426,14 +426,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param {string} type 事件类型
          * @param {Function} listener 需要添加的监听器
          * @remark
-         * 
+         *
         1. 不支持跨浏览器的鼠标滚轮事件监听器添加<br>
         2. 改方法不为监听器灌入事件对象，以防止跨iframe事件挂载的事件对象获取失败
-    
+
          * @shortcut on
          * @meta standard
          * @see baidu.event.un
-         *             
+         *
          * @returns {HTMLElement|window} 目标元素
          */
         baidu.event.on = function (element, type, listener) {
@@ -456,14 +456,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 realType = afterFilter.type;
                 realListener = afterFilter.listener;
             }
-    
+
             // 事件监听器挂载
             if (element.addEventListener) {
                 element.addEventListener(realType, realListener, false);
             } else if (element.attachEvent) {
                 element.attachEvent('on' + realType, realListener);
             }
-  
+
             // 将监听器存储到数组中
             lis[lis.length] = [element, type, listener, realListener, realType];
             return element;
@@ -479,7 +479,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @grammar baidu.lang.guid()
          * @version 1.1.1
          * @meta standard
-         *             
+         *
          * @returns {String} 当前页面的唯一标识字符串
          */
 
@@ -519,7 +519,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         };
 
         /**
-         *    
+         *
          * @ignore
          * @class  Tangram继承机制提供的一个基类，用户可以通过继承baidu.lang.Class来获取它的属性及方法。
          * @name 	baidu.lang.Class
@@ -585,7 +585,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
          * @param 	{string}   type         自定义事件的名称
          * @param 	{Function} handler      自定义事件被触发时应该调用的回调函数
          * @param 	{string}   [key]		为事件监听函数指定的名称，可在移除时使用。如果不提供，方法会默认为它生成一个全局唯一的key。
-         * @remark 	事件类型区分大小写。如果自定义事件名称不是以小写"on"开头，该方法会给它加上"on"再进行判断，即"click"和"onclick"会被认为是同一种事件。 
+         * @remark 	事件类型区分大小写。如果自定义事件名称不是以小写"on"开头，该方法会给它加上"on"再进行判断，即"click"和"onclick"会被认为是同一种事件。
          */
         baidu.lang.Class.prototype.addEventListener = function (type, handler, key) {
             if (!baidu.lang.isFunction(handler)) {
@@ -599,7 +599,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 if (/[^\w\-]/.test(key)) {
                     throw("nonstandard key:" + key);
                 } else {
-                    handler.hashCode = key; 
+                    handler.hashCode = key;
                     id = key;
                 }
             }
@@ -610,7 +610,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             handler.hashCode = id;
             t[type][id] = handler;
         };
- 
+
         /**
          * 移除对象的事件监听器。引入baidu.lang.Event后，Class的子类实例才会获得该方法。
          * @grammar obj.removeEventListener(type, handler)
@@ -706,29 +706,29 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
 
     /**
-    
+
      * 图片的路径
 
      * @private
      * @type {String}
-    
+
      */
     var _IMAGE_PATH = 'http://api.map.baidu.com/library/TextIconOverlay/1.2/src/images/m';
 
     /**
-    
+
      * 图片的后缀名
 
       * @private
      * @type {String}
-    
+
      */
     var _IMAGE_EXTENSION  = 'png';
 
     /**
      *@exports TextIconOverlay as BMapLib.TextIconOverlay
      */
-    var TextIconOverlay = 
+    var TextIconOverlay =
         /**
         * TextIconOverlay
         * @class 此类表示地图上的一个覆盖物，该覆盖物由文字和图标组成，从Overlay继承。文字通常是数字（0-9）或字母（A-Z ），而文字与图标之间有一定的映射关系。
@@ -737,6 +737,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         *@constructor
         *@param {Point} position 表示一个经纬度坐标位置。
         *@param {String} text 表示该覆盖物显示的文字信息。
+        *@param {Boolean} isRich。
         *@param {Json Object} options 可选参数，可选项包括：<br />
         *"<b>styles</b>":{Array<IconStyle>} 一组图标风格。单个图表风格包括以下几个属性：<br />
         *   url	{String}	 图片的url地址。(必选)<br />
@@ -746,17 +747,18 @@ var BMapLib = window.BMapLib = BMapLib || {};
         *   textSize {Number} 文字的大小。（可选，默认10）<br />
         *   textColor {String} 文字的颜色。（可选，默认black）<br />
         */
-        BMapLib.TextIconOverlay = function(position, text, options){
+        BMapLib.TextIconOverlay = function(position, text, options, isRich){
+            this._isRich = isRich;
             this._position = position;
             this._text = text;
             this._options = options || {};
             this._styles = this._options['styles'] || [];
-            (!this._styles.length) && this._setupDefaultStyles();                  
+            (!this._styles.length) && this._setupDefaultStyles();
         };
 
     T.lang.inherits(TextIconOverlay, BMap.Overlay, "TextIconOverlay");
 
-    TextIconOverlay.prototype._setupDefaultStyles = function(){  
+    TextIconOverlay.prototype._setupDefaultStyles = function(){
         var sizes = [53, 56, 66, 78, 90];
         for(var i = 0, size; size = sizes[i]; i++){
             this._styles.push({
@@ -773,16 +775,16 @@ var BMapLib = window.BMapLib = BMapLib || {};
     */
     TextIconOverlay.prototype.initialize = function(map){
         this._map = map;
-    
-        this._domElement = document.createElement('div');     
-        this._updateCss();    
+
+        this._domElement = document.createElement('div');
+        this._updateCss();
         this._updateText();
-        this._updatePosition(); 
-        
+        this._updatePosition();
+
         this._bind();
 
         this._map.getPanes().markerMouseTarget.appendChild(this._domElement);
-        return this._domElement;   
+        return this._domElement;
     };
 
     /**
@@ -792,7 +794,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     TextIconOverlay.prototype.draw = function(){
         this._map && this._updatePosition();
     };
-    
+
     /**
     *获取该覆盖物上的文字。
     *@return {String} 该覆盖物上的文字。
@@ -811,7 +813,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             this._text = text;
             this._updateText();
             this._updateCss();
-            this._updatePosition(); 
+            this._updatePosition();
         }
     };
 
@@ -822,7 +824,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     TextIconOverlay.prototype.getPosition = function () {
         return this._position;
     };
-   
+
     /**
     *设置该覆盖物的位置。
     *@param {Point}  position 要设置的经纬度坐标。
@@ -830,7 +832,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     */
     TextIconOverlay.prototype.setPosition = function (position) {
         if(position && (!this._position || !this._position.equals(position))){
-            this._position = position;  
+            this._position = position;
             this._updatePosition();
         }
     };
@@ -848,7 +850,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var index = parseInt(count / 10);
         index = Math.max(0, index);
         index = Math.min(index, styles.length - 1);
-        return styles[index]; 
+        return styles[index];
     }
 
     /**
@@ -866,7 +868,24 @@ var BMapLib = window.BMapLib = BMapLib || {};
     */
     TextIconOverlay.prototype._updateText = function(){
         if (this._domElement) {
+          if(!this._isRich) {
             this._domElement.innerHTML = this._text;
+          } else {
+            const cssText = [
+              'position: absolute;',
+              'left: 67.5%;',
+              'top: 0;',
+              'padding: 0 5px;',
+              'height: 16px;',
+              'line-height: 16px;',
+              'border-radius: 8px;',
+              'text-align: center;',
+              'background: #FFAA16;',
+              'box-shadow: 0 0 1px 0 rgba(20,36,70,0.30);'
+            ].join('');
+            this._domElement.innerHTML = `<div style="${cssText}">${this._text}</div>`;
+          }
+
         }
     };
 
@@ -877,20 +896,20 @@ var BMapLib = window.BMapLib = BMapLib || {};
     TextIconOverlay.prototype._updatePosition = function(){
         if (this._domElement && this._position) {
             var style = this._domElement.style;
-            var pixelPosition= this._map.pointToOverlayPixel(this._position); 
+            var pixelPosition= this._map.pointToOverlayPixel(this._position);
             pixelPosition.x -= Math.ceil(parseInt(style.width) / 2);
-            pixelPosition.y -= Math.ceil(parseInt(style.height) / 2);       
+            pixelPosition.y -= Math.ceil(parseInt(style.height) / 2);
             style.left = pixelPosition.x + "px";
             style.top = pixelPosition.y + "px";
         }
     };
-    
+
     /**
     * 为该覆盖物的HTML元素构建CSS
     * @param {IconStyle}  一个图标的风格。
     * @return {String} 构建完成的CSSTEXT。
     */
-    TextIconOverlay.prototype._buildCssText = function(style) {    
+    TextIconOverlay.prototype._buildCssText = function(style) {
         //根据style来确定一些默认值
         var url = style['url'];
         var size = style['size'];
@@ -906,7 +925,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         } else {
             csstext.push('background-image:url(' + url + ');');
             var backgroundPosition = '0 0';
-            (offset instanceof BMap.Size) && (backgroundPosition = offset.width + 'px' + ' ' + offset.height + 'px');          
+            (offset instanceof BMap.Size) && (backgroundPosition = offset.width + 'px' + ' ' + offset.height + 'px');
             csstext.push('background-position:' + backgroundPosition + ';');
         }
 
@@ -916,14 +935,26 @@ var BMapLib = window.BMapLib = BMapLib || {};
                       csstext.push('height:' + (size.height - anchor.height) + 'px; padding-top:' + anchor.height + 'px;');
                 }
                 if(anchor.width > 0 && anchor.width < size.width){
-                    csstext.push('width:' + (size.width - anchor.width) + 'px; padding-left:' + anchor.width + 'px;');                
+                    csstext.push('width:' + (size.width - anchor.width) + 'px; padding-left:' + anchor.width + 'px;');
                 }
             } else {
                 csstext.push('height:' + size.height + 'px; line-height:' + size.height + 'px;');
                 csstext.push('width:' + size.width + 'px; text-align:center;');
             }
         }
-   
+
+      var backgroundSize = style['backgroundSize'];
+      if (backgroundSize) {
+        csstext.push(`background-size: ${backgroundSize};`)
+      }
+
+      var backgroundRepeat = style['backgroundRepeat'];
+      if (backgroundRepeat) {
+        csstext.push(`background-repeat: ${backgroundRepeat};`)
+      }
+
+      debugger
+
         csstext.push('cursor:pointer; color:' + textColor + '; position:absolute; font-size:' +
             textSize + 'px; font-family:Arial,sans-serif; font-weight:bold');
         return csstext.join('');
@@ -931,7 +962,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
 
     /**
-    
+
      * 当鼠标点击该覆盖物时会触发该事件
 
      * @name TextIconOverlay#click
@@ -939,7 +970,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @event
 
      * @param {Event Object} e 回调函数会返回event参数，包括以下返回值：
-    
+
      * <br />"<b>type</b> : {String} 事件类型
 
      * <br />"<b>target</b>：{BMapLib.TextIconOverlay} 事件目标
@@ -956,7 +987,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
      * @event
      * @param {Event Object} e 回调函数会返回event参数，包括以下返回值：
-    
+
      * <br />"<b>type</b> : {String} 事件类型
 
      * <br />"<b>target</b>：{BMapLib.TextIconOverlay} 事件目标

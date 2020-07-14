@@ -3,17 +3,17 @@
  * 主入口类是<a href="symbols/BMapLib.MarkerClusterer.html">MarkerClusterer</a>，
  * 基于Baidu Map API 1.2。
  *
- * @author Baidu Map Api Group 
+ * @author Baidu Map Api Group
  * @version 1.2
  */
- 
 
-/** 
+
+/**
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
 var BMapLib = window.BMapLib = BMapLib || {};
 (function(){
-    
+
     /**
      * 获取一个扩展的视图范围，把上下左右都扩大一样的像素值。
      * @param {Map} map BMap.Map的实例化对象
@@ -25,7 +25,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     var getExtendedBounds = function(map, bounds, gridSize){
         bounds = cutBoundsInRange(bounds);
         var pixelNE = map.pointToPixel(bounds.getNorthEast());
-        var pixelSW = map.pointToPixel(bounds.getSouthWest()); 
+        var pixelSW = map.pointToPixel(bounds.getSouthWest());
         pixelNE.x += gridSize;
         pixelNE.y -= gridSize;
         pixelSW.x -= gridSize;
@@ -47,14 +47,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var maxY = getRange(bounds.getNorthEast().lat, -74, 74);
         var minY = getRange(bounds.getSouthWest().lat, -74, 74);
         return new BMap.Bounds(new BMap.Point(minX, minY), new BMap.Point(maxX, maxY));
-    }; 
+    };
 
     /**
      * 对单个值进行边界处理。
      * @param {Number} i 要处理的数值
      * @param {Number} min 下边界值
      * @param {Number} max 上边界值
-     * 
+     *
      * @return {Number} 返回不越界的数值
      */
     var getRange = function (i, mix, max) {
@@ -93,14 +93,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
                     }
                 }
             }
-        }        
+        }
         return index;
     };
 
     /**
      *@exports MarkerClusterer as BMapLib.MarkerClusterer
      */
-    var MarkerClusterer =  
+    var MarkerClusterer =
         /**
          * MarkerClusterer
          * @class 用来解决加载大量点要素到地图上产生覆盖现象的问题，并提高性能
@@ -121,26 +121,27 @@ var BMapLib = window.BMapLib = BMapLib || {};
             this._map = map;
             this._markers = [];
             this._clusters = [];
-            
+
             var opts = options || {};
             this._gridSize = opts["gridSize"] || 60;
             this._maxZoom = opts["maxZoom"] || 18;
-            this._minClusterSize = opts["minClusterSize"] || 2;           
+            this._minClusterSize = opts["minClusterSize"] || 2;
             this._isAverageCenter = false;
             if (opts['isAverageCenter'] != undefined) {
                 this._isAverageCenter = opts['isAverageCenter'];
-            }    
+            }
+
             this._styles = opts["styles"] || [];
-        
+
             var that = this;
             this._map.addEventListener("zoomend",function(){
-                that._redraw();     
+                that._redraw();
             });
-    
+
             this._map.addEventListener("moveend",function(){
-                 that._redraw();     
+                 that._redraw();
             });
-   
+
             var mkrs = opts["markers"];
             isArray(mkrs) && this.addMarkers(mkrs);
         };
@@ -155,7 +156,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         for(var i = 0, len = markers.length; i <len ; i++){
             this._pushMarkerTo(markers[i]);
         }
-        this._createClusters();   
+        this._createClusters();
     };
 
     /**
@@ -190,10 +191,10 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var mapBounds = this._map.getBounds();
         var extendedBounds = getExtendedBounds(this._map, mapBounds, this._gridSize);
         for(var i = 0, marker; marker = this._markers[i]; i++){
-            if(!marker.isInCluster && extendedBounds.containsPoint(marker.getPosition()) ){ 
+            if(!marker.isInCluster && extendedBounds.containsPoint(marker.getPosition()) ){
                 this._addToClosestCluster(marker);
             }
-        }   
+        }
     };
 
     /**
@@ -216,14 +217,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 }
             }
         }
-    
+
         if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)){
             clusterToAddTo.addMarker(marker);
         } else {
             var cluster = new Cluster(this);
-            cluster.addMarker(marker);            
+            cluster.addMarker(marker);
             this._clusters.push(cluster);
-        }    
+        }
     };
 
     /**
@@ -231,7 +232,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @return 无返回值。
      */
     MarkerClusterer.prototype._clearLastClusters = function(){
-        for(var i = 0, cluster; cluster = this._clusters[i]; i++){            
+        for(var i = 0, cluster; cluster = this._clusters[i]; i++){
             cluster.remove();
         }
         this._clusters = [];//置空Cluster数组
@@ -247,7 +248,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
             marker.isInCluster = false;
         }
     };
-   
+
     /**
      * 把所有的标记从地图上清除
      * @return 无返回值
@@ -255,7 +256,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     MarkerClusterer.prototype._removeMarkersFromMap = function(){
         for(var i = 0, marker; marker = this._markers[i]; i++){
             marker.isInCluster = false;
-            this._map.removeOverlay(marker);       
+            this._map.removeOverlay(marker);
         }
     };
 
@@ -289,7 +290,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         }
         return success;
     };
-    
+
     /**
      * 删除一组标记
      * @param {Array<BMap.Marker>} markers 需要被删除的marker数组
@@ -300,7 +301,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var success = false;
         for (var i = 0; i < markers.length; i++) {
             var r = this._removeMarker(markers[i]);
-            success = success || r; 
+            success = success || r;
         }
 
         if (success) {
@@ -352,7 +353,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @return {Number} 聚合的最大缩放级别。
      */
     MarkerClusterer.prototype.getMaxZoom = function() {
-        return this._maxZoom;       
+        return this._maxZoom;
     };
 
     /**
@@ -432,7 +433,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     MarkerClusterer.prototype.getClustersCount = function() {
         var count = 0;
 		for(var i = 0, cluster; cluster = this._clusters[i]; i++){
-            cluster.isReal() && count++;     
+            cluster.isReal() && count++;
         }
 		return count;
     };
@@ -453,11 +454,13 @@ var BMapLib = window.BMapLib = BMapLib || {};
         this._markers = [];//这个Cluster中所包含的markers
         this._gridBounds = null;//以中心点为准，向四边扩大gridSize个像素的范围，也即网格范围
 		this._isReal = false; //真的是个聚合
-    
-        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, this._markers.length, {"styles":this._markerClusterer.getStyles()});
+
+      const target = `<div class="dd">${this._markers.length}</div>`
+
+        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, this._markers.length, {"styles":this._markerClusterer.getStyles()}, true);
         //this._map.addOverlay(this._clusterMarker);
     }
-   
+
     /**
      * 向该聚合添加一个标记。
      * @param {Marker} marker 要添加的标记。
@@ -467,7 +470,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         if(this.isMarkerInCluster(marker)){
             return false;
         }//也可用marker.isInCluster判断,外面判断OK，这里基本不会命中
-    
+
         if (!this._center){
             this._center = marker.getPosition();
             this.updateGridBounds();//
@@ -480,12 +483,12 @@ var BMapLib = window.BMapLib = BMapLib || {};
                 this.updateGridBounds();
             }//计算新的Center
         }
-    
+
         marker.isInCluster = true;
         this._markers.push(marker);
-    
+
         var len = this._markers.length;
-        if(len < this._minClusterSize ){     
+        if(len < this._minClusterSize ){
             this._map.addOverlay(marker);
 			//this.updateClusterMarker();
             return true;
@@ -493,14 +496,14 @@ var BMapLib = window.BMapLib = BMapLib || {};
             for (var i = 0; i < len; i++) {
                 this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
             }
-			
-        } 
+
+        }
         this._map.addOverlay(this._clusterMarker);
 		this._isReal = true;
         this.updateClusterMarker();
         return true;
     };
-    
+
     /**
      * 判断一个标记是否在该聚合中。
      * @param {Marker} marker 要判断的标记。
@@ -527,7 +530,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     Cluster.prototype.isMarkerInClusterBounds = function(marker) {
         return this._gridBounds.containsPoint(marker.getPosition());
     };
-	
+
 	Cluster.prototype.isReal = function(marker) {
         return this._isReal;
     };
@@ -560,7 +563,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         }
 
         this._clusterMarker.setPosition(this._center);
-        
+
         this._clusterMarker.setText(this._markers.length);
 
         var thatMap = this._map;
