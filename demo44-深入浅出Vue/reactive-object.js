@@ -122,6 +122,9 @@ class Watcher {
     this.vm = vm;
     this.cb = cb;
 
+    // 当创建 watcher 实例时，都将 watcher 实例添加到 vm._watchers 中
+    vm._watchers.push(this);
+
     if (options) {
       this.deep = !!options.deep;
     } else {

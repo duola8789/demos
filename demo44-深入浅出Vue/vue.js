@@ -1518,11 +1518,7 @@
    * Merge two option objects into a new one.
    * Core utility used in both instantiation and inheritance.
    */
-  function mergeOptions (
-    parent,
-    child,
-    vm
-  ) {
+  function mergeOptions (parent, child, vm) {
     {
       checkComponents(child);
     }
@@ -5133,6 +5129,7 @@
       extendOptions = extendOptions || {};
       var Super = this;
       var SuperId = Super.cid;
+      debugger
       var cachedCtors = extendOptions._Ctor || (extendOptions._Ctor = {});
       if (cachedCtors[SuperId]) {
         return cachedCtors[SuperId]
