@@ -18,10 +18,13 @@
         width: 440,
         height: 240,
         isLive: true,
-        file: 'http://111.62.42.118:83/openUrl/Ttx8LT2/playback.m3u8?beginTime=20200411T142746&endTime=20200411T162750',
+        file: 'rtmp://58.200.131.2:1935/livetv/hunantv',
         controls: showControl,
         ak: '0545fe8c4dd4409e965dc9ada9330dcd' // 公有云平台注册即可获得accessKey
       });
+      player.on('time', () => {
+        console.log(123);
+      })
     </script>
   </body>
   <style>
