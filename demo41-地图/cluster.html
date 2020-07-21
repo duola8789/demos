@@ -19,7 +19,7 @@
       }
     </style>
 
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=1.2"></script>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"></script>
     <script
       type="text/javascript"
       src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"
@@ -37,9 +37,15 @@
     <input id="btnRemoveMarkers" type="button" value="删除Markers" />
     <div id="mapDiv1"></div>
     <div id="mapDiv2"></div>
+  <div id="btn123">click</div>
   </body>
 
   <script type="text/javascript">
+  const btn = document.querySelector('#btn123');
+  btn.addEventListener('click', () => {
+    console.log(map.getZoom())
+  })
+
     var EXAMPLE_URL = 'http://api.map.baidu.com/library/MarkerClusterer/1.2/examples/';
     var map = new BMap.Map('mapDiv1');
     map.enableScrollWheelZoom();

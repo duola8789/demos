@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Grid布局 - 两栏</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      .container {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 200px 1fr;
+      }
+
+      .left {
+        background: #0bc1ff;
+      }
+
+      .right {
+        background: #b8c885;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+  </body>
+</html>
