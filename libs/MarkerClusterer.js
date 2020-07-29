@@ -7,13 +7,11 @@
  * @version 1.2
  */
 
-
 /**
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
-var BMapLib = window.BMapLib = BMapLib || {};
-(function(){
-
+var BMapLib = (window.BMapLib = BMapLib || {});
+(function () {
     /**
      * 获取一个扩展的视图范围，把上下左右都扩大一样的像素值。
      * @param {Map} map BMap.Map的实例化对象
@@ -22,7 +20,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return {BMap.Bounds} 返回扩大后的视图范围。
      */
-    var getExtendedBounds = function(map, bounds, gridSize){
+    var getExtendedBounds = function (map, bounds, gridSize) {
         bounds = cutBoundsInRange(bounds);
         var pixelNE = map.pointToPixel(bounds.getNorthEast());
         var pixelSW = map.pointToPixel(bounds.getSouthWest());
@@ -80,13 +78,13 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return {Number} 如果在数组内，返回索引，否则返回-1
      */
-    var indexOf = function(item, source){
+    var indexOf = function (item, source) {
         var index = -1;
-        if(isArray(source)){
+        if (isArray(source)) {
             if (source.indexOf) {
                 index = source.indexOf(item);
             } else {
-                for (var i = 0, m; m = source[i]; i++) {
+                for (var i = 0, m; (m = source[i]); i++) {
                     if (m === item) {
                         index = i;
                         break;
@@ -114,8 +112,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
          *    isAverangeCenter {Boolean} 聚合点的落脚位置是否是所有聚合在内点的平均值，默认为否，落脚在聚合内的第一个点<br />
          *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
          */
-        BMapLib.MarkerClusterer = function(map, options){
-            if (!map){
+        (BMapLib.MarkerClusterer = function (map, options) {
+            if (!map) {
                 return;
             }
             this._map = map;
@@ -123,28 +121,28 @@ var BMapLib = window.BMapLib = BMapLib || {};
             this._clusters = [];
 
             var opts = options || {};
-            this._gridSize = opts["gridSize"] || 60;
-            this._maxZoom = opts["maxZoom"] || 18;
-            this._minClusterSize = opts["minClusterSize"] || 2;
+            this._gridSize = opts['gridSize'] || 60;
+            this._maxZoom = opts['maxZoom'] || 18;
+            this._minClusterSize = opts['minClusterSize'] || 2;
             this._isAverageCenter = false;
             if (opts['isAverageCenter'] != undefined) {
                 this._isAverageCenter = opts['isAverageCenter'];
             }
 
-            this._styles = opts["styles"] || [];
+            this._styles = opts['styles'] || [];
 
             var that = this;
-            this._map.addEventListener("zoomend",function(){
+            this._map.addEventListener('zoomend', function () {
                 that._redraw();
             });
 
-            this._map.addEventListener("moveend",function(){
-                 that._redraw();
+            this._map.addEventListener('moveend', function () {
+                that._redraw();
             });
 
-            var mkrs = opts["markers"];
+            var mkrs = opts['markers'];
             isArray(mkrs) && this.addMarkers(mkrs);
-        };
+        });
 
     /**
      * 添加要聚合的标记数组。
@@ -152,8 +150,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return 无返回值。
      */
-    MarkerClusterer.prototype.addMarkers = function(markers){
-        for(var i = 0, len = markers.length; i <len ; i++){
+    MarkerClusterer.prototype.addMarkers = function (markers) {
+        for (var i = 0, len = markers.length; i < len; i++) {
             this._pushMarkerTo(markers[i]);
         }
         this._createClusters();
@@ -165,11 +163,11 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return 无返回值。
      */
-    MarkerClusterer.prototype._pushMarkerTo = function(marker){
+    MarkerClusterer.prototype._pushMarkerTo = function (marker) {
         var index = indexOf(marker, this._markers);
-        if(index === -1){
+        if (index === -1) {
             marker.isInCluster = false;
-            this._markers.push(marker);//Marker拖放后enableDragging不做变化，忽略
+            this._markers.push(marker); //Marker拖放后enableDragging不做变化，忽略
         }
     };
 
@@ -178,7 +176,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {BMap.Marker} marker 要聚合的单个标记。
      * @return 无返回值。
      */
-    MarkerClusterer.prototype.addMarker = function(marker) {
+    MarkerClusterer.prototype.addMarker = function (marker) {
         this._pushMarkerTo(marker);
         this._createClusters();
     };
@@ -187,11 +185,11 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 根据所给定的标记，创建聚合点
      * @return 无返回值
      */
-    MarkerClusterer.prototype._createClusters = function(){
+    MarkerClusterer.prototype._createClusters = function () {
         var mapBounds = this._map.getBounds();
         var extendedBounds = getExtendedBounds(this._map, mapBounds, this._gridSize);
-        for(var i = 0, marker; marker = this._markers[i]; i++){
-            if(!marker.isInCluster && extendedBounds.containsPoint(marker.getPosition()) ){
+        for (var i = 0, marker; (marker = this._markers[i]); i++) {
+            if (!marker.isInCluster && extendedBounds.containsPoint(marker.getPosition())) {
                 this._addToClosestCluster(marker);
             }
         }
@@ -203,22 +201,22 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return 无返回值。
      */
-    MarkerClusterer.prototype._addToClosestCluster = function (marker){
+    MarkerClusterer.prototype._addToClosestCluster = function (marker) {
         var distance = 4000000;
         var clusterToAddTo = null;
         var position = marker.getPosition();
-        for(var i = 0, cluster; cluster = this._clusters[i]; i++){
+        for (var i = 0, cluster; (cluster = this._clusters[i]); i++) {
             var center = cluster.getCenter();
-            if(center){
+            if (center) {
                 var d = this._map.getDistance(center, marker.getPosition());
-                if(d < distance){
+                if (d < distance) {
                     distance = d;
                     clusterToAddTo = cluster;
                 }
             }
         }
 
-        if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)){
+        if (clusterToAddTo && clusterToAddTo.isMarkerInClusterBounds(marker)) {
             clusterToAddTo.addMarker(marker);
         } else {
             var cluster = new Cluster(this);
@@ -231,20 +229,20 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 清除上一次的聚合的结果
      * @return 无返回值。
      */
-    MarkerClusterer.prototype._clearLastClusters = function(){
-        for(var i = 0, cluster; cluster = this._clusters[i]; i++){
+    MarkerClusterer.prototype._clearLastClusters = function () {
+        for (var i = 0, cluster; (cluster = this._clusters[i]); i++) {
             cluster.remove();
         }
-        this._clusters = [];//置空Cluster数组
-        this._removeMarkersFromCluster();//把Marker的cluster标记设为false
+        this._clusters = []; //置空Cluster数组
+        this._removeMarkersFromCluster(); //把Marker的cluster标记设为false
     };
 
     /**
      * 清除某个聚合中的所有标记
      * @return 无返回值
      */
-    MarkerClusterer.prototype._removeMarkersFromCluster = function(){
-        for(var i = 0, marker; marker = this._markers[i]; i++){
+    MarkerClusterer.prototype._removeMarkersFromCluster = function () {
+        for (var i = 0, marker; (marker = this._markers[i]); i++) {
             marker.isInCluster = false;
         }
     };
@@ -253,8 +251,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 把所有的标记从地图上清除
      * @return 无返回值
      */
-    MarkerClusterer.prototype._removeMarkersFromMap = function(){
-        for(var i = 0, marker; marker = this._markers[i]; i++){
+    MarkerClusterer.prototype._removeMarkersFromMap = function () {
+        for (var i = 0, marker; (marker = this._markers[i]); i++) {
             marker.isInCluster = false;
             this._map.removeOverlay(marker);
         }
@@ -266,7 +264,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return {Boolean} 删除成功返回true，否则返回false
      */
-    MarkerClusterer.prototype._removeMarker = function(marker) {
+    MarkerClusterer.prototype._removeMarker = function (marker) {
         var index = indexOf(marker, this._markers);
         if (index === -1) {
             return false;
@@ -282,7 +280,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return {Boolean} 删除成功返回true，否则返回false
      */
-    MarkerClusterer.prototype.removeMarker = function(marker) {
+    MarkerClusterer.prototype.removeMarker = function (marker) {
         var success = this._removeMarker(marker);
         if (success) {
             this._clearLastClusters();
@@ -297,7 +295,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      *
      * @return {Boolean} 删除成功返回true，否则返回false
      */
-    MarkerClusterer.prototype.removeMarkers = function(markers) {
+    MarkerClusterer.prototype.removeMarkers = function (markers) {
         var success = false;
         for (var i = 0; i < markers.length; i++) {
             var r = this._removeMarker(markers[i]);
@@ -315,7 +313,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 从地图上彻底清除所有的标记
      * @return 无返回值
      */
-    MarkerClusterer.prototype.clearMarkers = function() {
+    MarkerClusterer.prototype.clearMarkers = function () {
         this._clearLastClusters();
         this._removeMarkersFromMap();
         this._markers = [];
@@ -334,7 +332,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取网格大小
      * @return {Number} 网格大小
      */
-    MarkerClusterer.prototype.getGridSize = function() {
+    MarkerClusterer.prototype.getGridSize = function () {
         return this._gridSize;
     };
 
@@ -343,7 +341,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Number} size 网格大小
      * @return 无返回值
      */
-    MarkerClusterer.prototype.setGridSize = function(size) {
+    MarkerClusterer.prototype.setGridSize = function (size) {
         this._gridSize = size;
         this._redraw();
     };
@@ -352,7 +350,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取聚合的最大缩放级别。
      * @return {Number} 聚合的最大缩放级别。
      */
-    MarkerClusterer.prototype.getMaxZoom = function() {
+    MarkerClusterer.prototype.getMaxZoom = function () {
         return this._maxZoom;
     };
 
@@ -361,7 +359,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Number} maxZoom 聚合的最大缩放级别
      * @return 无返回值
      */
-    MarkerClusterer.prototype.setMaxZoom = function(maxZoom) {
+    MarkerClusterer.prototype.setMaxZoom = function (maxZoom) {
         this._maxZoom = maxZoom;
         this._redraw();
     };
@@ -370,7 +368,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取聚合的样式风格集合
      * @return {Array<IconStyle>} 聚合的样式风格集合
      */
-    MarkerClusterer.prototype.getStyles = function() {
+    MarkerClusterer.prototype.getStyles = function () {
         return this._styles;
     };
 
@@ -379,7 +377,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Array<IconStyle>} styles 样式风格数组
      * @return 无返回值
      */
-    MarkerClusterer.prototype.setStyles = function(styles) {
+    MarkerClusterer.prototype.setStyles = function (styles) {
         this._styles = styles;
         this._redraw();
     };
@@ -388,7 +386,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取单个聚合的最小数量。
      * @return {Number} 单个聚合的最小数量。
      */
-    MarkerClusterer.prototype.getMinClusterSize = function() {
+    MarkerClusterer.prototype.getMinClusterSize = function () {
         return this._minClusterSize;
     };
 
@@ -397,7 +395,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Number} size 单个聚合的最小数量。
      * @return 无返回值。
      */
-    MarkerClusterer.prototype.setMinClusterSize = function(size) {
+    MarkerClusterer.prototype.setMinClusterSize = function (size) {
         this._minClusterSize = size;
         this._redraw();
     };
@@ -406,7 +404,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取单个聚合的落脚点是否是聚合内所有标记的平均中心。
      * @return {Boolean} true或false。
      */
-    MarkerClusterer.prototype.isAverageCenter = function() {
+    MarkerClusterer.prototype.isAverageCenter = function () {
         return this._isAverageCenter;
     };
 
@@ -414,15 +412,15 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取聚合的Map实例。
      * @return {Map} Map的示例。
      */
-    MarkerClusterer.prototype.getMap = function() {
-      return this._map;
+    MarkerClusterer.prototype.getMap = function () {
+        return this._map;
     };
 
     /**
      * 获取所有的标记数组。
      * @return {Array<Marker>} 标记数组。
      */
-    MarkerClusterer.prototype.getMarkers = function() {
+    MarkerClusterer.prototype.getMarkers = function () {
         return this._markers;
     };
 
@@ -430,12 +428,12 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取聚合的总数量。
      * @return {Number} 聚合的总数量。
      */
-    MarkerClusterer.prototype.getClustersCount = function() {
+    MarkerClusterer.prototype.getClustersCount = function () {
         var count = 0;
-		for(var i = 0, cluster; cluster = this._clusters[i]; i++){
+        for (var i = 0, cluster; (cluster = this._clusters[i]); i++) {
             cluster.isReal() && count++;
         }
-		return count;
+        return count;
     };
 
     /**
@@ -445,19 +443,24 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @constructor
      * @param {MarkerClusterer} markerClusterer 一个标记聚合器示例。
      */
-    function Cluster(markerClusterer){
+    function Cluster(markerClusterer) {
         this._markerClusterer = markerClusterer;
         this._map = markerClusterer.getMap();
         this._minClusterSize = markerClusterer.getMinClusterSize();
         this._isAverageCenter = markerClusterer.isAverageCenter();
-        this._center = null;//落脚位置
-        this._markers = [];//这个Cluster中所包含的markers
-        this._gridBounds = null;//以中心点为准，向四边扩大gridSize个像素的范围，也即网格范围
-		this._isReal = false; //真的是个聚合
+        this._center = null; //落脚位置
+        this._markers = []; //这个Cluster中所包含的markers
+        this._gridBounds = null; //以中心点为准，向四边扩大gridSize个像素的范围，也即网格范围
+        this._isReal = false; //真的是个聚合
 
-      const target = `<div class="dd">${this._markers.length}</div>`
+        const target = `<div class="dd">${this._markers.length}</div>`;
 
-        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, this._markers.length, {"styles":this._markerClusterer.getStyles()}, true);
+        this._clusterMarker = new BMapLib.TextIconOverlay(
+            this._center,
+            this._markers.length,
+            {styles: this._markerClusterer.getStyles()},
+            true
+        );
         //this._map.addOverlay(this._clusterMarker);
     }
 
@@ -466,40 +469,39 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Marker} marker 要添加的标记。
      * @return 无返回值。
      */
-    Cluster.prototype.addMarker = function(marker){
-        if(this.isMarkerInCluster(marker)){
+    Cluster.prototype.addMarker = function (marker) {
+        if (this.isMarkerInCluster(marker)) {
             return false;
-        }//也可用marker.isInCluster判断,外面判断OK，这里基本不会命中
+        } //也可用marker.isInCluster判断,外面判断OK，这里基本不会命中
 
-        if (!this._center){
+        if (!this._center) {
             this._center = marker.getPosition();
-            this.updateGridBounds();//
+            this.updateGridBounds(); //
         } else {
-            if(this._isAverageCenter){
+            if (this._isAverageCenter) {
                 var l = this._markers.length + 1;
                 var lat = (this._center.lat * (l - 1) + marker.getPosition().lat) / l;
                 var lng = (this._center.lng * (l - 1) + marker.getPosition().lng) / l;
                 this._center = new BMap.Point(lng, lat);
                 this.updateGridBounds();
-            }//计算新的Center
+            } //计算新的Center
         }
 
         marker.isInCluster = true;
         this._markers.push(marker);
 
         var len = this._markers.length;
-        if(len < this._minClusterSize ){
+        if (len < this._minClusterSize) {
             this._map.addOverlay(marker);
-			//this.updateClusterMarker();
+            //this.updateClusterMarker();
             return true;
         } else if (len === this._minClusterSize) {
             for (var i = 0; i < len; i++) {
                 this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
             }
-
         }
         this._map.addOverlay(this._clusterMarker);
-		this._isReal = true;
+        this._isReal = true;
         this.updateClusterMarker();
         return true;
     };
@@ -509,11 +511,11 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Marker} marker 要判断的标记。
      * @return {Boolean} true或false。
      */
-    Cluster.prototype.isMarkerInCluster= function(marker){
+    Cluster.prototype.isMarkerInCluster = function (marker) {
         if (this._markers.indexOf) {
             return this._markers.indexOf(marker) != -1;
         } else {
-            for (var i = 0, m; m = this._markers[i]; i++) {
+            for (var i = 0, m; (m = this._markers[i]); i++) {
                 if (m === marker) {
                     return true;
                 }
@@ -527,11 +529,11 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * @param {Marker} marker 要判断的标记。
      * @return {Boolean} true或false。
      */
-    Cluster.prototype.isMarkerInClusterBounds = function(marker) {
+    Cluster.prototype.isMarkerInClusterBounds = function (marker) {
         return this._gridBounds.containsPoint(marker.getPosition());
     };
 
-	Cluster.prototype.isReal = function(marker) {
+    Cluster.prototype.isReal = function (marker) {
         return this._isReal;
     };
 
@@ -539,7 +541,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 更新该聚合的网格范围。
      * @return 无返回值。
      */
-    Cluster.prototype.updateGridBounds = function() {
+    Cluster.prototype.updateGridBounds = function () {
         var bounds = new BMap.Bounds(this._center, this._center);
         this._gridBounds = getExtendedBounds(this._map, bounds, this._markerClusterer.getGridSize());
     };
@@ -551,7 +553,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
     Cluster.prototype.updateClusterMarker = function () {
         if (this._map.getZoom() > this._markerClusterer.getMaxZoom()) {
             this._clusterMarker && this._map.removeOverlay(this._clusterMarker);
-            for (var i = 0, marker; marker = this._markers[i]; i++) {
+            for (var i = 0, marker; (marker = this._markers[i]); i++) {
                 this._map.addOverlay(marker);
             }
             return;
@@ -568,32 +570,31 @@ var BMapLib = window.BMapLib = BMapLib || {};
 
         var thatMap = this._map;
         var thatBounds = this.getBounds();
-        this._clusterMarker.addEventListener("click", function(event){
+        this._clusterMarker.addEventListener('click', function (event) {
             thatMap.setViewport(thatBounds);
         });
-
     };
 
     /**
      * 删除该聚合。
      * @return 无返回值。
      */
-    Cluster.prototype.remove = function(){
-        for (var i = 0, m; m = this._markers[i]; i++) {
-                this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
-        }//清除散的标记点
+    Cluster.prototype.remove = function () {
+        for (var i = 0, m; (m = this._markers[i]); i++) {
+            this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
+        } //清除散的标记点
         this._map.removeOverlay(this._clusterMarker);
         this._markers.length = 0;
         delete this._markers;
-    }
+    };
 
     /**
      * 获取该聚合所包含的所有标记的最小外接矩形的范围。
      * @return {BMap.Bounds} 计算出的范围。
      */
-    Cluster.prototype.getBounds = function() {
-        var bounds = new BMap.Bounds(this._center,this._center);
-        for (var i = 0, marker; marker = this._markers[i]; i++) {
+    Cluster.prototype.getBounds = function () {
+        var bounds = new BMap.Bounds(this._center, this._center);
+        for (var i = 0, marker; (marker = this._markers[i]); i++) {
             bounds.extend(marker.getPosition());
         }
         return bounds;
@@ -603,8 +604,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
      * 获取该聚合的落脚点。
      * @return {BMap.Point} 该聚合的落脚点。
      */
-    Cluster.prototype.getCenter = function() {
+    Cluster.prototype.getCenter = function () {
         return this._center;
     };
-
 })();
