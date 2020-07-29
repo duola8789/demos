@@ -1,5 +1,6 @@
-﻿/**
- * @fileoverview 此类表示地图上的一个覆盖物，该覆盖物由文字和图标组成，从Overlay继承。
+﻿/* eslint-disable */
+/**
+ * @file 图上的一个覆盖物，该覆盖物由文字和图标组成，从Overlay继承。
  * 主入口类是<a href="symbols/BMapLib.TextIconOverlay.html">TextIconOverlay</a>，
  * 基于Baidu Map API 1.2。
  *
@@ -10,7 +11,7 @@
 /**
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
-var BMapLib = (window.BMapLib = BMapLib || {});
+var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {});
 
 (function () {
     /**
@@ -715,8 +716,7 @@ var BMapLib = (window.BMapLib = BMapLib || {});
      * @type {String}
 
      */
-    var _IMAGE_PATH = 'http://api.map.baidu.com/library/TextIconOverlay/1.2/src/images/m';
-
+    var _IMAGE_PATH = `${window.location.protocol}//api.map.baidu.com/library/TextIconOverlay/1.2/src/images/m`;
     /**
 
      * 图片的后缀名
@@ -739,7 +739,6 @@ var BMapLib = (window.BMapLib = BMapLib || {});
          *@constructor
          *@param {Point} position 表示一个经纬度坐标位置。
          *@param {String} text 表示该覆盖物显示的文字信息。
-         *@param {Boolean} isRich。
          *@param {Json Object} options 可选参数，可选项包括：<br />
          *"<b>styles</b>":{Array<IconStyle>} 一组图标风格。单个图表风格包括以下几个属性：<br />
          *   url	{String}	 图片的url地址。(必选)<br />
@@ -749,8 +748,7 @@ var BMapLib = (window.BMapLib = BMapLib || {});
          *   textSize {Number} 文字的大小。（可选，默认10）<br />
          *   textColor {String} 文字的颜色。（可选，默认black）<br />
          */
-        (BMapLib.TextIconOverlay = function (position, text, options, isRich) {
-            this._isRich = isRich;
+        (BMapLib.TextIconOverlay = function (position, text, options) {
             this._position = position;
             this._text = text;
             this._options = options || {};
@@ -869,24 +867,10 @@ var BMapLib = (window.BMapLib = BMapLib || {});
      *@return 无返回值。
      */
     TextIconOverlay.prototype._updateText = function () {
+        var defaultStyle = ['margin: 0;'];
+        var textStyle = defaultStyle.join(' ');
         if (this._domElement) {
-            if (!this._isRich) {
-                this._domElement.innerHTML = this._text;
-            } else {
-                const cssText = [
-                    'position: absolute;',
-                    'left: 67.5%;',
-                    'top: 0;',
-                    'padding: 0 5px;',
-                    'height: 16px;',
-                    'line-height: 16px;',
-                    'border-radius: 8px;',
-                    'text-align: center;',
-                    'background: #FFAA16;',
-                    'box-shadow: 0 0 1px 0 rgba(20,36,70,0.30);'
-                ].join('');
-                this._domElement.innerHTML = `<div style="${cssText}">${this._text}</div>`;
-            }
+            this._domElement.innerHTML = `<p style="${textStyle}">${this._text}</p>`;
         }
     };
 
@@ -964,77 +948,9 @@ var BMapLib = (window.BMapLib = BMapLib || {});
                 textSize +
                 'px; font-family:Arial,sans-serif; font-weight:bold'
         );
+
         return csstext.join('');
     };
-
-    /**
-
-     * 当鼠标点击该覆盖物时会触发该事件
-
-     * @name TextIconOverlay#click
-
-     * @event
-
-     * @param {Event Object} e 回调函数会返回event参数，包括以下返回值：
-
-     * <br />"<b>type</b> : {String} 事件类型
-
-     * <br />"<b>target</b>：{BMapLib.TextIconOverlay} 事件目标
-
-     *
-
-     */
-
-    /**
-
-     * 当鼠标进入该覆盖物区域时会触发该事件
-
-     * @name TextIconOverlay#mouseover
-
-     * @event
-     * @param {Event Object} e 回调函数会返回event参数，包括以下返回值：
-
-     * <br />"<b>type</b> : {String} 事件类型
-
-     * <br />"<b>target</b>：{BMapLib.TextIconOverlay} 事件目标
-
-     * <br />"<b>point</b> : {BMap.Point} 最新添加上的节点BMap.Point对象
-
-     * <br />"<b>pixel</b>：{BMap.pixel} 最新添加上的节点BMap.Pixel对象
-
-     *
-
-     * @example <b>参考示例：</b><br />
-
-     * myTextIconOverlay.addEventListener("mouseover", function(e) {  alert(e.point);  });
-
-     */
-
-    /**
-
-     * 当鼠标离开该覆盖物区域时会触发该事件
-
-     * @name TextIconOverlay#mouseout
-
-     * @event
-
-     * @param {Event Object} e 回调函数会返回event参数，包括以下返回值：
-
-     * <br />"<b>type</b> : {String} 事件类型
-
-     * <br />"<b>target</b>：{BMapLib.TextIconOverlay} 事件目标
-
-     * <br />"<b>point</b> : {BMap.Point} 最新添加上的节点BMap.Point对象
-
-     * <br />"<b>pixel</b>：{BMap.pixel} 最新添加上的节点BMap.Pixel对象
-
-     *
-
-     * @example <b>参考示例：</b><br />
-
-     * myTextIconOverlay.addEventListener("mouseout", function(e) {  alert(e.point);  });
-
-     */
 
     /**
      * 为该覆盖物绑定一系列事件

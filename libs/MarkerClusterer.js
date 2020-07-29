@@ -1,5 +1,6 @@
-﻿/**
- * @fileoverview MarkerClusterer标记聚合器用来解决加载大量点要素到地图上产生覆盖现象的问题，并提高性能。
+﻿/* eslint-disable */
+/**
+ * @fileo MarkerClusterer标记聚合器用来解决加载大量点要素到地图上产生覆盖现象的问题，并提高性能。
  * 主入口类是<a href="symbols/BMapLib.MarkerClusterer.html">MarkerClusterer</a>，
  * 基于Baidu Map API 1.2。
  *
@@ -10,7 +11,8 @@
 /**
  * @namespace BMap的所有library类均放在BMapLib命名空间下
  */
-var BMapLib = (window.BMapLib = BMapLib || {});
+var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {});
+
 (function () {
     /**
      * 获取一个扩展的视图范围，把上下左右都扩大一样的像素值。
@@ -111,6 +113,7 @@ var BMapLib = (window.BMapLib = BMapLib || {});
          *    minClusterSize {Number} 最小的聚合数量，小于该数量的不能成为一个聚合，默认为2<br />
          *    isAverangeCenter {Boolean} 聚合点的落脚位置是否是所有聚合在内点的平均值，默认为否，落脚在聚合内的第一个点<br />
          *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
+         *    margins {Array<Number>} 缩放时视野调整的预留边距
          */
         (BMapLib.MarkerClusterer = function (map, options) {
             if (!map) {
@@ -121,6 +124,7 @@ var BMapLib = (window.BMapLib = BMapLib || {});
             this._clusters = [];
 
             var opts = options || {};
+            this._margins = options.margins || [0, 0, 0, 0];
             this._gridSize = opts['gridSize'] || 60;
             this._maxZoom = opts['maxZoom'] || 18;
             this._minClusterSize = opts['minClusterSize'] || 2;
@@ -128,7 +132,6 @@ var BMapLib = (window.BMapLib = BMapLib || {});
             if (opts['isAverageCenter'] != undefined) {
                 this._isAverageCenter = opts['isAverageCenter'];
             }
-
             this._styles = opts['styles'] || [];
 
             var that = this;
@@ -193,6 +196,15 @@ var BMapLib = (window.BMapLib = BMapLib || {});
                 this._addToClosestCluster(marker);
             }
         }
+
+        setTimeout(() => {
+            var len = this._markers.length;
+            for (var i = 0; i < len; i++) {
+                if (this._clusters[i]) {
+                    this._clusters[i].render();
+                }
+            }
+        });
     };
 
     /**
@@ -452,15 +464,11 @@ var BMapLib = (window.BMapLib = BMapLib || {});
         this._markers = []; //这个Cluster中所包含的markers
         this._gridBounds = null; //以中心点为准，向四边扩大gridSize个像素的范围，也即网格范围
         this._isReal = false; //真的是个聚合
+        this._margins = markerClusterer._margins;
 
-        const target = `<div class="dd">${this._markers.length}</div>`;
-
-        this._clusterMarker = new BMapLib.TextIconOverlay(
-            this._center,
-            this._markers.length,
-            {styles: this._markerClusterer.getStyles()},
-            true
-        );
+        this._clusterMarker = new BMapLib.TextIconOverlay(this._center, this._markers.length, {
+            styles: this._markerClusterer.getStyles()
+        });
         //this._map.addOverlay(this._clusterMarker);
     }
 
@@ -490,20 +498,25 @@ var BMapLib = (window.BMapLib = BMapLib || {});
         marker.isInCluster = true;
         this._markers.push(marker);
 
-        var len = this._markers.length;
-        if (len < this._minClusterSize) {
-            this._map.addOverlay(marker);
-            //this.updateClusterMarker();
-            return true;
-        } else if (len === this._minClusterSize) {
-            for (var i = 0; i < len; i++) {
-                this._markers[i].getMap() && this._map.removeOverlay(this._markers[i]);
-            }
-        }
-        this._map.addOverlay(this._clusterMarker);
-        this._isReal = true;
-        this.updateClusterMarker();
         return true;
+    };
+
+    /**
+     * 进行dom操作
+     * @return 无返回值
+     */
+    Cluster.prototype.render = function () {
+        var len = this._markers.length;
+
+        if (len < this._minClusterSize) {
+            for (var i = 0; i < len; i++) {
+                this._map.addOverlay(this._markers[i]);
+            }
+        } else {
+            this._map.addOverlay(this._clusterMarker);
+            this._isReal = true;
+            this.updateClusterMarker();
+        }
     };
 
     /**
@@ -570,8 +583,9 @@ var BMapLib = (window.BMapLib = BMapLib || {});
 
         var thatMap = this._map;
         var thatBounds = this.getBounds();
+        var margins = this._margins;
         this._clusterMarker.addEventListener('click', function (event) {
-            thatMap.setViewport(thatBounds);
+            thatMap.setViewport(thatBounds, {margins, enableAnimation: false});
         });
     };
 
