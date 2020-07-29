@@ -113,6 +113,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
          *    minClusterSize {Number} 最小的聚合数量，小于该数量的不能成为一个聚合，默认为2<br />
          *    isAverangeCenter {Boolean} 聚合点的落脚位置是否是所有聚合在内点的平均值，默认为否，落脚在聚合内的第一个点<br />
          *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
+         *    styleInterval {Array[Number] | Number} 根据此值划分不同数量聚合点从styles中取的样式Index<br />
          *    margins {Array<Number>} 缩放时视野调整的预留边距
          */
         (BMapLib.MarkerClusterer = function (map, options) {
@@ -133,6 +134,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
                 this._isAverageCenter = opts['isAverageCenter'];
             }
             this._styles = opts['styles'] || [];
+            this._styleInterval = opts['styleInterval'] || null;
 
             var that = this;
             this._map.addEventListener('zoomend', function () {
@@ -467,7 +469,8 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
         this._margins = markerClusterer._margins;
 
         this._clusterMarker = new BMapLib.TextIconOverlay(this._center, this._markers.length, {
-            styles: this._markerClusterer.getStyles()
+            styles: this._markerClusterer.getStyles(),
+            styleInterval: this._markerClusterer._styleInterval
         });
         //this._map.addOverlay(this._clusterMarker);
     }

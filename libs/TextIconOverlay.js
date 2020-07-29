@@ -747,12 +747,14 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
          *   offset {Size} 图片相对于可视区域的偏移值，此功能的作用等同于CSS中的background-position属性。（可选）<br />
          *   textSize {Number} 文字的大小。（可选，默认10）<br />
          *   textColor {String} 文字的颜色。（可选，默认black）<br />
+         *   styleInterval {Number | Array[Number]} 用于划分覆盖物样式的阶梯间隔（可选） <br />
          */
         (BMapLib.TextIconOverlay = function (position, text, options) {
             this._position = position;
             this._text = text;
             this._options = options || {};
             this._styles = this._options['styles'] || [];
+            this._styleInterval = this._options.styleInterval || null;
             !this._styles.length && this._setupDefaultStyles();
         });
 
@@ -843,13 +845,33 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
      *如果需要自定义映射关系，请覆盖该函数。
      *@param {String} text  文字。
      *@param {Array<IconStyle>}  styles 一组图标风格。
+     *@param {Array | number | null}  interval 自定义索引，可以数组，也可以是数字。
      *@return {Number} 对应的索引值。
      */
-    TextIconOverlay.prototype.getStyleByText = function (text, styles) {
+    TextIconOverlay.prototype.getStyleByText = function (text, styles, interval) {
         var count = parseInt(text);
-        var index = parseInt(count / 10);
+        var defaultInterval = 10;
+        var index;
+
+        if (Array.isArray(interval) && interval.length > 0) {
+            if (interval.length === 1) {
+                index = parseInt(count / interval[0]);
+            } else {
+                index = interval.length;
+                var sortedInterval = interval.sort((a, b) => a - b);
+                for (var i = 0, l = sortedInterval.length; i < l; i++) {
+                    if (count <= sortedInterval[i]) {
+                        index = i;
+                    }
+                }
+            }
+        } else {
+            index = interval ? parseInt(count / interval) : parseInt(count / defaultInterval);
+        }
+
         index = Math.max(0, index);
         index = Math.min(index, styles.length - 1);
+
         return styles[index];
     };
 
@@ -858,7 +880,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
      *@return 无返回值。
      */
     TextIconOverlay.prototype._updateCss = function () {
-        var style = this.getStyleByText(this._text, this._styles);
+        var style = this.getStyleByText(this._text, this._styles, this._styleInterval);
         this._domElement.style.cssText = this._buildCssText(style);
     };
 
