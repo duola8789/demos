@@ -13,28 +13,28 @@ class Drag {
     this.diffY = 0;
     this.className = 'draggable';
     this.target = target;
-    this.handleEvent = this.handleEvent.bind(this)
-  };
+    this.handleEvent = this.handleEvent.bind(this);
+  }
 
   handleEvent(event) {
     if (!this.target) {
-      return
+      return;
     }
 
     const {type, clientX, clientY} = event;
 
     switch (type) {
-      case 'mousedown' : {
+      case 'mousedown': {
         // 不放在前面，是为了保证鼠标快速移动时div移动速度能够赶得上
         if (!event.target.classList.contains(this.className)) {
-          return
+          return;
         }
         this.dragging = true;
         this.diffX = clientX - this.target.offsetLeft;
         this.diffY = clientY - this.target.offsetTop;
         break;
       }
-      case 'mousemove' : {
+      case 'mousemove': {
         if (this.dragging) {
           const clientWidth = document.documentElement.clientWidth, //浏览器时下窗口可视区域宽度
             clientHeight = document.documentElement.clientHeight, //浏览器时下窗口可视区域高度
@@ -48,13 +48,13 @@ class Drag {
           if (x < 0) {
             x = 0;
           }
-          if (x > (clientWidth - offsetWidth)) {
+          if (x > clientWidth - offsetWidth) {
             x = clientWidth - offsetWidth;
           }
           if (y < 0) {
             y = 0;
           }
-          if (y > (clientHeight - offsetHeight)) {
+          if (y > clientHeight - offsetHeight) {
             y = clientHeight - offsetHeight;
           }
 
@@ -64,33 +64,31 @@ class Drag {
 
         break;
       }
-      case 'mouseup' : {
+      case 'mouseup': {
         if (!event.target.classList.contains(this.className)) {
-          return
+          return;
         }
         this.dragging = false;
         break;
       }
     }
-
-  };
-
+  }
 
   enable() {
     window.addEventListener('mousedown', this.handleEvent);
     window.addEventListener('mousemove', this.handleEvent);
-    window.addEventListener('mouseup', this.handleEvent)
+    window.addEventListener('mouseup', this.handleEvent);
   }
 
   disable() {
     window.removeEventListener('mousedown', this.handleEvent);
     window.removeEventListener('mousemove', this.handleEvent);
-    window.removeEventListener('mouseup', this.handleEvent)
+    window.removeEventListener('mouseup', this.handleEvent);
   }
 }
 
 if (typeof exports === 'object') {
-  module.exports = Drag
+  module.exports = Drag;
 } else {
-  window.Drag = Drag
+  window.Drag = Drag;
 }

@@ -42,10 +42,10 @@ module.exports = {
     vueIndentScriptAndStyle: false,
     overrides: [
         {
-            'files': ['*.css', '*.less', '*.sass', '*.scss'],
-            'options': {
-                'singleQuote': false
+            files: ['*.css', '*.less', '*.sass', '*.scss'],
+            options: {
+                singleQuote: true
             }
-        },
+        }
     ]
 };

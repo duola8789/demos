@@ -34,7 +34,7 @@
     map.centerAndZoom(point, 15);
     map.enableScrollWheelZoom();
 
-    const bounds = new BMapGL.Bounds(new BMapGL.Point(115.963883,39.788863), new BMapGL.Point(116.795211,40.083625));
+    const bounds = new BMapGL.Bounds(new BMapGL.Point(115.963883, 39.788863), new BMapGL.Point(116.795211, 40.083625));
 
     // 创建小车图标
     const myIcon = new BMapGL.Icon('../assets/car1.png', new BMapGL.Size(36, 36));
@@ -50,7 +50,6 @@
     const markerCluster = new BMapLib.MarkerClusterer(map, {markers, maxZoom: 22});
 
     map.addEventListener('dragend', (e) => {
-
       console.log(bounds.containsPoint(point));
     });
   </script>

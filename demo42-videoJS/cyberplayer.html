@@ -4,16 +4,15 @@
     <meta charset="UTF-8" />
     <title>Title</title>
     <script type="text/javascript" src="../libs/cyberplayer/libs/cyberplayer.js"></script>
-
   </head>
   <body>
-  <div class="container">
-    <div id="container"></div>
-    <button id="btn">click</button>
-  </div>
+    <div class="container">
+      <div id="container"></div>
+      <button id="btn">click</button>
+    </div>
 
     <script type="text/javascript">
-    const showControl = true;
+      const showControl = true;
       const player = cyberplayer('container').setup({
         width: 440,
         height: 240,
@@ -24,16 +23,16 @@
       });
       player.on('time', () => {
         console.log(123);
-      })
+      });
     </script>
   </body>
   <style>
-  .jwplayer .jw-controls .jw-text.jw-reset {
-    display: none !important;
-  }
+    .jwplayer .jw-controls .jw-text.jw-reset {
+      display: none !important;
+    }
 
-  .jwplayer .jw-overlays {
-    background: rgba(20, 38, 74, 0.5) !important;
-  }
+    .jwplayer .jw-overlays {
+      background: rgba(20, 38, 74, 0.5) !important;
+    }
   </style>
 </html>

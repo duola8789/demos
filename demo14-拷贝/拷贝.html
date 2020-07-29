@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>拷贝</title>
-</head>
-<body>
-
-</body>
-<script>
-  let obj = {
-    a1: 1,
-    b1: [1, 2, 3],
-    c1: {
-      c2: 4,
-      c3: [5, 6],
-      c4: function () {
-        console.log(7)
+  <head>
+    <meta charset="UTF-8" />
+    <title>拷贝</title>
+  </head>
+  <body></body>
+  <script>
+    let obj = {
+      a1: 1,
+      b1: [1, 2, 3],
+      c1: {
+        c2: 4,
+        c3: [5, 6],
+        c4: function () {
+          console.log(7);
+        }
+      },
+      d1: function () {
+        console.log(8);
       }
-    },
-    d1: function () {
-      console.log(8)
-    }
-  };
+    };
 
-  // 赋值，浅拷贝
-  /*
+    // 赋值，浅拷贝
+    /*
    let a = obj;
    a.a1 = 100;
    console.log(obj.a1); //100
    */
 
-  // Object assign()
-  // 第一层深拷贝，后续浅拷贝
-  /*
+    // Object assign()
+    // 第一层深拷贝，后续浅拷贝
+    /*
    let b = {};
    Object.assign(b, obj);
    b.a1 = 100;
@@ -43,9 +41,9 @@
    console.log(obj.c1.c2); // 500
    */
 
-  // JSON.stringify
-  // 无法拷贝方法
-  /*
+    // JSON.stringify
+    // 无法拷贝方法
+    /*
    let c = JSON.parse(JSON.stringify(obj));
    c.a1 = 100;
    console.log(obj.a1); // 1
@@ -56,22 +54,20 @@
    c.d1();// 报错
    */
 
-
-  // 递归 + for...in实现真正意义的深拷贝
-  function copy(c, p, forArray) {
-    c = c || (forArray ? [] : {});
-    for (let i in p) {
-      if (typeof p[i] === 'object') {
-        c[i] = Array.isArray(p[i]) ? [] : {};
-        copy(c[i], p[i]);
+    // 递归 + for...in实现真正意义的深拷贝
+    function copy(c, p, forArray) {
+      c = c || (forArray ? [] : {});
+      for (let i in p) {
+        if (typeof p[i] === 'object') {
+          c[i] = Array.isArray(p[i]) ? [] : {};
+          copy(c[i], p[i]);
+        } else {
+          c[i] = p[i];
+        }
       }
-      else {
-        c[i] = p[i]
-      }
+      return c;
     }
-    return c
-  }
-  /*
+    /*
    let d = {};
    d = copy(d, obj);
    d.a1 = 100;
@@ -84,21 +80,26 @@
    d.c1.c4(); // 7
    */
 
-  let array = [1, {
-    a1: 2, a2: function () {
-      console.log(5)
-    }
-  }, [3, 4]];
+    let array = [
+      1,
+      {
+        a1: 2,
+        a2: function () {
+          console.log(5);
+        }
+      },
+      [3, 4]
+    ];
 
-  //  赋值，浅拷贝
-  /*
+    //  赋值，浅拷贝
+    /*
    let a = array;
    a[0] = 100;
    console.log(array[0]); // 100
    */
 
-  //  slice()方法，一层深拷贝
-  /*
+    //  slice()方法，一层深拷贝
+    /*
    let b = array.slice(0);
    b[0] = 100;
    console.log(array[0]); // 1
@@ -106,8 +107,8 @@
    console.log(array[1].a1); // 200
    */
 
-  //  slice()方法，一层深拷贝
-  /*
+    //  slice()方法，一层深拷贝
+    /*
    let c = [];
    c = c.concat(array);
    c[0] = 100;
@@ -116,8 +117,8 @@
    console.log(array[1].a1); // 200
    */
 
-  //  利用map拷贝，一层深拷贝, filter同理
-  /*
+    //  利用map拷贝，一层深拷贝, filter同理
+    /*
    let d = array.filter((value) => value);
    d[0] = 100;
    console.log(array[0]); // 1
@@ -125,8 +126,8 @@
    console.log(array[1].a1); // 200
    */
 
-  //  递归实现真正的深拷贝
-  /*
+    //  递归实现真正的深拷贝
+    /*
    let f = [];
    f = copy(f, array, true);
    f[0] = 100;
@@ -134,5 +135,5 @@
    f[1].a1 = 200;
    console.log(array[1].a1); // 2
    */
-</script>
+  </script>
 </html>

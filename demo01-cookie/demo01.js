@@ -4,5 +4,5 @@
 var url = window.url;
 var index = url.indexOf('callBack');
 var callBack = url.slice(index + 'callBack='.length, url.length);
-eval(callBack)({name : 'jay'});
+eval(callBack)({name: 'jay'});
 // setTimeout(callBack + "({name : 'jay'})", 0);

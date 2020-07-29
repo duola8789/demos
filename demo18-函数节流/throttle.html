@@ -1,26 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>函数节流</title>
-</head>
-<body>
-
-</body>
-<script>
-  let number = 0;
-  window.onresize = function () {
-    throttle(showNumber, window, 1000);
-  };
-  function showNumber() {
-    console.log(number++)
-  }
-  function throttle(func, context, time) {
-    clearTimeout(func.timer);
-    func.timer = null;
-    func.timer = setTimeout(function () {
-      func.call(context)
-    }, time)
-  }
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>函数节流</title>
+  </head>
+  <body></body>
+  <script>
+    let number = 0;
+    window.onresize = function () {
+      throttle(showNumber, window, 1000);
+    };
+    function showNumber() {
+      console.log(number++);
+    }
+    function throttle(func, context, time) {
+      clearTimeout(func.timer);
+      func.timer = null;
+      func.timer = setTimeout(function () {
+        func.call(context);
+      }, time);
+    }
+  </script>
 </html>

@@ -1,185 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>九宫格</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
-    .wrapper {
-      margin: 50px;
-      float: left
-    }
-    .table {
-      border-collapse: collapse;
-    }
-    .table td {
-      text-align: center;
-      vertical-align: middle;
-      border-collapse: collapse;
-      border: 5px solid black;
-      position: relative;
-    }
-    .table td span {
-      position: relative;
-      display: block;
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
-    }
-    .table td span:hover {
-      position: absolute;
-      left: -5px;
-      top: -5px;
-      border: 5px solid red;
-    }
-    .flex {
-      display: flex;
-      width: 165px;
-      height: 165px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-    }
-    .flex-cell {
-      flex: 0 0 50px;
-      height: 50px;
-      line-height: 50px;
-      margin: -5px 0 0 -5px;
-      text-align: center;
-      border: 5px solid black;
-      z-index: 1;
-    }
-    .flex-cell:hover {
-      border: 5px solid red;
-      z-index: 2;
-    }
-    .wrapper2 {
-      width: 165px;
-      height: 165px;
-      border-style: solid;
-      border-color: black;
-      border-width: 5px 0 0 5px;
-    }
-    .cell {
-      float: left;
-      width: 50px;
-      height: 50px;
-      line-height: 50px;
-      border-style: solid;
-      border-color: black;
-      border-width: 0 5px 5px 0;
-      text-align: center;
-      position: relative;
-    }
-    .cell:hover:after {
-      content: '';
-      display: block;
-      position: absolute;
-      left: -5px;
-      top: -5px;
-      width: 100%;
-      height: 100%;
-      border: 5px solid red;
-    }
-    .grid {
-      display: grid;
-      width: 165px;
-      height: 165px;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr;
-    }
-    .grid-cell {
-      display: grid;
-      align-items: center;
-      justify-content: center;
-      vertical-align: middle;
-      margin: -5px 0 0 -5px;
-      border: 5px solid black;
-      z-index: 1;
-    }
-    .grid-cell:hover {
-      border: 5px solid red;
-      z-index: 2;
-    }
-  </style>
-</head>
-<body>
-<div class="wrapper">
-  <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${width}">
-    <text x="50%" y="50%" dy="12px" text-anchor="middle" stroke="#000000" stroke-width="1" stroke-opacity="${opacity}" fill="none" transform="rotate(-45, 120 120)" style="font-size: ${fontSize};">${content}</text>
-  </svg>
-  <table class="table">
-    <tr>
-      <td><span>1</span></td>
-      <td><span>2</span></td>
-      <td><span>3</span></td>
-    </tr>
-    <tr>
-      <td><span>4</span></td>
-      <td><span>5</span></td>
-      <td><span>6</span></td>
-    </tr>
-    <tr>
-      <td><span>7</span></td>
-      <td><span>8</span></td>
-      <td><span>9</span></td>
-    </tr>
-  </table>
-</div>
-<div class="wrapper">
-  <div class="flex">
-    <div class="flex-cell">1</div>
-    <div class="flex-cell">2</div>
-    <div class="flex-cell">3</div>
-    <div class="flex-cell">4</div>
-    <div class="flex-cell">5</div>
-    <div class="flex-cell">6</div>
-    <div class="flex-cell">7</div>
-    <div class="flex-cell">8</div>
-    <div class="flex-cell">9</div>
-  </div>
-</div>
-<div class="wrapper">
-  <div class="wrapper2">
-    <div class="cell">1</div>
-    <div class="cell">2</div>
-    <div class="cell">3</div>
-    <div class="cell">4</div>
-    <div class="cell">5</div>
-    <div class="cell">6</div>
-    <div class="cell">7</div>
-    <div class="cell">8</div>
-    <div class="cell">9</div>
-  </div>
-</div>
-<div class="wrapper">
-  <div class="grid">
-    <div class="grid-cell">1</div>
-    <div class="grid-cell">2</div>
-    <div class="grid-cell">3</div>
-    <div class="grid-cell">4</div>
-    <div class="grid-cell">5</div>
-    <div class="grid-cell">6</div>
-    <div class="grid-cell">7</div>
-    <div class="grid-cell">8</div>
-    <div class="grid-cell">9</div>
-  </div>
-  <input id="input" value="123">
-</div>
-  <script>
-    const number = 123456789876543212345678987654321;
-    const findN = (number, n) => number.toString().split('')[n];
+  <head>
+    <meta charset="UTF-8" />
+    <title>九宫格</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      .wrapper {
+        margin: 50px;
+        float: left;
+      }
+      .table {
+        border-collapse: collapse;
+      }
+      .table td {
+        text-align: center;
+        vertical-align: middle;
+        border-collapse: collapse;
+        border: 5px solid black;
+        position: relative;
+      }
+      .table td span {
+        position: relative;
+        display: block;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+      }
+      .table td span:hover {
+        position: absolute;
+        left: -5px;
+        top: -5px;
+        border: 5px solid red;
+      }
+      .flex {
+        display: flex;
+        width: 165px;
+        height: 165px;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+      }
+      .flex-cell {
+        flex: 0 0 50px;
+        height: 50px;
+        line-height: 50px;
+        margin: -5px 0 0 -5px;
+        text-align: center;
+        border: 5px solid black;
+        z-index: 1;
+      }
+      .flex-cell:hover {
+        border: 5px solid red;
+        z-index: 2;
+      }
+      .wrapper2 {
+        width: 165px;
+        height: 165px;
+        border-style: solid;
+        border-color: black;
+        border-width: 5px 0 0 5px;
+      }
+      .cell {
+        float: left;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        border-style: solid;
+        border-color: black;
+        border-width: 0 5px 5px 0;
+        text-align: center;
+        position: relative;
+      }
+      .cell:hover:after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: -5px;
+        top: -5px;
+        width: 100%;
+        height: 100%;
+        border: 5px solid red;
+      }
+      .grid {
+        display: grid;
+        width: 165px;
+        height: 165px;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+      }
+      .grid-cell {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        vertical-align: middle;
+        margin: -5px 0 0 -5px;
+        border: 5px solid black;
+        z-index: 1;
+      }
+      .grid-cell:hover {
+        border: 5px solid red;
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${width}">
+        <text
+          x="50%"
+          y="50%"
+          dy="12px"
+          text-anchor="middle"
+          stroke="#000000"
+          stroke-width="1"
+          stroke-opacity="${opacity}"
+          fill="none"
+          transform="rotate(-45, 120 120)"
+          style="font-size: ${fontSize};"
+        >
+          ${content}
+        </text>
+      </svg>
+      <table class="table">
+        <tr>
+          <td><span>1</span></td>
+          <td><span>2</span></td>
+          <td><span>3</span></td>
+        </tr>
+        <tr>
+          <td><span>4</span></td>
+          <td><span>5</span></td>
+          <td><span>6</span></td>
+        </tr>
+        <tr>
+          <td><span>7</span></td>
+          <td><span>8</span></td>
+          <td><span>9</span></td>
+        </tr>
+      </table>
+    </div>
+    <div class="wrapper">
+      <div class="flex">
+        <div class="flex-cell">1</div>
+        <div class="flex-cell">2</div>
+        <div class="flex-cell">3</div>
+        <div class="flex-cell">4</div>
+        <div class="flex-cell">5</div>
+        <div class="flex-cell">6</div>
+        <div class="flex-cell">7</div>
+        <div class="flex-cell">8</div>
+        <div class="flex-cell">9</div>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="wrapper2">
+        <div class="cell">1</div>
+        <div class="cell">2</div>
+        <div class="cell">3</div>
+        <div class="cell">4</div>
+        <div class="cell">5</div>
+        <div class="cell">6</div>
+        <div class="cell">7</div>
+        <div class="cell">8</div>
+        <div class="cell">9</div>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="grid">
+        <div class="grid-cell">1</div>
+        <div class="grid-cell">2</div>
+        <div class="grid-cell">3</div>
+        <div class="grid-cell">4</div>
+        <div class="grid-cell">5</div>
+        <div class="grid-cell">6</div>
+        <div class="grid-cell">7</div>
+        <div class="grid-cell">8</div>
+        <div class="grid-cell">9</div>
+      </div>
+      <input id="input" value="123" />
+    </div>
+    <script>
+      const number = 123456789876543212345678987654321;
+      const findN = (number, n) => number.toString().split('')[n];
 
-    console.log(findN(number, 0))
+      console.log(findN(number, 0));
 
-    const input = document.querySelector('#input');
-    input.oninput = function(e) {
-      console.log(typeof input.value)
-    }
-
-  </script>
-</body>
+      const input = document.querySelector('#input');
+      input.oninput = function (e) {
+        console.log(typeof input.value);
+      };
+    </script>
+  </body>
 </html>

@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>排序算法</title>
-</head>
-<body>
-
-</body>
-<script>
-let arr = [7, 28, -1, 0, 7, 33];
-//绝对值冒泡排序
-function sort(arr, absNum) {
-  for (let i = 0; i < arr.length - 1; i++) {
-    for (let j = 0; j < arr.length - 1 - i; j++) {
-      if (Math.abs(arr[j] - absNum) > Math.abs(arr[j + 1] - absNum)) {
-        [arr[j],arr[j+1]] = [arr[j+1],arr[j]];
-        // let temp = arr[j + 1];
-        // arr[j + 1] = arr[j];
-        // arr[j] = temp
+  <head>
+    <meta charset="UTF-8" />
+    <title>排序算法</title>
+  </head>
+  <body></body>
+  <script>
+    let arr = [7, 28, -1, 0, 7, 33];
+    //绝对值冒泡排序
+    function sort(arr, absNum) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = 0; j < arr.length - 1 - i; j++) {
+          if (Math.abs(arr[j] - absNum) > Math.abs(arr[j + 1] - absNum)) {
+            [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+            // let temp = arr[j + 1];
+            // arr[j + 1] = arr[j];
+            // arr[j] = temp
+          }
+        }
       }
+      return arr;
     }
-  }
-  return arr;
-}
-console.log(sort(arr, 0))
-</script>
+    console.log(sort(arr, 0));
+  </script>
 </html>

@@ -31,5 +31,5 @@ export function parseText(text) {
     tokens.push(JSON.stringify(text.slice(lastIndex)));
   }
 
-  return tokens.join('+')
+  return tokens.join('+');
 }

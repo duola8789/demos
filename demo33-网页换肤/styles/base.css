@@ -20,7 +20,7 @@ input {
   appearance: none;
   outline: none;
   background: none;
-  border: none
+  border: none;
 }
 .input input {
   display: inline-block;
@@ -30,10 +30,10 @@ input {
   background: #ddd;
   box-sizing: border-box;
 }
-.input input[value=green] {
+.input input[value='green'] {
   background: green;
 }
-.input input[value=red] {
+.input input[value='red'] {
   background: red;
 }
 .input input:checked {

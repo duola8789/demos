@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>图片处理</title>
-  <style>
-    .canvas {
-      display: none;
-      float: right;
-      border: 1px solid gray;
-    }
-    .container {
-      float: left;
-    }
-    .preview {
-      width: 300px;
-    }
-    .img {
-      width: 400px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <label>上传图片<input type="file" id="input"></label>
-    <img id="preview" class="preview">
-    <img id="img" class="img">
-  </div>
-  <canvas id="canvas" class="canvas"></canvas>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>图片处理</title>
+    <style>
+      .canvas {
+        display: none;
+        float: right;
+        border: 1px solid gray;
+      }
+      .container {
+        float: left;
+      }
+      .preview {
+        width: 300px;
+      }
+      .img {
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <label>
+        上传图片
+        <input type="file" id="input" />
+      </label>
+      <img id="preview" class="preview" />
+      <img id="img" class="img" />
+    </div>
+    <canvas id="canvas" class="canvas"></canvas>
+  </body>
   <script>
     // 加载图片
     function loadImage(src) {
@@ -39,12 +42,12 @@
         }
         img.src = src;
         img.onload = () => {
-          resolve(img)
+          resolve(img);
         };
         img.onerror = () => {
-          reject(new Error('图片解析失败'))
-        }
-      })
+          reject(new Error('图片解析失败'));
+        };
+      });
     }
 
     window.onload = async function () {
@@ -65,7 +68,7 @@
       preview.src = clipImage(img, {
         width: 1800,
         height: 1800
-      })
+      });
     };
 
     // 通过canvas绘制图片
@@ -77,7 +80,7 @@
       const ctxHeight = ctxWidth / imgRatio;
 
       // 绘制图片
-      const ctx = canvas.getContext("2d");
+      const ctx = canvas.getContext('2d');
       let x = 0;
       let y = 0;
       ctx.drawImage(img, x, y, ctxWidth, ctxHeight);
@@ -96,14 +99,14 @@
         const file = e.target.files[0];
         if (!file) {
           preview.src = '';
-          return
+          return;
         }
         const fileReader = new FileReader();
         fileReader.readAsDataURL(file);
-        fileReader.onload = t => {
+        fileReader.onload = (t) => {
           preview.src = t.target.result;
-        }
-      }
+        };
+      };
     }
 
     // 利用URL.createObjectURL预览图片
@@ -112,10 +115,10 @@
         const file = e.target.files[0];
         if (!file) {
           preview.src = '';
-          return
+          return;
         }
-        preview.src = window.URL.createObjectURL(file)
-      }
+        preview.src = window.URL.createObjectURL(file);
+      };
     }
 
     // 居中剪裁
@@ -148,8 +151,7 @@
       ctx.drawImage(img, dx, dy, clippedWidth, clippedHeight, x, y, ctxWidth, ctxHeight);
 
       // 返回base64图片
-      return cvs.toDataURL('image/jpeg', 0.9)
+      return cvs.toDataURL('image/jpeg', 0.9);
     }
-
   </script>
 </html>

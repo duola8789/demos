@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>跨文档通信-1</title>
-</head>
-<body>
-  <a href="demo30-2.html#hello" target="_blank">打开页面</a>
-  <script>
-    const btn1 = document.querySelector('#btn1');
-    const btn2 = document.querySelector('#btn2');
-    const h1 = document.querySelector('#h1');
-    let otherWindow;
+  <head>
+    <meta charset="UTF-8" />
+    <title>跨文档通信-1</title>
+  </head>
+  <body>
+    <a href="demo30-2.html#hello" target="_blank">打开页面</a>
+    <script>
+      const btn1 = document.querySelector('#btn1');
+      const btn2 = document.querySelector('#btn2');
+      const h1 = document.querySelector('#h1');
+      let otherWindow;
 
-    /**
+      /**
      * postMessage
      *
      // 打开Tab2
@@ -38,7 +38,7 @@
     })
      */
 
-    /**
+      /**
      * MessageChannel
      *
      const channel = new MessageChannel();
@@ -64,13 +64,13 @@
     }
      */
 
-    /**
+      /**
      * Cookie
      *
      btn1.addEventListener('click', () => {
       document.cookie += 'value1=hello1'
     })
      */
-  </script>
-</body>
+    </script>
+  </body>
 </html>

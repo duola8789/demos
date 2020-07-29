@@ -1,110 +1,110 @@
 <!DOCTYPE >
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <title>MarkerClusterer for Baidu Map Example</title>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>MarkerClusterer for Baidu Map Example</title>
 
-        <style type="text/css">
-            #map {
-                height: 500px;
-                width: 1200px;
-                margin: 20px;
-            }
-        </style>
+    <style type="text/css">
+      #map {
+        height: 500px;
+        width: 1200px;
+        margin: 20px;
+      }
+    </style>
 
-        <script
-            type="text/javascript"
-            src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"
-        ></script>
-        <script type="text/javascript" src="../libs/TextIconOverlay.js"></script>
-        <script type="text/javascript" src="../libs/MarkerClusterer.js"></script>
-    </head>
-    <body>
-        <div id="map"></div>
-    </body>
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"
+    ></script>
+    <script type="text/javascript" src="../libs/TextIconOverlay.js"></script>
+    <script type="text/javascript" src="../libs/MarkerClusterer.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+  </body>
 
-    <script type="text/javascript">
-        // 百度地图API功能
-        const map = new BMap.Map('map', {enableMapClick: false});
-        const point = new BMap.Point(116.404, 39.915);
-        map.centerAndZoom(point, 15);
-        map.enableScrollWheelZoom();
+  <script type="text/javascript">
+    // 百度地图API功能
+    const map = new BMap.Map('map', {enableMapClick: false});
+    const point = new BMap.Point(116.404, 39.915);
+    map.centerAndZoom(point, 15);
+    map.enableScrollWheelZoom();
 
-        // 创建小车图标
-        const myIcon = new BMap.Icon('assets/car1.png', new BMap.Size(36, 36));
-        myIcon.setImageSize(new BMap.Size(36, 36));
+    // 创建小车图标
+    const myIcon = new BMap.Icon('assets/car1.png', new BMap.Size(36, 36));
+    myIcon.setImageSize(new BMap.Size(36, 36));
 
-        const pt1 = new BMap.Point(116.404, 39.915);
-        const marker1 = new BMap.Marker(pt1, {icon: myIcon});
+    const pt1 = new BMap.Point(116.404, 39.915);
+    const marker1 = new BMap.Marker(pt1, {icon: myIcon});
 
-        const pt2 = new BMap.Point(116.404, 39.915);
-        const marker2 = new BMap.Marker(pt2, {icon: myIcon});
+    const pt2 = new BMap.Point(116.404, 39.915);
+    const marker2 = new BMap.Marker(pt2, {icon: myIcon});
 
-        const pt3 = new BMap.Point(116.403361, 39.915084);
-        const marker3 = new BMap.Marker(pt3, {icon: myIcon});
+    const pt3 = new BMap.Point(116.403361, 39.915084);
+    const marker3 = new BMap.Marker(pt3, {icon: myIcon});
 
-        const pt4 = new BMap.Point(116.404314, 39.915385);
-        const marker4 = new BMap.Marker(pt4, {icon: myIcon});
-        const marker5 = new BMap.Marker(pt4, {icon: myIcon});
-        const marker6 = new BMap.Marker(pt4, {icon: myIcon});
-        const marker7 = new BMap.Marker(pt4, {icon: myIcon});
-        const marker8 = new BMap.Marker(pt4, {icon: myIcon});
-        const marker9 = new BMap.Marker(pt4, {icon: myIcon});
-        const marker10 = new BMap.Marker(pt4, {icon: myIcon});
+    const pt4 = new BMap.Point(116.404314, 39.915385);
+    const marker4 = new BMap.Marker(pt4, {icon: myIcon});
+    const marker5 = new BMap.Marker(pt4, {icon: myIcon});
+    const marker6 = new BMap.Marker(pt4, {icon: myIcon});
+    const marker7 = new BMap.Marker(pt4, {icon: myIcon});
+    const marker8 = new BMap.Marker(pt4, {icon: myIcon});
+    const marker9 = new BMap.Marker(pt4, {icon: myIcon});
+    const marker10 = new BMap.Marker(pt4, {icon: myIcon});
 
-        const markers1 = [marker1, marker2, marker3, marker4, marker5];
+    const markers1 = [marker1, marker2, marker3, marker4, marker5];
 
-        markers1.forEach((marker) =>
-            marker.addEventListener('click', () => {
-                console.log(555);
-            })
-        );
+    markers1.forEach((marker) =>
+      marker.addEventListener('click', () => {
+        console.log(555);
+      })
+    );
 
-        const styles = [
-            {
-                url: 'assets/car2.png',
-                size: new BMap.Size(36, 36),
-                textColor: 'green',
-                textSize: 20,
-                backgroundSize: 'contain',
-                display: 'flex'
-            },
-            {
-                url: 'assets/car2.png',
-                size: new BMap.Size(36, 36),
-                textColor: 'yellow',
-                textSize: 20,
-                backgroundSize: 'contain',
-                display: 'flex'
-            },
-            {
-                url: 'assets/car2.png',
-                size: new BMap.Size(36, 36),
-                textColor: 'red',
-                textSize: 20,
-                backgroundSize: 'contain',
-                display: 'flex'
-            }
-        ];
+    const styles = [
+      {
+        url: 'assets/car2.png',
+        size: new BMap.Size(36, 36),
+        textColor: 'green',
+        textSize: 20,
+        backgroundSize: 'contain',
+        display: 'flex'
+      },
+      {
+        url: 'assets/car2.png',
+        size: new BMap.Size(36, 36),
+        textColor: 'yellow',
+        textSize: 20,
+        backgroundSize: 'contain',
+        display: 'flex'
+      },
+      {
+        url: 'assets/car2.png',
+        size: new BMap.Size(36, 36),
+        textColor: 'red',
+        textSize: 20,
+        backgroundSize: 'contain',
+        display: 'flex'
+      }
+    ];
 
-        const obj = {
-            age: 999,
-            say(markers) {
-                console.log(markers);
-            }
-        };
+    const obj = {
+      age: 999,
+      say(markers) {
+        console.log(markers);
+      }
+    };
 
-        const markerCluster1 = new BMapLib.MarkerClusterer(map, {
-            markers: markers1,
-            maxZoom: 19,
-            styles,
-            styleInterval: [2, 5],
-            maxZoomCb: obj.say
-        });
+    const markerCluster1 = new BMapLib.MarkerClusterer(map, {
+      markers: markers1,
+      maxZoom: 19,
+      styles,
+      styleInterval: [2, 5],
+      maxZoomCb: obj.say
+    });
 
-        setTimeout(() => {
-            markerCluster1.clearMarkers();
-            markerCluster1.addMarkers([...markers1, marker6]);
-        }, 6000);
-    </script>
+    setTimeout(() => {
+      markerCluster1.clearMarkers();
+      markerCluster1.addMarkers([...markers1, marker6]);
+    }, 6000);
+  </script>
 </html>

@@ -48,14 +48,14 @@
         .then((AMap) => {
           var map = new AMap.Map('map', {
             zoom: 12,
-            resizeEnable: true,
+            resizeEnable: true
           });
           map.addControl(new AMap.Scale());
 
           const btn = document.querySelector('#locateBtn');
           const locationInput = document.querySelector('#location');
           let marker = new AMap.Marker({
-            icon: "../assets/icon-location.png",
+            icon: '../assets/icon-location.png',
             position: [116.406315, 39.908775],
             offset: new AMap.Pixel(-13, -30)
           });
@@ -75,9 +75,9 @@
             AMap.convertFrom(gps, 'gps', (status, result) => {
               if (result.info === 'ok') {
                 const position = result.locations;
-                if(!marker) {
+                if (!marker) {
                   marker = new AMap.Marker({
-                    icon: "http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+                    icon: 'http://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png',
                     position: [116.406315, 39.908775],
                     offset: new AMap.Pixel(-13, -30)
                   });

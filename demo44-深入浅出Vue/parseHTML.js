@@ -69,7 +69,7 @@ export function parseHtml(html, options) {
           rest = html.slice(textEnd);
         }
         text = html.substring(0, textEnd);
-        html = html.substring(textEnd)
+        html = html.substring(textEnd);
       }
 
       // 如果模板中不再包含 < 了，那么剩余内容都是文本内容了

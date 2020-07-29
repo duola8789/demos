@@ -27,7 +27,6 @@
       // 创建点坐标
       map.centerAndZoom(point, 15);
 
-
       const polyOptions = {
         strokeColor: 'none',
         fillColor: 'red',
@@ -54,8 +53,8 @@
         map.pantO(new BMap.Point(116.404 + count * 0.01, 37.905 + count * 0.01));
         const points = getMapBoundsPoint(map);
         console.log(points);
-        mask.setPath(points)
-      }, 1000)
+        mask.setPath(points);
+      }, 1000);
     </script>
   </body>
 </html>

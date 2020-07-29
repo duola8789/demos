@@ -1,52 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>绝对定位</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-    }
-    .container {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    .left {
-      position: absolute;
-      left: 0;
-      top:0;
-      width: 200px;
-      height: inherit;
-      background: silver;
-    }
-    .right {
-      position: absolute;
-      right: 0;
-      top:0;
-      width: 200px;
-      height: inherit;
-      background: khaki;
-    }
-    .middle {
-      margin: 0 200px;
-      height: inherit;
-      background: palegreen;
-    }
-  </style>
-</head>
-<body>
-<div class="container">
-  <aside class="left"></aside>
-  <section class="middle"></section>
-  <aside class="right"></aside>
-</div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>绝对定位</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+      .left {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 200px;
+        height: inherit;
+        background: silver;
+      }
+      .right {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 200px;
+        height: inherit;
+        background: khaki;
+      }
+      .middle {
+        margin: 0 200px;
+        height: inherit;
+        background: palegreen;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <aside class="left"></aside>
+      <section class="middle"></section>
+      <aside class="right"></aside>
+    </div>
+  </body>
 </html>

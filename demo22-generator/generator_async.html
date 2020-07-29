@@ -1,66 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>generator函数异步</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>generator函数异步</title>
+  </head>
+  <body></body>
+  <script>
+    // generator函数自动执行
+    // let gen = function* () {
+    //   yield 11;
+    //   yield 22;
+    //   yield 33;
+    // };
+    // let g = gen();
+    // let r = g.next();
+    // while (!r.done) {
+    //   console.log(r.value);
+    //   r = g.next()
+    // }
+    //
+    // async function f() {
+    //   console.log(1);
+    //   let a = await test();
+    //   console.log(a)
+    // }
+    //
+    // f();
+    // console.log(2);
+    //
+    // function test() {
+    //   return 3
+    // }
 
-</body>
-<script>
-// generator函数自动执行
-// let gen = function* () {
-//   yield 11;
-//   yield 22;
-//   yield 33;
-// };
-// let g = gen();
-// let r = g.next();
-// while (!r.done) {
-//   console.log(r.value);
-//   r = g.next()
-// }
-//
-// async function f() {
-//   console.log(1);
-//   let a = await test();
-//   console.log(a)
-// }
-//
-// f();
-// console.log(2);
-//
-// function test() {
-//   return 3
-// }
+    // function Person(name) {
+    //   this.name = name
+    // }
+    //
+    // Person.prototype.sayHello = () => {
+    //   alert('hello')
+    // };
+    @go
+    class Person {
+      constructor(name, age) {
+        this.name = name;
+        this.age = age;
+        this.say = this.say.bind(this);
+      }
+      say() {
+        alert(this.name);
+      }
 
-// function Person(name) {
-//   this.name = name
-// }
-//
-// Person.prototype.sayHello = () => {
-//   alert('hello')
-// };
-@go
-class Person{
-  constructor(name, age) {
-    this.name = name;
-    this.age = age;
-    this.say = this.say.bind(this)
-  }
-  say() {
-    alert(this.name)
-  }
-
-  static smile() {
-   return this
-  }
-}
-Person.age = 123;
-let p1 = new Person('Jay');
-function go(){
-  alert('go')
-}
-
-</script>
+      static smile() {
+        return this;
+      }
+    }
+    Person.age = 123;
+    let p1 = new Person('Jay');
+    function go() {
+      alert('go');
+    }
+  </script>
 </html>

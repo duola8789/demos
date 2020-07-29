@@ -3,7 +3,7 @@
  */
 import {createEmptyVNode} from './vnode';
 
-function noop (a, b, c) {}
+function noop(a, b, c) {}
 
 function createFunction(code) {
   return new Function(code);
@@ -40,12 +40,16 @@ function mountComponent(vm, el) {
     }
   }
   // 触发生命周期钩子
-  callHook(vm, 'beforeMount')
+  callHook(vm, 'beforeMount');
 
   // 执行挂载操作，观察数据状态，状态改变持续进行渲染
-  vm._watcher = new Watcher(vm, () => {
-    vm._update(vm._render())
-  }, noop)
+  vm._watcher = new Watcher(
+    vm,
+    () => {
+      vm._update(vm._render());
+    },
+    noop
+  );
 }
 
 Vue.prototype.$mount = function (el) {

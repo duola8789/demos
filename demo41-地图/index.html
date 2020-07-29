@@ -1,98 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>百度地图</title>
-  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"></script>
-  <script type="text/javascript" src="../libs/TextIconOverlay.js"></script>
-  <script type="text/javascript" src="../libs/MarkerClusterer.js"></script>
-  <style>
-  @keyframes water-animate {
-    0% {
-      transform: scale(1);
-      opacity: 0.8;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>百度地图</title>
+    <script
+      type="text/javascript"
+      src="https://api.map.baidu.com/api?v=3.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"
+    ></script>
+    <script type="text/javascript" src="../libs/TextIconOverlay.js"></script>
+    <script type="text/javascript" src="../libs/MarkerClusterer.js"></script>
+    <style>
+      @keyframes water-animate {
+        0% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
 
-    100% {
-      transform: scale(1.8);
-      opacity: 0;
-    }
-  }
+        100% {
+          transform: scale(1.8);
+          opacity: 0;
+        }
+      }
 
-  .water-animation-in-map {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-  }
+      .water-animation-in-map {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+      }
 
-  .water-animation1,
-  .water-animation2,
-  .water-animation3 {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 0 0.01rem 0.04rem #0bc1ff;
-    border-radius: 100%;
-    z-index: 1;
-    opacity: 0;
-  }
+      .water-animation1,
+      .water-animation2,
+      .water-animation3 {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        box-shadow: 0 0 0.01rem 0.04rem #0bc1ff;
+        border-radius: 100%;
+        z-index: 1;
+        opacity: 0;
+      }
 
-  .water-animation1 {
-    animation: water-animate 3.5s 0.5s ease-out;
-  }
+      .water-animation1 {
+        animation: water-animate 3.5s 0.5s ease-out;
+      }
 
-  .water-animation2 {
-    animation: water-animate 3.5s 1.5s ease-out;
-  }
+      .water-animation2 {
+        animation: water-animate 3.5s 1.5s ease-out;
+      }
 
-  .water-animation3 {
-    animation: water-animate 3.5s 2.5s ease-out;
-  }
-  </style>
-</head>
-<body>
-<div class="water-animation-in-map" style="width: 50px; height: 50px">
-  <div class="water-animation1"></div>
-  <div class="water-animation2"></div>
-  <div class="water-animation3"></div>
-</div>
-<script>
+      .water-animation3 {
+        animation: water-animate 3.5s 2.5s ease-out;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="water-animation-in-map" style="width: 50px; height: 50px;">
+      <div class="water-animation1"></div>
+      <div class="water-animation2"></div>
+      <div class="water-animation3"></div>
+    </div>
+    <script>
+      var map = new BMap.Map('test');
+      // 创建地图实例
+      var point = new BMap.Point(116.404, 39.915);
+      // 创建点坐标
+      map.centerAndZoom(point, 15);
 
-var map = new BMap.Map("test");
-// 创建地图实例
-var point = new BMap.Point(116.404, 39.915);
-// 创建点坐标
-map.centerAndZoom(point, 15);
+      const size = [32, 32];
+      const sizeInMap = new BMap.Size(size[0], size[1]);
 
-const size = [32, 32];
-const sizeInMap = new BMap.Size(size[0], size[1]);
+      const mapIcon = new BMap.Icon('./icon-device-id.png', sizeInMap);
 
-const mapIcon = new BMap.Icon('./icon-device-id.png', sizeInMap);
+      mapIcon.setImageSize(sizeInMap);
 
-mapIcon.setImageSize(sizeInMap);
+      var point2 = new BMap.Point(116.4041, 39.915);
+      let marker2 = new BMap.Marker(point, {icon: mapIcon});
 
-var point2 = new BMap.Point(116.4041, 39.915);
-let marker2 = new BMap.Marker(point, {icon: mapIcon});
+      let marker = new BMap.Marker(point2, {icon: mapIcon});
 
-let marker = new BMap.Marker(point2, {icon: mapIcon});
+      marker.addEventListener('mouseover', () => {
+        console.log(123);
+        marker.getIcon().setImageUrl('./icon-location.png');
+        marker.setIcon(marker.getIcon());
 
-marker.addEventListener('mouseover', () => {
-  console.log(123);
-  marker.getIcon().setImageUrl('./icon-location.png');
-  marker.setIcon(marker.getIcon());
+        console.log(marker.getIcon());
+      });
 
-  console.log(marker.getIcon());
-});
+      marker.addEventListener('mouseout', () => {
+        console.log(456);
+        marker.getIcon().setImageUrl('./icon-device-id.png');
+        marker.setIcon(marker.getIcon());
+      });
 
-marker.addEventListener('mouseout', () => {
-  console.log(456);
-  marker.getIcon().setImageUrl('./icon-device-id.png');
-  marker.setIcon(marker.getIcon());
-});
-
-new BMapLib.MarkerClusterer(map, {markers: [marker, marker2]});
-</script>
-</body>
+      new BMapLib.MarkerClusterer(map, {markers: [marker, marker2]});
+    </script>
+  </body>
 </html>

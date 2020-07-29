@@ -45,7 +45,6 @@ export function genElement(el, state) {
   return `_c('${el.tag}'${data ? `,${data}` : ''}${children ? `,${children}` : ''})`;
 }
 
-
 export function genText(text) {
   // 如果是动态文本使用 expression，否则使用 JSON.stringify 为字符串额外包一层""
   return `_v(${type.type === 2 ? text.expression : JSON.stringify(text.text)})`;

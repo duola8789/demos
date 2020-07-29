@@ -1,16 +1,16 @@
 /**
  * Created by zh on 2018/1/13.
  */
-"use strict";
-require("babel-core/register");
-require("babel-polyfill");
+'use strict';
+require('babel-core/register');
+require('babel-polyfill');
 
 // 移植到Vue2之后直接使用lodash中的_.debounce替换即可
-import debounce from './debounce'
-import _ from 'lodash'
+import debounce from './debounce';
+import _ from 'lodash';
 
-import w from './test'
-import {b} from './test'
+import w from './test';
+import {b} from './test';
 
 // function time(ms, message, index) {
 //   console.log(index);
@@ -88,21 +88,20 @@ import {b} from './test'
 //   .catch(v => console.log('outside wrong', v))
 
 let timeout1 = function () {
-  return new Promise(resolve => {
-    setTimeout(resolve, 3000, 'timeout1')
-  })
+  return new Promise((resolve) => {
+    setTimeout(resolve, 3000, 'timeout1');
+  });
 };
 let timeout2 = function () {
-  return new Promise(resolve => {
-    setTimeout(resolve, 2000, 'timeout2')
-  })
-}
+  return new Promise((resolve) => {
+    setTimeout(resolve, 2000, 'timeout2');
+  });
+};
 let timeout3 = function () {
-  return new Promise(resolve => {
-    setTimeout(resolve, 4000, 'timeout3')
-  })
-}
-
+  return new Promise((resolve) => {
+    setTimeout(resolve, 4000, 'timeout3');
+  });
+};
 
 // 继发操作
 // async function fn() {
@@ -131,11 +130,11 @@ let timeout3 = function () {
 
 // 继发操作2
 async function fn() {
-  console.log('计时开始')
-  console.time('操作')
+  console.log('计时开始');
+  console.time('操作');
   let array = [timeout1(), timeout2()];
   for (let val of array) {
-    await val
+    await val;
   }
 }
 
@@ -154,8 +153,7 @@ async function fn() {
 //   console.timeEnd('操作')
 // })
 
-
-let arr = [timeout1, timeout2, timeout3]
+let arr = [timeout1, timeout2, timeout3];
 
 // 同时发出，按顺序输出
 // async function f(urls) {
@@ -181,7 +179,6 @@ let arr = [timeout1, timeout2, timeout3]
 //
 // f(arr)
 
-
 // decorator
 // function mixin(...argus) {
 //   return function (target) {
@@ -197,32 +194,30 @@ let arr = [timeout1, timeout2, timeout3]
 //
 // console.log(Person.name)
 
-
 // debounce相关
 function main() {
-  obj.say()
+  obj.say();
 }
 
 function test() {
-  console.log(123)
+  console.log(123);
 }
 
 let obj = {
   say: _.debounce(function () {
-    console.log(456)
+    console.log(456);
   }, 500)
-}
+};
 
 let btn = document.querySelector('#btn');
-btn.addEventListener('click', main())
-setInterval(main, 222)
+btn.addEventListener('click', main());
+setInterval(main, 222);
 
-
-console.log(w)
+console.log(w);
 setTimeout(function () {
-  console.log(w)
-}, 3000)
+  console.log(w);
+}, 3000);
 let a = {
   a: 123,
-  b: 333,
-}
+  b: 333
+};
