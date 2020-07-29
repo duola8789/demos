@@ -3,11 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <title>百度地图</title>
+
     <script
       type="text/javascript"
-      src="https://api.map.baidu.com/api?v=3.0&ak=bXbgnHre8m1z4SUNaIQrKcR7A3Mw1Hqr"
+      src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=NLCXCCj7GMyTyTelUshSPttNGc24kIl9"
     ></script>
-    <script type="text/javascript" src="styles/custom-style.js"></script>
+
+    <script type="text/javascript" src="../styles/custom-style.js"></script>
     <style>
       * {
         margin: 0;
@@ -25,8 +27,8 @@
   <body>
     <div class="map" id="map"></div>
     <script>
-      const map = new BMap.Map('map');
-      const point = new BMap.Point(116.404, 39.915);
+      const map = new BMapGL.Map('map');
+      const point = new BMapGL.Point(116.404, 39.915);
 
       // 创建点坐标
       map.centerAndZoom(point, 15);
@@ -44,15 +46,15 @@
       map.addEventListener('tilesloaded', fn);
 
       const values = Array.from({length: 500}).map(
-        (v, index) => new BMap.Point(116.404 + index * 0.01, 39.915 + index * 0.01)
+        (v, index) => new BMapGL.Point(116.404 + index * 0.01, 39.915 + index * 0.01)
       );
 
       for (const item of values) {
-        const size = new BMap.Size(32, 61);
-        const mapIcon = new BMap.Icon('../assets/icon-map-car-free@2x.png', size);
+        const size = new BMapGL.Size(32, 61);
+        const mapIcon = new BMapGL.Icon('../../assets/icon-map-car-free@2x.png', size);
         mapIcon.setImageSize(size);
 
-        const marker = new BMap.Marker(item, {icon: mapIcon});
+        const marker = new BMapGL.Marker(item, {icon: mapIcon});
         map.addOverlay(marker);
       }
     </script>

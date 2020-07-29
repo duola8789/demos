@@ -13,6 +13,8 @@ const map = new BMap.Map('map');
 map.enableScrollWheelZoom();
 map.centerAndZoom(pt1, 15);
 
+BMap.Marker.prototype.smoothMove = smoothMove;
+
 const makers = Array.from({length: 1}).map(() => {
   const size = new BMap.Size(32, 61);
   const icon = new BMap.Icon('../../assets/icon-map-car-free@2x.png', size);
@@ -26,6 +28,6 @@ const makers = Array.from({length: 1}).map(() => {
 for (let i = 0; i < makers.length; i++) {
   const targetMarker = makers[i];
   for (const pt of pts) {
-    smoothMove(targetMarker, pt, i);
+    targetMarker.smoothMove(pt, i);
   }
 }
