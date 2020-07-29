@@ -115,12 +115,14 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
          *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
          *    styleInterval {Array[Number] | Number} 根据此值划分不同数量聚合点从styles中取的样式Index<br />
          *    margins {Array<Number>} 缩放时视野调整的预留边距
+         *    maxZoomCb {Function} 在最大缩放情况下的点击事件
          */
         (BMapLib.MarkerClusterer = function (map, options) {
             if (!map) {
                 return;
             }
             this._map = map;
+            this._mapMaxZoom = map.getMapType().getMaxZoom();
             this._markers = [];
             this._clusters = [];
 
@@ -135,6 +137,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
             }
             this._styles = opts['styles'] || [];
             this._styleInterval = opts['styleInterval'] || null;
+            this._maxZoomCb = opts['maxZoomCb'] || null;
 
             var that = this;
             this._map.addEventListener('zoomend', function () {
@@ -459,6 +462,8 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
      */
     function Cluster(markerClusterer) {
         this._markerClusterer = markerClusterer;
+        this._mapMaxZoom = this._markerClusterer._mapMaxZoom;
+        this._maxZoomCb = this._markerClusterer._maxZoomCb;
         this._map = markerClusterer.getMap();
         this._minClusterSize = markerClusterer.getMinClusterSize();
         this._isAverageCenter = markerClusterer.isAverageCenter();
@@ -473,6 +478,19 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
             styleInterval: this._markerClusterer._styleInterval
         });
         //this._map.addOverlay(this._clusterMarker);
+
+        var that = this;
+        this._clusterMarker.addEventListener('click', function (event) {
+            const currentZoom = that._map.getZoom();
+            // 处理两个点完全重合的情况，此时在最大缩放条件下，仍然需要聚合，执行传入的 callback
+            if (currentZoom === that._mapMaxZoom) {
+                if (that._maxZoomCb && typeof that._maxZoomCb === 'function') {
+                    that._maxZoomCb(that._markers);
+                }
+            } else {
+                that._map.setViewport(that.getBounds(), {margins: that.margins, enableAnimation: false});
+            }
+        });
     }
 
     /**
@@ -583,13 +601,6 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
         this._clusterMarker.setPosition(this._center);
 
         this._clusterMarker.setText(this._markers.length);
-
-        var thatMap = this._map;
-        var thatBounds = this.getBounds();
-        var margins = this._margins;
-        this._clusterMarker.addEventListener('click', function (event) {
-            thatMap.setViewport(thatBounds, {margins, enableAnimation: false});
-        });
     };
 
     /**

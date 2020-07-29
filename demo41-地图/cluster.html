@@ -25,7 +25,7 @@
 
     <script type="text/javascript">
         // 百度地图API功能
-        const map = new BMap.Map('map');
+        const map = new BMap.Map('map', {enableMapClick: false});
         const point = new BMap.Point(116.404, 39.915);
         map.centerAndZoom(point, 15);
         map.enableScrollWheelZoom();
@@ -54,6 +54,12 @@
 
         const markers1 = [marker1, marker2, marker3, marker4, marker5];
 
+        markers1.forEach((marker) =>
+            marker.addEventListener('click', () => {
+                console.log(555);
+            })
+        );
+
         const styles = [
             {
                 url: 'map-gl/3d/assets/car2.png',
@@ -81,16 +87,24 @@
             }
         ];
 
+        const obj = {
+            age: 999,
+            say(markers) {
+                console.log(markers);
+            }
+        };
+
         const markerCluster1 = new BMapLib.MarkerClusterer(map, {
             markers: markers1,
-            maxZoom: 55,
+            maxZoom: 19,
             styles,
-            styleInterval: [2, 5]
+            styleInterval: [2, 5],
+            maxZoomCb: obj.say
         });
 
         setTimeout(() => {
             markerCluster1.clearMarkers();
             markerCluster1.addMarkers([...markers1, marker6]);
-        }, 2000);
+        }, 6000);
     </script>
 </html>
