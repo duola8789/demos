@@ -61,6 +61,12 @@
         // 数据的 index，如果不指定也可以通过 name 属性根据名称指定数据
         dataIndex: 2
       });
+
+      setInterval(() => {
+        option.xAxis.data = [...option.xAxis.data.slice(1), new Date().toLocaleString()];
+        option.series[0].data = [...option.series[0].data.slice(1), 122]
+        myChart.setOption(option);
+      }, 2000)
     </script>
   </body>
 </html>

@@ -113,6 +113,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
      *    minClusterSize {Number} 最小的聚合数量，小于该数量的不能成为一个聚合，默认为2<br />
      *    isAverangeCenter {Boolean} 聚合点的落脚位置是否是所有聚合在内点的平均值，默认为否，落脚在聚合内的第一个点<br />
      *    styles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
+     *    hoverStyles {Array<IconStyle>} 自定义聚合后的图标风格，请参考TextIconOverlay类<br />
      *    styleInterval {Array[Number] | Number} 根据此值划分不同数量聚合点从styles中取的样式Index<br />
      *    margins {Array<Number>} 缩放时视野调整的预留边距
      *    maxZoomCb {Function} 在最大缩放情况下的点击事件
@@ -136,6 +137,9 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
         this._isAverageCenter = opts['isAverageCenter'];
       }
       this._styles = opts['styles'] || [];
+      this._hoverStyles = opts['hoverStyles'] || [];
+      this._isHover = false;
+
       this._styleInterval = opts['styleInterval'] || null;
       this._maxZoomCb = opts['maxZoomCb'] || null;
 
@@ -151,6 +155,20 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
       var mkrs = opts['markers'];
       isArray(mkrs) && this.addMarkers(mkrs);
     });
+
+  /**
+   * 获取鼠标悬浮状态
+   */
+  MarkerClusterer.prototype.getIsHover = function () {
+    return this._isHover;
+  };
+
+  /**
+   * 设置鼠标悬浮状态。s
+   */
+  MarkerClusterer.prototype.setIsHover = function (isHover) {
+    this._isHover = isHover;
+  };
 
   /**
    * 添加要聚合的标记数组。
@@ -226,7 +244,8 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
       var center = cluster.getCenter();
       if (center) {
         var d = this._map.getDistance(center, marker.getPosition());
-        if (d < distance) {
+        // isNaN(d) 目的：GL 版的 getDistance 会对同一个点返回 NaN
+        if (isNaN(d) || d < distance) {
           distance = d;
           clusterToAddTo = cluster;
         }
@@ -472,9 +491,12 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
     this._gridBounds = null; //以中心点为准，向四边扩大gridSize个像素的范围，也即网格范围
     this._isReal = false; //真的是个聚合
     this._margins = markerClusterer._margins;
+    this._isHover = markerClusterer.getIsHover();
 
     this._clusterMarker = new BMapLib.TextIconOverlay(this._center, this._markers.length, {
       styles: this._markerClusterer.getStyles(),
+      hoverStyles: this._markerClusterer._hoverStyles,
+      isHover: this._isHover,
       styleInterval: this._markerClusterer._styleInterval
     });
     //this._map.addOverlay(this._clusterMarker);
@@ -488,10 +510,37 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
           that._maxZoomCb(that._markers);
         }
       } else {
-        that._map.setViewport(that.getBounds(), {margins: that.margins, enableAnimation: false});
+        that._map.setViewport([new BMap.Point(116.404, 39.915), new BMap.Point(116.404, 39.915)], {
+          margins: that.margins,
+          enableAnimation: false
+        });
       }
     });
+
+    if (Array.isArray(this._markerClusterer._hoverStyles) && this._markerClusterer._hoverStyles.length > 0) {
+      this._clusterMarker.addEventListener('mouseover', function () {
+        if (!that._markerClusterer.getIsHover()) {
+          that.mouseHoverHandler(true, that._markerClusterer, that._clusterMarker);
+        }
+      });
+
+      this._clusterMarker.addEventListener('mouseout', function () {
+        if (that._markerClusterer.getIsHover()) {
+          that.mouseHoverHandler(false, that._markerClusterer, that._clusterMarker);
+        }
+      });
+    }
   }
+
+  Cluster.prototype.mouseHoverHandler = function (isHover, markerClusterer, clusterMarker) {
+    markerClusterer.setIsHover(isHover);
+    clusterMarker.setIsHover(isHover);
+
+    console.log(isHover);
+
+    const text = clusterMarker.getText();
+    clusterMarker.setText(text, true);
+  };
 
   /**
    * 向该聚合添加一个标记。

@@ -5,16 +5,15 @@
     <title>跨文档通信-1</title>
   </head>
   <body>
-    <a href="demo30-2.html#hello" target="_blank">打开页面</a>
+    <button id="btn1">打开页面</button>
+    <button id="btn2">发送消息</button>
+    <h1 id="h1"></h1>
     <script>
       const btn1 = document.querySelector('#btn1');
       const btn2 = document.querySelector('#btn2');
       const h1 = document.querySelector('#h1');
       let otherWindow;
 
-      /**
-     * postMessage
-     *
      // 打开Tab2
      btn1.addEventListener('click', () => {
       otherWindow = window.open('./demo30-2.html');
@@ -34,9 +33,8 @@
       if (e.origin !== window.location.origin) {
         return
       }
-      h1.innerHTML += e.data.value + '<br>';
+      h1.innerHTML += e.data + '<br>';
     })
-     */
 
       /**
      * MessageChannel

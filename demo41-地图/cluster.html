@@ -52,13 +52,21 @@
     const marker9 = new BMap.Marker(pt4, {icon: myIcon});
     const marker10 = new BMap.Marker(pt4, {icon: myIcon});
 
-    const markers1 = [marker1, marker2, marker3, marker4, marker5];
+    const markers1 = [marker4, marker5];
 
-    markers1.forEach((marker) =>
-      marker.addEventListener('click', () => {
-        console.log(555);
-      })
-    );
+    map.addOverlay(marker1);
+
+    marker1.addEventListener('mouseover', (e) => {
+      const icon = marker1.getIcon();
+      icon.setImageUrl('assets/car2.png');
+      marker1.setIcon(icon);
+    })
+
+    // markers1.forEach((marker) =>
+    //   marker.addEventListener('click', () => {
+    //     console.log(555);
+    //   })
+    // );
 
     const styles = [
       {
@@ -72,7 +80,7 @@
       {
         url: 'assets/car2.png',
         size: new BMap.Size(36, 36),
-        textColor: 'yellow',
+        textColor: 'red',
         textSize: 20,
         backgroundSize: 'contain',
         display: 'flex'
@@ -87,24 +95,55 @@
       }
     ];
 
-    const obj = {
-      age: 999,
-      say(markers) {
-        console.log(markers);
-      }
-    };
+    // const hoverStyles = [
+    //   {
+    //     url: 'assets/car1.png',
+    //     size: new BMap.Size(36, 36),
+    //     textColor: 'green',
+    //     textSize: 20,
+    //     backgroundSize: 'contain',
+    //     display: 'flex'
+    //   },
+    //   {
+    //     url: 'assets/car1.png',
+    //     size: new BMap.Size(36, 36),
+    //     textColor: 'red',
+    //     textSize: 20,
+    //     backgroundSize: 'contain',
+    //     display: 'flex'
+    //   },
+    //   {
+    //     url: 'assets/car1.png',
+    //     size: new BMap.Size(36, 36),
+    //     textColor: 'red',
+    //     textSize: 20,
+    //     backgroundSize: 'contain',
+    //     display: 'flex'
+    //   }
+    // ];
+    //
+    // const obj = {
+    //   age: 999,
+    //   say(markers) {
+    //     console.log(markers);
+    //   }
+    // };
 
-    const markerCluster1 = new BMapLib.MarkerClusterer(map, {
-      markers: markers1,
-      maxZoom: 19,
-      styles,
-      styleInterval: [2, 5],
-      maxZoomCb: obj.say
-    });
+    // setTimeout(() => {
+    //   marker1.setRotation(90)
+    // }, 2000)
 
-    setTimeout(() => {
-      markerCluster1.clearMarkers();
-      markerCluster1.addMarkers([...markers1, marker6]);
-    }, 6000);
+    // const markerCluster1 = new BMapLib.MarkerClusterer(map, {
+    //   markers: markers1,
+    //   maxZoom: 19,
+    //   hoverStyles,
+    //   styleInterval: [2, 5],
+    //   maxZoomCb: obj.say
+    // });
+    //
+    // setTimeout(() => {
+    //   markerCluster1.clearMarkers();
+    //   markerCluster1.addMarkers([...markers1, marker6]);
+    // }, 6000);
   </script>
 </html>

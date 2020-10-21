@@ -569,7 +569,6 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
    */
   Cluster.prototype.updateGridBounds = function () {
     var bounds = new BMapGL.Bounds(this._center, this._center);
-    debugger;
     this._gridBounds = getExtendedBounds(this._map, bounds, this._markerClusterer.getGridSize());
   };
 
@@ -595,11 +594,14 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
 
     this._clusterMarker.setText(this._markers.length);
 
+    var that = this;
     var thatMap = this._map;
     var thatBounds = this.getBounds();
+
     var margins = this._margins;
     this._clusterMarker.addEventListener('click', function (event) {
-      thatMap.setViewport(thatBounds, {margins, enableAnimation: false});
+      console.log(that.getBounds(), 123123);
+      thatMap.setViewport([that.getBounds().sw, that.getBounds().ne], {enableAnimation: false});
     });
   };
 

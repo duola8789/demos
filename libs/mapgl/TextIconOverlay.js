@@ -751,6 +751,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
       this._text = text;
       this._options = options || {};
       this._styles = this._options['styles'] || [];
+      this._hoverStyles = this._options['hoverStyles'] || [];
       !this._styles.length && this._setupDefaultStyles();
     });
 

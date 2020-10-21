@@ -34,23 +34,34 @@
     map.centerAndZoom(point, 15);
     map.enableScrollWheelZoom();
 
-    const bounds = new BMapGL.Bounds(new BMapGL.Point(115.963883, 39.788863), new BMapGL.Point(116.795211, 40.083625));
-
     // 创建小车图标
     const myIcon = new BMapGL.Icon('../assets/car1.png', new BMapGL.Size(36, 36));
 
     const pt1 = new BMapGL.Point(116.404, 39.915);
     const marker1 = new BMapGL.Marker(pt1, {icon: myIcon}); // 创建标注
 
-    const pt2 = new BMapGL.Point(116.404, 39.915);
-    const marker2 = new BMapGL.Marker(pt2, {icon: myIcon}); // 创建标注
+    map.addOverlay(marker1);
 
-    const markers = [marker1, marker2];
+    marker1.addEventListener('mouseover', (e) => {
+      const icon = marker1.getIcon();
+      icon.setImageUrl('../assets/car2.png');
+      marker1.setIcon(icon);
+    })
 
-    const markerCluster = new BMapLib.MarkerClusterer(map, {markers, maxZoom: 22});
+    // marker1.addEventListener('mouseout', () => {
+    //   const icon = marker1.getIcon();
+    //   icon.setImageUrl('../assets/car1.png');
+    //   marker1.setIcon(icon)
+    // })
 
-    map.addEventListener('dragend', (e) => {
-      console.log(bounds.containsPoint(point));
-    });
+    // setTimeout(() => {
+    //   marker1.setRotation(90);
+    // }, 2000);
+
+    // const markerCluster = new BMapLib.MarkerClusterer(map, {markers, maxZoom: 22});
+    //
+    // setTimeout(() => {
+    //   map.setViewport([new BMapGL.Point(116.404, 39.915), new BMapGL.Point(116.404, 39.415)]);
+    // }, 2000);
   </script>
 </html>

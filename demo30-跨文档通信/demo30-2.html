@@ -12,11 +12,10 @@
       const btn1 = document.querySelector('#btn1');
       const btn2 = document.querySelector('#btn2');
       const h1 = document.querySelector('#h1');
-      /**
-     * 通过postMessage进行通信
 
      // 监听message事件
      window.addEventListener('message', e => {
+       console.log(e)
       // 验证消息来源
       if (e.origin !== window.location.origin) {
         return
@@ -27,7 +26,6 @@
         e.source.postMessage({value: 'answer from tab2'}, window.location.origin)
       }, 3000)
     })
-     */
 
       /**
      * MessageChannel

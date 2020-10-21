@@ -751,6 +751,8 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
       this._text = text;
       this._options = options || {};
       this._styles = this._options['styles'] || [];
+      this._hoverStyles = this._options['hoverStyles'] || [];
+      this._isHover = this._options['isHover'] || false;
       this._styleInterval = this._options.styleInterval || null;
       !this._styles.length && this._setupDefaultStyles();
     });
@@ -803,12 +805,29 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
   };
 
   /**
+   *获取鼠标悬浮标识符
+   *@return {String} 该覆盖物上的文字。
+   */
+  TextIconOverlay.prototype.getIsHover = function () {
+    return this._isHover;
+  };
+
+  /**
+   *更改鼠标悬浮标识符
+   *@return {String} 该覆盖物上的文字。
+   */
+  TextIconOverlay.prototype.setIsHover = function (isHover) {
+    this._isHover = isHover;
+  };
+
+  /**
    *设置该覆盖物上的文字。
    *@param {String} text 要设置的文字，通常是字母A-Z或数字0-9。
+   *@param {Boolean} force 轻质执行
    *@return 无返回值。
    */
-  TextIconOverlay.prototype.setText = function (text) {
-    if (text && (!this._text || this._text.toString() != text.toString())) {
+  TextIconOverlay.prototype.setText = function (text, force = false) {
+    if ((text && (!this._text || this._text.toString() != text.toString())) || force) {
       this._text = text;
       this._updateText();
       this._updateCss();
@@ -877,7 +896,8 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
    *@return 无返回值。
    */
   TextIconOverlay.prototype._updateCss = function () {
-    var style = this.getStyleByText(this._text, this._styles, this._styleInterval);
+    const styles = this._isHover ? this._hoverStyles : this._styles;
+    var style = this.getStyleByText(this._text, styles, this._styleInterval);
     this._domElement.style.cssText = this._buildCssText(style);
   };
 
@@ -959,7 +979,7 @@ var BMapLib = window.BMapLib ? window.BMapLib : (window.BMapLib = BMapLib || {})
     }
 
     csstext.push(
-      'cursor:pointer; color:' +
+      'cursor:pointer; transform: translateZ(0); color:' +
         textColor +
         '; position:absolute; font-size:' +
         textSize +
