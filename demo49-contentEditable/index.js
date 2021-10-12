@@ -79,7 +79,7 @@ class ATProcess {
             return;
         }
         if (clear) {
-            this.ATRange.range.setStart(this.ATRange.container, 0);
+            this.ATRange.range.setStart(this.ATRange.container, this.ATRange.offset - 1);
             this.ATRange.range.setEnd(this.ATRange.container, this.ATRange.offset + this.inputTemp.length - 1);
             this.ATRange.range.deleteContents();
         }
@@ -91,11 +91,11 @@ class ATProcess {
         this.ATRange.range.setEnd(this.ATRange.container, 0);
     }
 
-    // insertContent(content) {
-    //     const node = document.createTextNode(content);
-    //     this.insertNodeInRange(node, false);
-    //     this.handleATInput(content);
-    // }
+    insertContent(content) {
+        const node = document.createTextNode(content);
+        this.insertNodeInRange(node, false);
+        this.handleATInput(content, 'insertText', html_editor.getCaretYPosition());
+    }
 
     // 处理输入内容
     handleATInput(currentInputValue, inputType, cursorY) {
@@ -159,7 +159,7 @@ class ATProcess {
         }
 
         const newRange = document.createRange();
-        newRange.selectNodeContents(endEmptyNode);
+        newRange.selectNodeContents(needSpace ? endEmptyNode : node);
         newRange.collapse(false);
         selection.removeAllRanges();
         selection.addRange(newRange);
@@ -195,7 +195,8 @@ class ATProcess {
                   background: '#3946FF',
                   'border-radius': '8px',
                   padding: '0 4px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  margin: '2px 0'
               }
             : {
                   display: 'inline-block',
@@ -293,7 +294,7 @@ window.onload = function () {
 
     const insertBtn = document.querySelector('#insertBtn');
     insertBtn.addEventListener('click', () => {
-        atProcess.insertATContact('周昊', 'zhouhao1@corp.netease.com', false);
+        atProcess.insertATContact('周昊', 'zhouhao1@corp.netease.com', true);
     });
 
     setTimeout(() => {
@@ -333,11 +334,12 @@ window.onload = function () {
     const changeStrInput = document.querySelector('#changeStrInput');
     const changeStrBtn = document.querySelector('#changeStrBtn');
     changeStrBtn.addEventListener('click', () => {
-        // atProcess.insertContent(changeStrInput.value);
+        html_editor.editor.focus();
+        atProcess.insertContent(changeStrInput.value);
     });
 
     const exitBtn = document.querySelector('#exitBtn');
     exitBtn.addEventListener('click', () => {
-        atProcess.exitATProcess();
+        atProcess.exitATProcess(false);
     });
 };
