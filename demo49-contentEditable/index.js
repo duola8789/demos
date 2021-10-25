@@ -99,6 +99,21 @@ class ATProcess {
 
     // 处理输入内容
     handleATInput(currentInputValue, inputType, cursorY) {
+        if (currentInputValue === '@') {
+            this.startATProcess();
+
+            if (this.inATProcess) {
+                // 在 @ 流程当中重复输入 @
+                this.inputTemp = ['@'];
+                this.onATTextChange('');
+            } else {
+                this.inputTemp.push(currentInputValue);
+                this.nativeEvents.onEntryATState(cursorY);
+            }
+
+            return;
+        }
+
         // 在 @ 流程当中
         if (this.inATProcess) {
             // 如果是删除（退格）
@@ -131,13 +146,6 @@ class ATProcess {
             }
 
             this.onATTextChange(this.inputTemp.slice(1).join(''));
-            return;
-        }
-
-        if (currentInputValue === '@') {
-            this.inputTemp.push(currentInputValue);
-            this.startATProcess();
-            this.nativeEvents.onEntryATState(cursorY);
         }
     }
 
@@ -192,15 +200,15 @@ class ATProcess {
             ? {
                   display: 'inline-block',
                   color: '#FFF',
-                  background: '#3946FF',
+                  background: '#386EE7',
                   'border-radius': '8px',
-                  padding: '0 4px',
+                  padding: '4px 8px',
                   cursor: 'pointer',
                   margin: '2px 0'
               }
             : {
                   display: 'inline-block',
-                  color: ' #3964FF',
+                  color: '#386EE7',
                   cursor: 'pointer'
               };
         return Object.keys(style).reduce((total, key) => {
@@ -297,10 +305,6 @@ window.onload = function () {
         atProcess.insertATContact('周昊', 'zhouhao1@corp.netease.com', true);
     });
 
-    setTimeout(() => {
-        atProcess.insertATContact('周昊', 'zhouhao1@corp.netease.com', false);
-    }, 3000);
-
     /// breaks the blockquote into two if possible
     html_editor.editor.addEventListener('keydown', function (e) {
         // 处理 @xxx
@@ -335,7 +339,9 @@ window.onload = function () {
     const changeStrBtn = document.querySelector('#changeStrBtn');
     changeStrBtn.addEventListener('click', () => {
         html_editor.editor.focus();
-        atProcess.insertContent(changeStrInput.value);
+        setTimeout(() => {
+            atProcess.insertContent(changeStrInput.value);
+        }, 100);
     });
 
     const exitBtn = document.querySelector('#exitBtn');
