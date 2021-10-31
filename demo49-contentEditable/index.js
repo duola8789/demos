@@ -100,14 +100,14 @@ class ATProcess {
     // 处理输入内容
     handleATInput(currentInputValue, inputType, cursorY) {
         if (currentInputValue === '@') {
-            this.startATProcess();
-
             if (this.inATProcess) {
                 // 在 @ 流程当中重复输入 @
                 this.inputTemp = ['@'];
+                this.startATProcess();
                 this.onATTextChange('');
             } else {
                 this.inputTemp.push(currentInputValue);
+                this.startATProcess();
                 this.nativeEvents.onEntryATState(cursorY);
             }
 
