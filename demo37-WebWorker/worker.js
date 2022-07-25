@@ -3,15 +3,15 @@
  */
 
 const events = {
-  calculate({time}) {
-    const start = Date.now();
-    while (Date.now() - start < time) {}
-    return 'done';
-  }
+    calculate({time}) {
+        const start = Date.now();
+        while (Date.now() - start < time) {}
+        return 'done';
+    }
 };
 
 self.addEventListener('message', (e) => {
-  const {type, data, origin} = e;
-  const result = events[type](data);
-  self.postMessage({type: 'calculate', data: result}, origin);
+    const {type, data, origin} = e;
+    const result = events[type](data);
+    self.postMessage({type: 'calculate', data: result}, origin);
 });

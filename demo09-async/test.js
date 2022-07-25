@@ -3,10 +3,10 @@
  */
 let a = 123;
 function b() {
-  alert(333);
+    alert(333);
 }
 setTimeout(function () {
-  a = 999;
+    a = 999;
 }, 1500);
 export default a;
 export {b};

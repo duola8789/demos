@@ -135,7 +135,9 @@ class ATProcess {
                 // 粘贴直接退出流程
                 this.exitATProcess(false);
             } else {
-                this.inputTemp.push(...currentInputValue);
+                for (var i = 0, len = currentInputValue.length; i < len; i++) {
+                    this.inputTemp.push(currentInputValue[i]);
+                }
             }
 
             // 输入终止字符或者传递内容被删干净了
@@ -269,6 +271,7 @@ window.onload = function () {
 
     html_editor.editor.addEventListener('input', (event) => {
         if (!atProcess.isComposition) {
+            debugger;
             atProcess.handleATInput(event.data, event.inputType, html_editor.getCaretYPosition());
         }
     });

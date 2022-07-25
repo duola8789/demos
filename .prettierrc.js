@@ -20,7 +20,7 @@ module.exports = {
     // no comma at the end
     trailingComma: 'none',
     // spaces are required at the beginning and end of the braces
-    bracketSpacing: false,
+    bracketSpacing: true,
     // end tag of jsx need to wrap
     jsxBracketSameLine: false,
     // brackets are required for arrow function parameter, even when there is only one parameter
