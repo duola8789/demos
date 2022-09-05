@@ -1,0 +1,10 @@
+/**
+ * Created by zh on 2019/5/13.
+ */
+.theme {
+    color: #000;
+    background: #ddd;
+}
+.theme .text {
+    border: 1px solid #000;
+}

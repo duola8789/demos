@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>自定义字体</title>
+        <style>
+            @font-face {
+                font-family: 'Secret Font';
+                src: url('../../assets/fonts/PangMenZhengDaoQingSongTi-2.otf');
+            }
+            .special {
+                font-family: 'Secret Font', sans-serif; /* 使用 @font-face 自定义的字体 */
+                font-size: 40px;
+            }
+            .normal {
+                font-size: 40px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1 class="special">你好哇！我是一个神秘的小可爱123。</h1>
+        <h1 class="normal">你好哇！我是一个正常的小可爱123。</h1>
+    </body>
+</html>

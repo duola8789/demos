@@ -1,11 +1,12 @@
 {
+  "dependencies": {
+    "prettier": "^2.7.1"
+  },
   "name": "demos",
+  "description": "练习用各种demo",
   "version": "1.0.0",
-  "description": "练习用",
-  "main": "index.js",
   "scripts": {
-    "start": "webpack",
-    "dev": "webpack-dev-server --open"
+      "formate": "prettier --write 'src/**/*.{html,ts,js,css,scss}'"
   },
   "repository": {
     "type": "git",
@@ -16,24 +17,5 @@
   "bugs": {
     "url": "https://github.com/duola8789/demos/issues"
   },
-  "homepage": "https://github.com/duola8789/demos#readme",
-  "dependencies": {
-    "prettier": "^2.0.2",
-    "webpack": "^3.10.0"
-  },
-  "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.2",
-    "babel-plugin-transform-decorators-legacy": "^1.3.4",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-es2016": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
-    "babel-preset-stage-0": "^6.24.1",
-    "babel-preset-stage-2": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "fs": "0.0.1-security",
-    "webpack-dev-server": "^2.11.2"
-  }
+  "homepage": "https://github.com/duola8789/demos#readme"
 }

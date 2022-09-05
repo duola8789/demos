@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>滚动条触底</title>
+        <style>
+            .wrap {
+                margin-top: 20px;
+                padding-top: 20px;
+                width: 500px;
+                height: 300px;
+                overflow: auto;
+                border: 11px solid gray;
+            }
+            .wrap img {
+                width: 100%;
+            }
+            .newContent {
+                width: 100%;
+                background: red;
+                padding: 10px 0;
+                margin: 0;
+            }
+        </style>
+        <script src="../../libs/jquery.min.js"></script>
+    </head>
+    <body>
+        <div id="wrap" class="wrap">
+            <img src="../../assets/images/placeholder.png" alt="" />
+            <img src="../../assets/images/placeholder.png" alt="" />
+        </div>
+        <script>
+            const ele = document.querySelector('#wrap');
+            window.onload = function () {
+                ele.addEventListener('scroll', function () {
+                    throttle(scroll, ele, 500);
+                });
+            };
+
+            function scroll() {
+                console.log(this.scrollHeight - this.scrollTop, '滚动条距离顶部的位置');
+                console.log(this.scrollHeight, '内容区域的真实高度（也就是滚动区域）');
+                console.log(this.clientHeight, '内容区域的可见高度');
+                // 由于this.scrollHeight不是整数，会有零点几的误差，所以和1px进行比较
+                if (this.scrollHeight - this.scrollTop - this.clientHeight < 1) {
+                    console.log('到底了');
+                    getData();
+                }
+            }
+
+            function getData() {
+                $.ajax({
+                    url: 'data.json',
+                    type: 'GET'
+                }).then((val) => {
+                    let temp = document.createElement('div');
+                    temp.innerHTML = `<p class="newContent">${val.result}</p>`;
+                    ele.appendChild(temp);
+                });
+            }
+
+            function throttle(func, context, time) {
+                clearTimeout(func.timer);
+                func.timer = null;
+                func.timer = setTimeout(() => {
+                    func.call(context);
+                }, time);
+            }
+        </script>
+    </body>
+</html>

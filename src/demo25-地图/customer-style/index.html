@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>百度地图自定义样式</title>
+        <script
+            type="text/javascript"
+            src="https://api.map.baidu.com/api?v=3.0&ak=bXbgnHre8m1z4SUNaIQrKcR7A3Mw1Hqr"
+        ></script>
+        <script type="text/javascript" src="custom-style.js"></script>
+        <script src="../utils.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            .map {
+                position: relative;
+                margin: 0;
+                padding: 0;
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="map" id="map"></div>
+        <script>
+            const map = new BMap.Map('map');
+            const point = new BMap.Point(116.404, 39.915);
+
+            // 创建点坐标
+            map.centerAndZoom(point, 15);
+
+            map.enableScrollWheelZoom();
+
+            map.setMapStyleV2({ styleJson });
+
+            function fn(a) {
+                console.log(a);
+                console.log(map);
+                map.removeEventListener('tilesloaded', fn);
+            }
+
+            map.addEventListener('tilesloaded', fn);
+
+            const values = Array.from({ length: 500 }).map(
+                (v, index) => new BMap.Point(116.404 + index * 0.01, 39.915 + index * 0.01)
+            );
+
+            for (const item of values) {
+                const size = new BMap.Size(32, 61);
+                const mapIcon = new BMap.Icon(getMapImage('icon-map-car-free@2x.png'), size);
+                mapIcon.setImageSize(size);
+
+                const marker = new BMap.Marker(item, { icon: mapIcon });
+                map.addOverlay(marker);
+            }
+        </script>
+    </body>
+</html>

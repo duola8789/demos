@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                max-width: 750px;
+                height: 100%;
+                margin: 0 auto;
+                background: #ddd;
+            }
+            .head {
+                flex: 0 0 50px;
+                background: red;
+                text-align: center;
+                line-height: 50px;
+                color: #fff;
+                font-size: 16px;
+            }
+            .main {
+                flex: 1 1 auto;
+                background: darkcyan;
+                overflow: auto;
+            }
+            .foot {
+                flex: 0 0 50px;
+                background: darkblue;
+            }
+            .content {
+                position: relative;
+                height: 800px;
+            }
+            .target-container {
+                position: absolute;
+                left: 20px;
+                bottom: 20px;
+                width: 300px;
+                height: 200px;
+                border: 1px solid darkgray;
+                overflow: auto;
+            }
+            .target-container:before {
+                content: '';
+                display: block;
+                height: 200px;
+            }
+            .target {
+                width: 50px;
+                height: 50px;
+                margin: 30px;
+                background: black;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header class="head" id="head"></header>
+            <main class="main" id="main">
+                <div class="content">
+                    <div class="target-container" id="targetContainer">
+                        <div class="target" id="target"></div>
+                    </div>
+                </div>
+            </main>
+            <footer class="foot" id="foot"></footer>
+        </div>
+        <script>
+            window.onload = () => {
+                const head = document.querySelector('#head'),
+                    foot = document.querySelector('#foot'),
+                    main = document.querySelector('#main'),
+                    targetContainer = document.querySelector('#targetContainer'),
+                    target = document.querySelector('#target');
+
+                const footTop = foot.getBoundingClientRect().top;
+
+                // 改变 head 的文字和样式
+                const changeHeadState = (isVisible) => {
+                    head.textContent = isVisible ? 'Visible' : 'Invisible';
+                    head.setAttribute('style', `background: ${isVisible ? 'lightgreen' : 'red'}`);
+                };
+
+                const watchPosition = () => {
+                    const targetContainerRect = targetContainer.getBoundingClientRect(),
+                        targetContainerBottom = targetContainerRect.top + targetContainerRect.height;
+
+                    const targetTop = target.getBoundingClientRect().top;
+
+                    let isVisible = false;
+
+                    // targetContainer 完全可见
+                    if (targetContainerBottom < footTop) {
+                        isVisible = targetTop < targetContainerBottom;
+                    } else {
+                        isVisible = targetTop < footTop;
+                    }
+
+                    return isVisible;
+                };
+
+                changeHeadState(watchPosition());
+
+                main.addEventListener('scroll', () => {
+                    changeHeadState(watchPosition());
+                });
+
+                targetContainer.addEventListener('scroll', () => {
+                    changeHeadState(watchPosition());
+                });
+            };
+        </script>
+    </body>
+</html>

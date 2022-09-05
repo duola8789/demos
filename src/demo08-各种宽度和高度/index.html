@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>各种宽度高度</title>
+        <script src="../../libs/jquery.min.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            body {
+            }
+            .outer {
+                width: 1500px;
+                height: 1500px;
+                padding: 50px;
+                background: azure;
+                overflow: hidden;
+                border: 10px solid red;
+            }
+            .middle {
+                margin: 50px 0 0 50px;
+                width: 600px;
+                height: 300px;
+                background: lightgrey;
+                overflow: hidden;
+                /*position: relative;*/
+            }
+            .inner {
+                margin: 50px 0 0 50px;
+                width: 300px;
+                height: 150px;
+                background: dodgerblue;
+                overflow: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="outer">
+            <div class="middle">
+                <div class="inner">
+                    scrollTop表示对象最顶端和窗口中可见内容的最顶端之间的距离,如果你的内容最顶端总是可见的,得到的值就为0.如果你修改scrollTop的值,你就会发现可见内容变了.这个是可修改的,可能你取值的方式不对吧.
+                    scrollTop表示对象最顶端和窗口中可见内容的最顶端之间的距离,如果你的内容最顶端总是可见的,得到的值就为0.如果你修改scrollTop的值,你就会发现可见内容变了.这个是可修改的,可能你取值的方式不对吧.
+                    scrollTop表示对象最顶端和窗口中可见内容的最顶端之间的距离,如果你的内容最顶端总是可见的,得到的值就为0.如果你修改scrollTop的值,你就会发现可见内容变了.这个是可修改的,可能你取值的方式不对吧.
+                    scrollTop表示对象最顶端和窗口中可见内容的最顶端之间的距离,如果你的内容最顶端总是可见的,得到的值就为0.如果你修改scrollTop的值,你就会发现可见内容变了.这个是可修改的,可能你取值的方式不对吧.
+                    scrollTop表示对象最顶端和窗口中可见内容的最顶端之间的距离,如果你的内容最顶端总是可见的,得到的值就为0.如果你修改scrollTop的值,你就会发现可见内容变了.这个是可修改的,可能你取值的方式不对吧.
+                </div>
+            </div>
+        </div>
+        <script>
+            let outer = document.querySelector('.outer'),
+                middle = document.querySelector('.middle'),
+                inner = document.querySelector('.inner'),
+                body = document.body;
+
+            // clientHeight
+            console.log('clientHeight = height + padding + border - 水平滚动条高度', body.clientHeight); //1620px;
+            console.log('clientHeight = height + padding + border - 水平滚动条高度', outer.clientHeight); //1620px;
+            console.log('-----------------------------------');
+
+            // offsetHeight
+            console.log('offsetHeight = height + padding + border', body.offsetHeight); //1620px;
+            console.log('offsetHeight = height + padding + border', outer.offsetHeight); //1620px;
+            console.log('-----------------------------------');
+
+            // clientTop
+            console.log('clientTop = border', body.clientTop); //0;
+            console.log('clientTop = border', outer.clientTop); //10;
+            console.log('-----------------------------------');
+
+            // offsetTop
+            console.log('middle的position为static时', inner.offsetTop); //160;
+            console.log('middle的position为relative时', inner.offsetTop); //50;
+            console.log('-----------------------------------');
+
+            // scrollTop
+            let timer;
+            console.log('无滚动条时scrollTop', middle.scrollTop); //0
+            inner.onscroll = function () {
+                throttle(showText, inner, 1500);
+            };
+            console.log('有滚动条时页面的scrollTop', document.documentElement.scrollTop);
+            console.log('-----------------------------------');
+
+            function showText() {
+                console.log('有滚动条时的div的scrollTop', this.scrollTop);
+                console.log('getBoundingClientRect', this.getBoundingClientRect().top);
+            }
+
+            // clientX：相对于浏览器的可视区左上角的坐标
+            // screenX：相对于屏幕的左上角的坐标
+            // pageX：相对于页面的左上角的坐标pageX
+            document.onclick = function (e) {
+                console.log('相对于浏览器的可视区左上角的坐标clientX：', e.clientX);
+                console.log('相对于屏幕的左上角的坐标screenX：', e.screenX);
+                console.log('相对于页面的左上角的坐标pageX：', e.pageX);
+                console.log('-----------------------------------');
+            };
+
+            // offsetX：相对于点击事件源左上角的坐标
+            inner.onclick = function (e) {
+                console.log('相对于点击事件源左上角的坐标offsetX：', e.offsetX);
+                console.log('-----------------------------------');
+                e.stopPropagation();
+            };
+
+            // window.screen.height
+            // window.screen.availHeight
+            console.log('屏幕分辨率的高度', window.screen.height);
+            console.log('屏幕可用工作区的高度', window.screen.availHeight);
+            console.log('-----------------------------------');
+
+            //  节流函数
+            function throttle(func, context, ms) {
+                clearTimeout(func.timer);
+                func.timer = null;
+                func.timer = setTimeout(function () {
+                    func.call(context);
+                }, ms);
+            }
+        </script>
+    </body>
+</html>

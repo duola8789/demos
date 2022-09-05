@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <link href="styles/base.css" rel="stylesheet" type="text/css" />
+        <link id="skinLink" href="styles/default.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="container">
+            <div id="skin-container" class="theme">
+                <p class="text">Hello!</p>
+            </div>
+        </div>
+        <div class="input-container">
+            <label class="input"><input type="radio" value="default" name="skin" checked /></label>
+            <label class="input"><input type="radio" value="green" name="skin" /></label>
+            <label class="input"><input type="radio" value="red" name="skin" /></label>
+        </div>
+    </body>
+    <script>
+        const skinLink = document.querySelector('#skinLink');
+        const inputContainer = document.querySelector('.input-container');
+
+        const changeSkin = (theme) => {
+            skinLink.href = `../styles/${theme}.css`;
+        };
+
+        inputContainer.addEventListener('change', (e) => {
+            changeSkin(e.target.value);
+        });
+    </script>
+</html>

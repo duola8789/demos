@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                height: 100%;
+            }
+
+            #app {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
+
+            .container {
+                position: relative;
+                width: 500px;
+                height: 280px;
+                overflow-x: hidden;
+            }
+
+            .item {
+                position: absolute;
+                left: 0;
+                top: 0;
+                display: inline-flex;
+                width: 100%;
+                height: 100%;
+                font-size: 25px;
+                color: #ff0000;
+            }
+
+            .item:nth-child(3) {
+                background: #0bc1ff;
+            }
+
+            .item:nth-child(4) {
+                background: #90992f;
+            }
+
+            .item:nth-child(5) {
+                background: #7f1519;
+            }
+
+            .item:nth-child(6) {
+                background: #274847;
+            }
+
+            .item:nth-child(7) {
+                background: #60d617;
+            }
+
+            img {
+                width: 100%;
+            }
+
+            .slide-btn {
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+                text-align: center;
+                background: rgba(23, 51, 123, 0.7);
+                border-radius: 50%;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 100;
+                cursor: pointer;
+                font-size: 20px;
+                color: #fff;
+                user-select: none;
+            }
+
+            .slide-btn-left {
+                left: 20px;
+            }
+
+            .slide-btn-right {
+                right: 20px;
+            }
+
+            .is-animating {
+                transition: transform linear 0.2s;
+            }
+
+            .slide-sign {
+                position: absolute;
+                left: 10px;
+                top: 10px;
+            }
+        </style>
+        <script src="../../libs/vue.js"></script>
+    </head>
+    <body>
+        <div id="app">
+            <div class="container">
+                <div class="slide-btn slide-btn-left" @click="changeActiveIndex(false)">←</div>
+                <div class="slide-btn slide-btn-right" @click="changeActiveIndex(true)">→</div>
+                <div
+                    v-for="(item, index) in pics"
+                    :key="index"
+                    class="item"
+                    :class="getItemClass(index)"
+                    :style="getItemStyle(index)"
+                >
+                    <p class="slide-sign">{{ index }}</p>
+                    <img :alt="index" :src="item" />
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                message: 'hello',
+                pics: [
+                    'http://image.oldzhou.cn/FnjUykAkiUux1TDE32VnWVnEyHIA',
+                    'https://pic1.zhimg.com/80/v2-522dd01c20992889aee323e00ff7dbf8_720w.jpg',
+                    'https://pic3.zhimg.com/80/v2-23a62728f9364b6868d10d9607392c7e_720w.jpg',
+                    'https://pic2.zhimg.com/80/v2-7fbdb98c77a0efd4de69c05dfaa7fdd9_720w.jpg',
+                    'https://pic3.zhimg.com/80/v2-a862735c06feb9edce4369859daf5c12_720w.jpg'
+                ],
+                activeIndex: 0,
+                animatingIndexes: [],
+                distance: 500
+            },
+
+            methods: {
+                calcIndex(index) {
+                    const activeIndex = this.activeIndex,
+                        length = this.pics.length;
+
+                    if (index === activeIndex) {
+                        return 0;
+                    }
+
+                    if (activeIndex === 0 && index === length - 1) {
+                        return -1;
+                    } else if (activeIndex === length - 1 && index === 0) {
+                        return 1;
+                    } else if (index === activeIndex - 1) {
+                        return -1;
+                    } else if (index < activeIndex - 1) {
+                        return -2;
+                    } else if (index === activeIndex + 1) {
+                        return 1;
+                    } else if (index > activeIndex + 1) {
+                        return 2;
+                    }
+                    return index;
+                },
+                getItemStyle(index) {
+                    const calcIndex = this.calcIndex(index);
+                    return {
+                        transform: `translateX(${calcIndex * this.distance}px)`
+                    };
+                },
+                getItemClass(index) {
+                    if (this.animatingIndexes.includes(index)) {
+                        return 'is-animating';
+                    }
+                    return '';
+                },
+                changeActiveIndex(isAdd) {
+                    if (isAdd) {
+                        if (this.activeIndex === this.pics.length - 1) {
+                            this.activeIndex = 0;
+                            this.animatingIndexes = [0, this.pics.length - 1];
+                        } else {
+                            this.activeIndex += 1;
+                            this.animatingIndexes = [this.activeIndex, this.activeIndex - 1];
+                        }
+                    } else {
+                        if (this.activeIndex === 0) {
+                            this.activeIndex = this.pics.length - 1;
+                            this.animatingIndexes = [0, this.pics.length - 1];
+                        } else {
+                            this.activeIndex -= 1;
+                            this.animatingIndexes = [this.activeIndex, this.activeIndex + 1];
+                        }
+                    }
+                }
+            },
+            mounted() {
+                this.animatingIndexes = [this.activeIndex];
+            }
+        });
+    </script>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+    </head>
+    <body>
+        <div id="target"></div>
+        <button id="button">click</button>
+        <script>
+            const worker = new Worker('worker.js');
+            worker.addEventListener('message', (e) => {
+                if (e.type === 'calculate') {
+                    console.log(e.data);
+                }
+            });
+
+            function changeText() {
+                document.querySelector('#target').textContent = '555';
+            }
+
+            document.querySelector('#button').addEventListener('click', () => {
+                changeText();
+                worker.postMessage({ type: 'calculate', data: { time: 3000 } });
+            });
+        </script>
+    </body>
+</html>
