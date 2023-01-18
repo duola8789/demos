@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>Demo00</title>
         <link rel="icon" href="../assets/favicon.ico" />
+        <script src="https://unpkg.com/gcoord/dist/gcoord.js"></script>
         <style>
             * {
                 margin: 0;
@@ -15,13 +16,36 @@
                 height: 100px;
                 background: red;
             }
+            .parent {
+                display: flex;
+                width: 200px;
+                height: 800px;
+                border: 1px solid #9e1515;
+                margin: 0 auto;
+            }
+
+            .left {
+                width: 50px;
+                background: #0bc1ff;
+                flex: 0 0 50px;
+            }
+
+            .right {
+                display: flex;
+                flex: 1 1 auto;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         </style>
     </head>
     <body>
-        <div id="parent" tabindex="-1">
-            <label><input id="input2" class="test" /></label>
-            <div id="children">123</div>
-        </div>
+        <span class="parent">
+            <span class="left">1</span>
+            <span class="right">
+                http://localhost:63342/demos/root/index.html?_ijt=bd294d5e3c84slc0srib216m67&_ij_reload=RELOAD_ON_SAVE
+            </span>
+        </span>
     </body>
     <script type="text/javascript" src="index.js"></script>
 </html>
