@@ -1,17 +1,10 @@
-const mock = (param) =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ data: param.data });
-    }, 2000);
-  });
+const a = [1, 2, 3, 4, 5];
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+a.forEach(async it => {
+  await wait(3000);
+  console.log(it);
+});
 
-async function test() {
-  const data = 400;
-  if (true) {
-    const { data } = await mock({
-      data
-    });
-    console.log(data);
-  }
-}
-test();
+window.addEventListener('message', e => {
+  console.log(e.data); // 子页面发送的消息, hello, parent!
+});

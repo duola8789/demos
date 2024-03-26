@@ -1,17 +1,5 @@
-/**
- * Created by zh on 2019/10/29.
- */
-
-const events = {
-    calculate({ time }) {
-        const start = Date.now();
-        while (Date.now() - start < time) {}
-        return 'done';
-    }
-};
-
-self.addEventListener('message', (e) => {
-    const { type, data, origin } = e;
-    const result = events[type](data);
-    self.postMessage({ type: 'calculate', data: result }, origin);
-});
+const str = 'https://waimao.cowork.netease.com#123 ';
+const encodeStr = encodeURIComponent(str);
+const matched = str.match(/(?:^|\?|&)target=(.+?)(&|$)/);
+const redirectUrl = matched ? decodeURIComponent(matched[1]) : '';
+console.log(redirectUrl);
