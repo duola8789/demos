@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>深入浅出Vue</title>
-        <script src="vue.js"></script>
-    </head>
-    <body>
-        <div id="app"></div>
-    </body>
-    <script>
-        const obj = {
-            template: '<p>{{a}}</p>',
-            data: function () {
-                return {
-                    a: 123
-                };
-            }
+  <head>
+    <meta charset="UTF-8" />
+    <title>深入浅出Vue</title>
+    <script src="vue.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script>
+    const obj = {
+      template: '<p>{{a}}</p>',
+      data: function () {
+        return {
+          a: 123,
         };
-        const obj2 = {
-            template: '<p>{{a}}</p>',
-            data: function () {
-                return {
-                    a: 1234
-                };
-            }
+      },
+    };
+    const obj2 = {
+      template: '<p>{{a}}</p>',
+      data: function () {
+        return {
+          a: 1234,
         };
-        const P1 = Vue.extend(obj);
-        const P2 = Vue.extend(obj);
-        new P1().$mount('#app');
-    </script>
+      },
+    };
+    const P1 = Vue.extend(obj);
+    const P2 = Vue.extend(obj);
+    new P1().$mount('#app');
+  </script>
 </html>

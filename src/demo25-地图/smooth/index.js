@@ -16,18 +16,18 @@ map.centerAndZoom(pt1, 15);
 BMap.Marker.prototype.smoothMove = smoothMove;
 
 const makers = Array.from({ length: 1 }).map(() => {
-    const size = new BMap.Size(32, 61);
-    const icon = new BMap.Icon('../../../assets/images/map/icon-map-car-free@2x.png', size);
-    icon.setImageSize(size);
-    const marker = new BMap.Marker(pt1, { icon: icon });
-    marker.setRotation(90);
-    map.addOverlay(marker);
-    return marker;
+  const size = new BMap.Size(32, 61);
+  const icon = new BMap.Icon('../../../assets/images/map/icon-map-car-free@2x.png', size);
+  icon.setImageSize(size);
+  const marker = new BMap.Marker(pt1, { icon: icon });
+  marker.setRotation(90);
+  map.addOverlay(marker);
+  return marker;
 });
 
 for (let i = 0; i < makers.length; i++) {
-    const targetMarker = makers[i];
-    for (const pt of pts) {
-        targetMarker.smoothMove(pt, i);
-    }
+  const targetMarker = makers[i];
+  for (const pt of pts) {
+    targetMarker.smoothMove(pt, i);
+  }
 }

@@ -1,119 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>继承</title>
-    </head>
-    <body></body>
-    <script>
-        'use strict';
-        // 构造函数
-        function Animal(foots) {
-            this.size = 'small';
-            this.foots = foots;
+  <head>
+    <meta charset="UTF-8" />
+    <title>继承</title>
+  </head>
+  <body></body>
+  <script>
+    'use strict';
+    // 构造函数
+    function Animal(foots) {
+      this.size = 'small';
+      this.foots = foots;
+    }
+    //  用构造函数创建的实例
+    let dog = new Animal();
+    let cat = new Animal();
+    //  定义在原型上的属性和方法
+    Animal.prototype.type = 'animal';
+    Animal.prototype.say = function () {
+      alert('hello');
+    };
+    //  另外一个构造函数（目标：继承Animal的属性和方法）
+    function Cat(name, age) {
+      //  用call或apply继承Animal， 无法继承原型链的属性和方法
+      //  Animal.call(this, 'small', 4);
+      //  Animal.apply(this, ['small', 4]);
+      this.name = name;
+      this.age = age;
+    }
+    Cat.prototype.food = 'food';
+    // 将prototype指向构造函数的实例，来继承构造函数的属性和方法
+    // 能够继承构造函数的属性和定义在原型的函数
+    // 但是定义在本身的prototype上的属性和方法被清除
+    // Cat.prototype = new Animal(100);
+    // Cat.prototype.constructor = Cat;
+
+    // 让prototype直接相等来继承，只能继承原型链上的属性和方法，无法继承函数内部的实例和方法
+    // 会导致Animal和Cat的prototype指向同一个内存地址，对Cat的prototype的改动直接影响Animal的prototype
+    // Cat.prototype = Animal.prototype;
+    // Cat.prototype.constructor = Cat;
+
+    // 利用空对象的prototype指向父函数的prototype，然后令子函数的prototype为空函数的实例
+    // 即避免了实例化父函数造成的内存浪费，又避免了修改子函数的prototype影响父函数的prototype
+    // 只能继承原型链的属性和方法，子函数的prototype上的属性或方法会被清空
+    // let f = function () {};
+    // f.prototype = Animal.prototype;
+    // Cat.prototype = new f();
+    // Cat.prototype.constructor = Cat;
+    // 将此方法封装成为一个函数
+    //  function extend(Parent, Child) {
+    //    let F = function () {};
+    //    F.prototype = Parent.prototype;
+    //    Child.prototype = new F();
+    //    Child.prototype.constructor = Child;
+    //  }
+    //  extend(Animal, Cat);
+
+    //  利用遍历父函数的prototype实现继承，还能继承父函数原型链的属性和方法
+    //  子函数prototype上的属性和方法会被保留
+    //  function copy(Parent, Child){
+    //    let p = Parent.prototype,
+    //      c = Child.prototype;
+    //    for(let i in p){
+    //      c[i] = p[i];
+    //    }
+    //  }
+    //  copy(Animal, Cat);
+    let mm = new Cat('mm', 5);
+
+    // 关于非构造函数的继承
+    let people = {
+      type: 'people',
+      arr: [1, 2, 3],
+      detail: {
+        country: 'China',
+        number: 455,
+      },
+      say: function () {
+        alert('hello');
+      },
+    };
+    let jay = {};
+
+    //  利用创建一个空函数，将空函数的prototype指向父对象，然后返回空函数的实例，实现继承
+    //    function extent(parent) {
+    //      function F() {}
+    //      F.prototype = parent;
+    //      return new F();
+    //    }
+    //     jay = extent(people);
+
+    //  浅拷贝
+    //  function copy(parent) {
+    //    let child = {};
+    //    Object.keys(parent).forEach(function (value) {
+    //      child[value] = parent[value];
+    //    });
+    //    return child
+    //  }
+    //  jay = copy(people);
+    //  jay.detail.number = 1000;
+
+    //  深拷贝， 在拷贝过程中对于是数组还是对象要分别对待
+    function deepCopy(c, p) {
+      c = c || {};
+      for (let i in p) {
+        if (typeof p[i] === 'object') {
+          c[i] = p[i].constructor === Array ? [] : {};
+          deepCopy(c[i], p[i]);
+        } else {
+          c[i] = p[i];
         }
-        //  用构造函数创建的实例
-        let dog = new Animal();
-        let cat = new Animal();
-        //  定义在原型上的属性和方法
-        Animal.prototype.type = 'animal';
-        Animal.prototype.say = function () {
-            alert('hello');
-        };
-        //  另外一个构造函数（目标：继承Animal的属性和方法）
-        function Cat(name, age) {
-            //  用call或apply继承Animal， 无法继承原型链的属性和方法
-            //  Animal.call(this, 'small', 4);
-            //  Animal.apply(this, ['small', 4]);
-            this.name = name;
-            this.age = age;
-        }
-        Cat.prototype.food = 'food';
-        // 将prototype指向构造函数的实例，来继承构造函数的属性和方法
-        // 能够继承构造函数的属性和定义在原型的函数
-        // 但是定义在本身的prototype上的属性和方法被清除
-        // Cat.prototype = new Animal(100);
-        // Cat.prototype.constructor = Cat;
-
-        // 让prototype直接相等来继承，只能继承原型链上的属性和方法，无法继承函数内部的实例和方法
-        // 会导致Animal和Cat的prototype指向同一个内存地址，对Cat的prototype的改动直接影响Animal的prototype
-        // Cat.prototype = Animal.prototype;
-        // Cat.prototype.constructor = Cat;
-
-        // 利用空对象的prototype指向父函数的prototype，然后令子函数的prototype为空函数的实例
-        // 即避免了实例化父函数造成的内存浪费，又避免了修改子函数的prototype影响父函数的prototype
-        // 只能继承原型链的属性和方法，子函数的prototype上的属性或方法会被清空
-        // let f = function () {};
-        // f.prototype = Animal.prototype;
-        // Cat.prototype = new f();
-        // Cat.prototype.constructor = Cat;
-        // 将此方法封装成为一个函数
-        //  function extend(Parent, Child) {
-        //    let F = function () {};
-        //    F.prototype = Parent.prototype;
-        //    Child.prototype = new F();
-        //    Child.prototype.constructor = Child;
-        //  }
-        //  extend(Animal, Cat);
-
-        //  利用遍历父函数的prototype实现继承，还能继承父函数原型链的属性和方法
-        //  子函数prototype上的属性和方法会被保留
-        //  function copy(Parent, Child){
-        //    let p = Parent.prototype,
-        //      c = Child.prototype;
-        //    for(let i in p){
-        //      c[i] = p[i];
-        //    }
-        //  }
-        //  copy(Animal, Cat);
-        let mm = new Cat('mm', 5);
-
-        // 关于非构造函数的继承
-        let people = {
-            type: 'people',
-            arr: [1, 2, 3],
-            detail: {
-                country: 'China',
-                number: 455
-            },
-            say: function () {
-                alert('hello');
-            }
-        };
-        let jay = {};
-
-        //  利用创建一个空函数，将空函数的prototype指向父对象，然后返回空函数的实例，实现继承
-        //    function extent(parent) {
-        //      function F() {}
-        //      F.prototype = parent;
-        //      return new F();
-        //    }
-        //     jay = extent(people);
-
-        //  浅拷贝
-        //  function copy(parent) {
-        //    let child = {};
-        //    Object.keys(parent).forEach(function (value) {
-        //      child[value] = parent[value];
-        //    });
-        //    return child
-        //  }
-        //  jay = copy(people);
-        //  jay.detail.number = 1000;
-
-        //  深拷贝， 在拷贝过程中对于是数组还是对象要分别对待
-        function deepCopy(c, p) {
-            c = c || {};
-            for (let i in p) {
-                if (typeof p[i] === 'object') {
-                    c[i] = p[i].constructor === Array ? [] : {};
-                    deepCopy(c[i], p[i]);
-                } else {
-                    c[i] = p[i];
-                }
-            }
-            return c;
-        }
-        jay = deepCopy(jay, people);
-    </script>
+      }
+      return c;
+    }
+    jay = deepCopy(jay, people);
+  </script>
 </html>

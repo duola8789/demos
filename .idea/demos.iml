@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="font_1245706_rxnn6pk0a69" level="application" />
     <orderEntry type="library" name="@types/baidumap-web-sdk" level="application" />
+    <orderEntry type="library" name="@types/chrome" level="application" />
   </component>
 </module>

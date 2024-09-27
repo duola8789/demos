@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ZH-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Demo51-translate</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      #children {
+        width: 100px;
+        height: 100px;
+        background: red;
+      }
+      .parent {
+        display: flex;
+        width: 200px;
+        height: 800px;
+        border: 1px solid #9e1515;
+        margin: 0 auto;
+      }
+
+      .left {
+        width: 50px;
+        background: #0bc1ff;
+        flex: 0 0 50px;
+      }
+
+      .right {
+        display: flex;
+        flex: 1 1 auto;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      body,
+      .container {
+        overflow: hidden;
+      }
+      iframe {
+        width: 100vw;
+        height: 80vh;
+        border: none;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button id="btn">click</button>
+      <button id="send">send</button>
+      <span><a href="index.html">an apple</a>.<a href="index.html">an apple</a></span>
+    </div>
+    <!--    <iframe id="gmt" src="https://ai-gmt-test.waimao.163.com/"></iframe>-->
+  </body>
+
+  <script src="scripts/config.js" type="module"></script>
+  <script src="scripts/tools.js" type="module"></script>
+  <script src="index.js" type="module"></script>
+</html>

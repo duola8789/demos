@@ -1,55 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>观察者模式</title>
-    </head>
-    <body></body>
-    <script>
-        let Events = {
-            handlers: {},
-            on(eventName, fn) {
-                if (!this.handlers[eventName]) {
-                    this.handlers[eventName] = []; // 可以利用 Set 结构去重
-                }
-                this.handlers[eventName].push(fn);
-            },
-            emit(eventName, ...argus) {
-                let handler = this.handlers[eventName];
-                if (!handler || handler.length === 0) {
-                    return false;
-                }
-                for (let fn of handler) {
-                    fn(...argus);
-                }
-            }
-        };
-
-        Events.on('msg', (...argus) => console.log(`Hello World ${argus[1]}`));
-        Events.on('msg', (...argus) => console.log(`Hello World ${argus[1]}`));
-        Events.emit('msg', '44', '55');
-
-        // 利用 Proxy 对象和 Reflect 对象实现
-        const queueObservers = new Set();
-        const observer = (observer) => queueObservers.add(observer);
-        const observable = (obj) => new Proxy(obj, { set });
-
-        function set(target, key, value, receiver) {
-            Reflect.set(target, key, value, receiver);
-            queueObservers.forEach((observer) => observer());
+  <head>
+    <meta charset="UTF-8" />
+    <title>观察者模式</title>
+  </head>
+  <body></body>
+  <script>
+    let Events = {
+      handlers: {},
+      on(eventName, fn) {
+        if (!this.handlers[eventName]) {
+          this.handlers[eventName] = []; // 可以利用 Set 结构去重
         }
-
-        const person = observable({
-            name: '张三',
-            age: 20
-        });
-
-        function print() {
-            console.log(`${person.name}, ${person.age}`);
+        this.handlers[eventName].push(fn);
+      },
+      emit(eventName, ...argus) {
+        let handler = this.handlers[eventName];
+        if (!handler || handler.length === 0) {
+          return false;
         }
+        for (let fn of handler) {
+          fn(...argus);
+        }
+      },
+    };
 
-        observer(print);
+    Events.on('msg', (...argus) => console.log(`Hello World ${argus[1]}`));
+    Events.on('msg', (...argus) => console.log(`Hello World ${argus[1]}`));
+    Events.emit('msg', '44', '55');
 
-        person.name = '李四';
-    </script>
+    // 利用 Proxy 对象和 Reflect 对象实现
+    const queueObservers = new Set();
+    const observer = observer => queueObservers.add(observer);
+    const observable = obj => new Proxy(obj, { set });
+
+    function set(target, key, value, receiver) {
+      Reflect.set(target, key, value, receiver);
+      queueObservers.forEach(observer => observer());
+    }
+
+    const person = observable({
+      name: '张三',
+      age: 20,
+    });
+
+    function print() {
+      console.log(`${person.name}, ${person.age}`);
+    }
+
+    observer(print);
+
+    person.name = '李四';
+  </script>
 </html>

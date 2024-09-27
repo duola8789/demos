@@ -3,7 +3,7 @@
  */
 const db = new Dexie('friend_database');
 db.version(6).stores({
-    friends: 'name, [age+size+isThread], weight'
+  friends: 'name, [age+size+isThread], weight',
 });
 
 // db.version(8)
@@ -24,19 +24,19 @@ db.version(6).stores({
 //     });
 
 db.version(11)
-    .stores({
-        persons6: 'name, [age+size+isThread], weight'
-    })
-    .upgrade((trans) => {
-        console.time('put');
-        return trans.friends
-            .each((v) => {
-                trans.persons6.put(v);
-            })
-            .then(() => {
-                console.timeEnd('put');
-            });
-    });
+  .stores({
+    persons6: 'name, [age+size+isThread], weight',
+  })
+  .upgrade(trans => {
+    console.time('put');
+    return trans.friends
+      .each(v => {
+        trans.persons6.put(v);
+      })
+      .then(() => {
+        console.timeEnd('put');
+      });
+  });
 
 // Array.from({ length: 10000 })
 //     .map((v, index) => ({
@@ -51,9 +51,9 @@ db.version(11)
 //     });
 
 async function show() {
-    return db.friends.where(['age', 'size', 'isThread']).between([21, 2], [21, 2], true, true).toArray();
+  return db.friends.where(['age', 'size', 'isThread']).between([21, 2], [21, 2], true, true).toArray();
 }
 
-show().then((v) => {
-    console.log(v);
+show().then(v => {
+  console.log(v);
 });

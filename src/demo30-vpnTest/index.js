@@ -3,7 +3,7 @@ window.onload = function () {
 };
 
 function canYouClimbWall() {
-  return new Promise((resolve) => {
+  return new Promise(resolve => {
     const img = new Image();
     let timer = setTimeout(() => {
       resolve(false);
@@ -32,7 +32,7 @@ function canYouClimbWallTask() {
     if (lastExeCute) {
       if (!isExecuting && Date.now() - lastExeCute >= EXECUTE_INTERVAL) {
         isExecuting = true;
-        canYouClimbWall().then((val) => {
+        canYouClimbWall().then(val => {
           isExecuting = false;
           if (val) {
             alert('Yes');

@@ -1,60 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>百度地图遮罩</title>
-        <script
-            type="text/javascript"
-            src="https://api.map.baidu.com/api?v=3.0&ak=6Bu8kKbTI4OW7cfpIpVh1bg8jRyz50Zt"
-        ></script>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-            }
-            #map {
-                width: 500px;
-                height: 500px;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="map"></div>
-        <script>
-            const map = new BMap.Map('map');
-            // 创建地图实例
-            const point = new BMap.Point(116.404, 39.915);
-            // 创建点坐标
-            map.centerAndZoom(point, 15);
+  <head>
+    <meta charset="UTF-8" />
+    <title>百度地图遮罩</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=6Bu8kKbTI4OW7cfpIpVh1bg8jRyz50Zt"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        width: 500px;
+        height: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      const map = new BMap.Map('map');
+      // 创建地图实例
+      const point = new BMap.Point(116.404, 39.915);
+      // 创建点坐标
+      map.centerAndZoom(point, 15);
 
-            const polyOptions = {
-                strokeColor: 'none',
-                fillColor: 'red',
-                strokeOpacity: 1
-            };
+      const polyOptions = {
+        strokeColor: 'none',
+        fillColor: 'red',
+        strokeOpacity: 1,
+      };
 
-            function getMapBoundsPoint() {
-                const bounds = map.getBounds();
-                const SW = bounds.getSouthWest();
-                const NE = bounds.getNorthEast();
-                const NW = new BMap.Point(SW.lng, NE.lat);
-                const SE = new BMap.Point(NE.lng, SW.lat);
-                return [NW, NE, SE, SW];
-            }
+      function getMapBoundsPoint() {
+        const bounds = map.getBounds();
+        const SW = bounds.getSouthWest();
+        const NE = bounds.getNorthEast();
+        const NW = new BMap.Point(SW.lng, NE.lat);
+        const SE = new BMap.Point(NE.lng, SW.lat);
+        return [NW, NE, SE, SW];
+      }
 
-            const points = getMapBoundsPoint(map);
-            console.log(points);
-            const mask = new BMap.Polygon(points, polyOptions);
-            map.addOverlay(mask);
+      const points = getMapBoundsPoint(map);
+      console.log(points);
+      const mask = new BMap.Polygon(points, polyOptions);
+      map.addOverlay(mask);
 
-            let count = 1;
-            setInterval(() => {
-                count += 1;
-                map.panTo(new BMap.Point(116.404 + count * 0.01, 37.905 + count * 0.01));
-                const points = getMapBoundsPoint(map);
-                console.log(points);
-                mask.setPath(points);
-            }, 1000);
-        </script>
-    </body>
+      let count = 1;
+      setInterval(() => {
+        count += 1;
+        map.panTo(new BMap.Point(116.404 + count * 0.01, 37.905 + count * 0.01));
+        const points = getMapBoundsPoint(map);
+        console.log(points);
+        mask.setPath(points);
+      }, 1000);
+    </script>
+  </body>
 </html>

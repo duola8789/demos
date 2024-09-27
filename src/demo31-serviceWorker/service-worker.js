@@ -1,9 +1,9 @@
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
   // 激活
-  console.log(event, 'activate')
+  console.log(event, 'activate');
 });
 
-self.addEventListener('fetch', function(event) {
+self.addEventListener('fetch', function (event) {
   // 拦截主线层的请求, 匹配 URL
-  console.log(event, 'fetch')
+  console.log(event, 'fetch');
 });

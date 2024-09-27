@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Tab1</title>
-    </head>
-    <body>
-        <button id="btn1">打开页面</button>
-        <label><input id="input" /></label>
-        <button id="btn2">发送消息</button>
-        <h1 id="h1"></h1>
-        <script>
-            const btn1 = document.querySelector('#btn1');
-            const btn2 = document.querySelector('#btn2');
-            const input = document.querySelector('#input');
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tab1</title>
+  </head>
+  <body>
+    <button id="btn1">打开页面</button>
+    <label><input id="input" /></label>
+    <button id="btn2">发送消息</button>
+    <h1 id="h1"></h1>
+    <script>
+      const btn1 = document.querySelector('#btn1');
+      const btn2 = document.querySelector('#btn2');
+      const input = document.querySelector('#input');
 
-            const h1 = document.querySelector('#h1');
-            let otherWindow;
+      const h1 = document.querySelector('#h1');
+      let otherWindow;
 
-            // 打开Tab2
-            btn1.addEventListener('click', () => {
-                if (!otherWindow) {
-                    otherWindow = window.open('./tab2.html');
-                }
-            });
+      // 打开Tab2
+      btn1.addEventListener('click', () => {
+        if (!otherWindow) {
+          otherWindow = window.open('./tab2.html');
+        }
+      });
 
-            // 向Tab2发送消息
-            btn2.addEventListener('click', () => {
-                if (!otherWindow) {
-                    return alert('请先打开页面');
-                }
-                const value = input.value;
-                if (!value) {
-                    return alert('请输入消息');
-                }
-                // postMessage的调用者是其他窗口的引用，比如iframe的contentWindow属性，window.open返回的窗口对象
-                // 指定目标窗口的targetOrigin
-                otherWindow.postMessage(value, window.location.origin);
-                alert('发送成功');
-                input.value = '';
-            });
+      // 向Tab2发送消息
+      btn2.addEventListener('click', () => {
+        if (!otherWindow) {
+          return alert('请先打开页面');
+        }
+        const value = input.value;
+        if (!value) {
+          return alert('请输入消息');
+        }
+        // postMessage的调用者是其他窗口的引用，比如iframe的contentWindow属性，window.open返回的窗口对象
+        // 指定目标窗口的targetOrigin
+        otherWindow.postMessage(value, window.location.origin);
+        alert('发送成功');
+        input.value = '';
+      });
 
-            // 监听message事件
-            window.addEventListener('message', (e) => {
-                // 判断消息来源
-                if (e.origin !== window.location.origin) {
-                    return;
-                }
-                if (!otherWindow) {
-                    otherWindow = e.source;
-                }
-                console.log(e.data);
-                h1.innerHTML += '来自Tab2的消息' + e.data.value + '<br>';
-            });
-        </script>
-    </body>
+      // 监听message事件
+      window.addEventListener('message', e => {
+        // 判断消息来源
+        if (e.origin !== window.location.origin) {
+          return;
+        }
+        if (!otherWindow) {
+          otherWindow = e.source;
+        }
+        console.log(e.data);
+        h1.innerHTML += '来自Tab2的消息' + e.data.value + '<br>';
+      });
+    </script>
+  </body>
 </html>

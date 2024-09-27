@@ -5,9 +5,9 @@
  * Created by zh on 2019/5/13.
  */
 .theme {
-    color: lemonchiffon;
-    background: green;
+  color: lemonchiffon;
+  background: green;
 }
 .theme .text {
-    border: 1px solid darkblue;
+  border: 1px solid darkblue;
 }

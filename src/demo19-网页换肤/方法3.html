@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Title</title>
-        <link href="styles/base.css" rel="stylesheet" type="text/css" />
-        <link id="theme-default" title="默认" href="styles/default.css" rel="stylesheet" type="text/css" />
-        <link id="theme-green" title="绿色" href="styles/green.css" rel="stylesheet alternate" type="text/css" />
-        <link id="theme-red" title="红色" href="styles/red.css" rel="stylesheet alternate" type="text/css" />
-    </head>
-    <body>
-        <div class="container">
-            <div id="skin-container" class="theme">
-                <p class="text">Hello!</p>
-            </div>
-        </div>
-        <div class="input-container">
-            <label class="input"><input type="radio" value="default" name="skin" checked /></label>
-            <label class="input"><input type="radio" value="green" name="skin" /></label>
-            <label class="input"><input type="radio" value="red" name="skin" /></label>
-        </div>
-    </body>
-    <script>
-        const inputContainer = document.querySelector('.input-container');
-        const links = document.querySelectorAll('link[title]');
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link href="styles/base.css" rel="stylesheet" type="text/css" />
+    <link id="theme-default" title="默认" href="styles/default.css" rel="stylesheet" type="text/css" />
+    <link id="theme-green" title="绿色" href="styles/green.css" rel="stylesheet alternate" type="text/css" />
+    <link id="theme-red" title="红色" href="styles/red.css" rel="stylesheet alternate" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+      <div id="skin-container" class="theme">
+        <p class="text">Hello!</p>
+      </div>
+    </div>
+    <div class="input-container">
+      <label class="input"><input type="radio" value="default" name="skin" checked /></label>
+      <label class="input"><input type="radio" value="green" name="skin" /></label>
+      <label class="input"><input type="radio" value="red" name="skin" /></label>
+    </div>
+  </body>
+  <script>
+    const inputContainer = document.querySelector('.input-container');
+    const links = document.querySelectorAll('link[title]');
 
-        const changeSkin = (theme) => {
-            [...links].forEach((link) => {
-                link.disabled = true;
-                link.disabled = link.id !== `theme-${theme}`;
-            });
-        };
+    const changeSkin = theme => {
+      [...links].forEach(link => {
+        link.disabled = true;
+        link.disabled = link.id !== `theme-${theme}`;
+      });
+    };
 
-        inputContainer.addEventListener('change', (e) => {
-            changeSkin(e.target.value);
-        });
-    </script>
+    inputContainer.addEventListener('change', e => {
+      changeSkin(e.target.value);
+    });
+  </script>
 </html>

@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>Tab2</title>
-    </head>
-    <body>
-        <button id="btn1">回复消息</button>
-        <label><input id="input" /></label>
-        <h1 id="h1"></h1>
-        <script>
-            const btn1 = document.querySelector('#btn1');
-            const h1 = document.querySelector('#h1');
-            const input = document.querySelector('#input');
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tab2</title>
+  </head>
+  <body>
+    <button id="btn1">回复消息</button>
+    <label><input id="input" /></label>
+    <h1 id="h1"></h1>
+    <script>
+      const btn1 = document.querySelector('#btn1');
+      const h1 = document.querySelector('#h1');
+      const input = document.querySelector('#input');
 
-            let source = window.opener;
+      let source = window.opener;
 
-            btn1.addEventListener('click', () => {
-                if (!source) {
-                    alert('好像没人可回复');
-                }
-                const value = input.value;
-                if (!value) {
-                    return alert('请输入消息');
-                }
-                source.postMessage({ value: value }, window.location.origin);
-                alert('回复成功');
-                input.value = '';
-            });
+      btn1.addEventListener('click', () => {
+        if (!source) {
+          alert('好像没人可回复');
+        }
+        const value = input.value;
+        if (!value) {
+          return alert('请输入消息');
+        }
+        source.postMessage({ value: value }, window.location.origin);
+        alert('回复成功');
+        input.value = '';
+      });
 
-            // 监听message事件
-            window.addEventListener('message', (e) => {
-                // 验证消息来源
-                if (e.origin !== window.location.origin) {
-                    return;
-                }
-                console.log(e);
-                h1.innerHTML += '来自Tab1的消息' + e.data + '<br>';
-                if (!source) {
-                    source = e.source;
-                }
-            });
-        </script>
-    </body>
+      // 监听message事件
+      window.addEventListener('message', e => {
+        // 验证消息来源
+        if (e.origin !== window.location.origin) {
+          return;
+        }
+        console.log(e);
+        h1.innerHTML += '来自Tab1的消息' + e.data + '<br>';
+        if (!source) {
+          source = e.source;
+        }
+      });
+    </script>
+  </body>
 </html>

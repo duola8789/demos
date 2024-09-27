@@ -1,125 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>百度地图获取途经点</title>
-        <script
-            type="text/javascript"
-            src="https://api.map.baidu.com/api?v=2.0&ak=6Bu8kKbTI4OW7cfpIpVh1bg8jRyz50Zt"
-        ></script>
-        <script src="../../../libs/vue.js"></script>
-        <style>
-            .map {
-                width: 800px;
-                height: 500px;
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-            }
-        </style>
-    </head>
-    <body>
-        <div id="app">
-            <div id="map" class="map"></div>
-            <ul class="result">
-                <li v-for="(item, index) in result" :key="index">{{item}}</li>
-            </ul>
-            <button class="copy-button" @click="copy">复制</button>
-        </div>
-    </body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>百度地图获取途经点</title>
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=6Bu8kKbTI4OW7cfpIpVh1bg8jRyz50Zt"></script>
+    <script src="../../../libs/vue.js"></script>
+    <style>
+      .map {
+        width: 800px;
+        height: 500px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="map" class="map"></div>
+      <ul class="result">
+        <li v-for="(item, index) in result" :key="index">{{item}}</li>
+      </ul>
+      <button class="copy-button" @click="copy">复制</button>
+    </div>
+  </body>
 </html>
 <script>
-    function copyTextToClipboard(text) {
-        // 支持 Clipboard API 并且在安全环境下（localhost 或者 https）
-        if (navigator && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-            navigator.clipboard
-                .writeText(text)
-                .then(() => {
-                    Message({
-                        message: '内容已复制到剪切板',
-                        type: 'success',
-                        duration: 1000
-                    });
-                })
-                .catch(() => {
-                    // 静默失败
-                });
-        }
+  function copyTextToClipboard(text) {
+    // 支持 Clipboard API 并且在安全环境下（localhost 或者 https）
+    if (navigator && navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard
+        .writeText(text)
+        .then(() => {
+          Message({
+            message: '内容已复制到剪切板',
+            type: 'success',
+            duration: 1000,
+          });
+        })
+        .catch(() => {
+          // 静默失败
+        });
     }
+  }
 
-    const app = new Vue({
-        el: '#app',
-        data: {
-            result: []
+  const app = new Vue({
+    el: '#app',
+    data: {
+      result: [],
+    },
+    methods: {
+      copy() {
+        copyTextToClipboard(JSON.stringify(this.result));
+      },
+    },
+    mounted() {
+      const map = new BMap.Map('map');
+
+      map.enableScrollWheelZoom();
+
+      const point = new BMap.Point(112.897915, 28.189945);
+
+      const p1 = new BMap.Point(112.891636, 28.191616);
+      const p2 = new BMap.Point(112.900224, 28.195309);
+
+      map.centerAndZoom(point, 15);
+
+      const setLayer = () => {
+        const ele = document.querySelector('#map');
+        const width = ele.getBoundingClientRect().width,
+          height = ele.getBoundingClientRect().height;
+
+        const a = map.pixelToPoint(new BMap.Pixel(0, 0)),
+          b = map.pixelToPoint(new BMap.Pixel(width, 0)),
+          c = map.pixelToPoint(new BMap.Pixel(0, height)),
+          d = map.pixelToPoint(new BMap.Pixel(width, height));
+
+        const polygon = new BMap.Polygon([a, b, d, c], {
+          fillColor: 'rgba(22, 22, 22, 0.1)',
+          fillOpacity: 1,
+        });
+        map.addOverlay(polygon); //添加覆盖物
+
+        const center = map.getCenter();
+        const circle1 = new BMap.Circle(center, 200, {
+          strokeColor: 'blue',
+          strokeWeight: 5,
+          strokeOpacity: 0.5,
+          fillColor: 'transparent',
+        });
+        map.addOverlay(circle1);
+
+        const circle2 = new BMap.Circle(center, 250, {
+          strokeColor: 'blue',
+          strokeWeight: 5,
+          strokeOpacity: 0.5,
+          fillColor: 'transparent',
+        });
+        map.addOverlay(circle2);
+      };
+
+      const driving = new BMap.DrivingRoute(map, {
+        renderOptions: {
+          map: map,
+          enableDragging: true, //起终点可进行拖拽
         },
-        methods: {
-            copy() {
-                copyTextToClipboard(JSON.stringify(this.result));
-            }
-        },
-        mounted() {
-            const map = new BMap.Map('map');
+      });
+      driving.search(p1, p2);
 
-            map.enableScrollWheelZoom();
-
-            const point = new BMap.Point(112.897915, 28.189945);
-
-            const p1 = new BMap.Point(112.891636, 28.191616);
-            const p2 = new BMap.Point(112.900224, 28.195309);
-
-            map.centerAndZoom(point, 15);
-
-            const setLayer = () => {
-                const ele = document.querySelector('#map');
-                const width = ele.getBoundingClientRect().width,
-                    height = ele.getBoundingClientRect().height;
-
-                const a = map.pixelToPoint(new BMap.Pixel(0, 0)),
-                    b = map.pixelToPoint(new BMap.Pixel(width, 0)),
-                    c = map.pixelToPoint(new BMap.Pixel(0, height)),
-                    d = map.pixelToPoint(new BMap.Pixel(width, height));
-
-                const polygon = new BMap.Polygon([a, b, d, c], {
-                    fillColor: 'rgba(22, 22, 22, 0.1)',
-                    fillOpacity: 1
-                });
-                map.addOverlay(polygon); //添加覆盖物
-
-                const center = map.getCenter();
-                const circle1 = new BMap.Circle(center, 200, {
-                    strokeColor: 'blue',
-                    strokeWeight: 5,
-                    strokeOpacity: 0.5,
-                    fillColor: 'transparent'
-                });
-                map.addOverlay(circle1);
-
-                const circle2 = new BMap.Circle(center, 250, {
-                    strokeColor: 'blue',
-                    strokeWeight: 5,
-                    strokeOpacity: 0.5,
-                    fillColor: 'transparent'
-                });
-                map.addOverlay(circle2);
-            };
-
-            const driving = new BMap.DrivingRoute(map, {
-                renderOptions: {
-                    map: map,
-                    enableDragging: true //起终点可进行拖拽
-                }
-            });
-            driving.search(p1, p2);
-
-            driving.setSearchCompleteCallback((result) => {
-                const plan = result.getPlan(0);
-                const route = plan.getRoute(0);
-                const path = route.getPath();
-                this.result = path.map((v) => [v.lng, v.lat]);
-                console.log(path);
-                setLayer();
-            });
-        }
-    });
+      driving.setSearchCompleteCallback(result => {
+        const plan = result.getPlan(0);
+        const route = plan.getRoute(0);
+        const path = route.getPath();
+        this.result = path.map(v => [v.lng, v.lat]);
+        console.log(path);
+        setLayer();
+      });
+    },
+  });
 </script>

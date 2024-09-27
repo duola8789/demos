@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>图片预览</title>
-        <script src="../../libs/jquery.min.js"></script>
-        <style>
-            .preview {
-                margin-top: 20px;
-                width: 500px;
-                height: 310px;
-                border: 1px solid grey;
-                border-radius: 10px;
-                overflow-y: hidden;
-            }
-            .preview img {
-                max-width: 100%;
-                min-height: 100%;
-            }
-        </style>
-    </head>
-    <body>
-        <label><input type="file" id="file" multiple /></label>
-        <div id="preview" class="preview">
-            <img id="img" src="../../assets/images/placeholder.png" alt="" />
-        </div>
-    </body>
-    <script src="./index.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>图片预览</title>
+    <script src="../../libs/jquery.min.js"></script>
+    <style>
+      .preview {
+        margin-top: 20px;
+        width: 500px;
+        height: 310px;
+        border: 1px solid grey;
+        border-radius: 10px;
+        overflow-y: hidden;
+      }
+      .preview img {
+        max-width: 100%;
+        min-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <label><input type="file" id="file" multiple /></label>
+    <div id="preview" class="preview">
+      <img id="img" src="../../assets/images/placeholder.png" alt="" />
+    </div>
+  </body>
+  <script src="./index.js"></script>
 </html>
