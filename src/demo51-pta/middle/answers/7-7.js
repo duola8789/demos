@@ -1,54 +1,53 @@
-// 7-8 分段反转链表
-// https://pintia.cn/problem-sets/1740639867689107456/exam/problems/type/7?problemSetProblemId=1740640149902721026&page=0
+// 7-7 连通网络的操作次数
+// https://pintia.cn/problem-sets/1740639867689107456/exam/problems/type/7?problemSetProblemId=1740640149902721025&page=0
 
-function revertList(nodes, start, k, n) {
-  let cur = nodes.get(start),
-    remain = n;
-  const stack = [],
-    queue = [];
+function fn(n, connections) {
+  if (connections.length < n - 1) {
+    return -1;
+  }
+  const edges = new Map(),
+    visited = [];
 
-  while (cur && remain >= k) {
-    let i = 0;
-    while (i < k) {
-      stack.push(cur);
-      cur = nodes.get(cur.next);
-      i++;
-    }
-    while (stack.length) {
-      const temp = stack.pop();
-      queue.push(temp);
-    }
-    remain -= k;
+  for (const [x, y] of connections) {
+    edges.get(x) ? edges.get(x).push(y) : edges.set(x, [y]);
+    edges.get(y) ? edges.get(y).push(x) : edges.set(y, [x]);
   }
 
-  while (cur) {
-    queue.push(cur);
-    cur = nodes.get(cur.next);
+  let count = 0;
+  for (let i = 0; i < n; i++) {
+    if (!visited[i]) {
+      count += 1;
+      dfs(i);
+    }
   }
 
-  return queue;
+  function dfs(u) {
+    visited[u] = true;
+    if (edges.get(u)) {
+      for (const v of edges.get(u)) {
+        if (!visited[v]) {
+          dfs(v);
+        }
+      }
+    }
+  }
+
+  return count - 1;
 }
 
-function fn(inputStr) {
-  const lines = inputStr.split('\n').filter(v => !!v);
-  const [start, n, k] = lines[0].split(' ');
-  const nodes = new Map();
+var fs = require('fs');
+var buf = '';
 
-  for (let i = 1; i <= +n; i++) {
-    const [address, value, next] = lines[i].split(' ');
-    nodes.set(address, { address, value, next });
-  }
+process.stdin.on('readable', function () {
+  var chunk = process.stdin.read();
+  if (chunk) buf += chunk.toString();
+});
 
-  const queue = revertList(nodes, start, +k, +n);
-
-  const res = queue.reduce((total, cur, index) => {
-    const { address, value } = cur || {};
-    return `${total}${index !== 0 ? address + '\n' : ''}${address} ${value} `;
-  }, '');
-
-  console.log(res + '-1');
-}
-
-const str = '00100 6 4\n00000 4 99999\n00100 1 12309\n68237 6 -1\n33218 3 00000\n99999 5 68237\n12309 2 33218\n\n';
-
-fn(str);
+process.stdin.on('end', function () {
+  const params = buf.split('\n');
+  const param1 = params[0],
+    param2 = params.slice(1);
+  const n = +param1.split(' ')[0];
+  const connections = param2.filter(v => !!v).map(v => v.split(' ').map(i => +i));
+  console.log(fn(n, connections));
+});
