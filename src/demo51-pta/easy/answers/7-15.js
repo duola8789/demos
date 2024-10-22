@@ -41,6 +41,23 @@ function fn(str) {
   return result;
 }
 
+function test(str) {
+  return str === [...str].reverse().join('');
+}
+
+function fn(str) {
+  let result = str[0];
+  for (let i = 0; i < str.length; i++) {
+    for (j = i + 1; j < str.length; j++) {
+      const current = str.slice(i, j + 1);
+      if (test(current) && current.length > result.length) {
+        result = current;
+      }
+    }
+  }
+  return result;
+}
+
 process.stdin.on('readable', function () {
   var chunk = process.stdin.read();
   if (chunk) buf += chunk.toString();

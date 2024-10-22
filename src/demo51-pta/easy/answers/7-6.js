@@ -4,23 +4,28 @@
 function splitNum(k) {
   const result = [];
   for (let i = 0; i < k; i++) {
-    let start = i,
-      sum = 0,
-      gap = 1,
+    let sum = 0,
+      gap = 0,
+      newVal = i,
       temp = [];
-    while (sum < k) {
-      sum += start;
-      temp.push(start);
+    while (sum <= k) {
+      sum += newVal;
+      temp.push(newVal);
       if (sum === k) {
         result.push(temp);
-      } else if (sum < k) {
-        start += gap;
-        gap += 1;
+        temp = [];
+        break;
       }
+      gap += 1;
+      newVal += gap;
     }
   }
 
-  return result.join('\n');
+  result
+    .sort((a, b) => a[0] - b[0])
+    .forEach(v => {
+      console.log(v.join(','));
+    });
 }
 
 // function fn(k) {

@@ -1,5 +1,6 @@
 // 7-9 无法吃午餐的学生数量
 // https://pintia.cn/problem-sets/1740631898909958144/exam/problems/type/7?problemSetProblemId=1740638633187987456&page=0
+// 关键点：要输出的是无法吃午餐的学生数量，不要用指针，用出栈入栈来实现
 var fs = require('fs');
 var buf = '';
 
@@ -8,62 +9,29 @@ process.stdin.on('readable', function () {
   if (chunk) buf += chunk.toString();
 });
 
-// function hungryStudents(students, sandwiches) {
-//   let students0 = 0,
-//     students1 = 0;
-//   let i = 0;
-//   while (i < students.length) {
-//     const student = students[i];
-//     if (student === 0) {
-//       students0 += 1;
-//     }
-//     i += 1;
-//   }
-//   students1 = students.length - students0;
-//   while (students0 > 0 || students1 > 0) {
-//     const current = sandwiches[0];
-//     if (current === 0 && students0 > 0) {
-//       students0 -= 1;
-//       sandwiches.shift();
-//     } else if (current === 1 && students1 > 0) {
-//       students1 -= 1;
-//       sandwiches.shift();
-//     } else {
-//       break;
-//     }
-//   }
-//   return students0 > 0 ? students0 : students1;
-// }
-
-function hungryStudents(students, sandwiches) {
-  let newStudents = [];
-  let i = 0;
-  debugger;
-  while (i < students.length) {
-    const student = students[i],
-      sandwich = sandwiches[0];
-    if (student === sandwich) {
-      sandwiches.shift();
+function fn(stus, sands) {
+  let visited = [];
+  while (true) {
+    const curStu = stus.shift();
+    if (curStu === sands[0]) {
+      sands.shift();
+      stus.push(...visited);
+      visited = [];
+      if (stus.length === 0) {
+        return 0;
+      }
     } else {
-      newStudents.push(student);
-    }
-    i += 1;
-    if (i === students.length) {
-      if (students.length === newStudents.length) {
-        break;
-      } else {
-        students = newStudents;
-        newStudents = [];
-        i = 0;
+      visited.push(curStu);
+      if (stus.length === 0) {
+        return visited.length;
       }
     }
   }
-  return newStudents.length;
 }
 
 process.stdin.on('end', function () {
   const [paramA, paramB] = buf.split('\n');
   const students = paramA.split(' ').map(v => +v);
   const sandwiches = paramB.split(' ').map(v => +v);
-  console.log(hungryStudents(students, sandwiches));
+  console.log(fn(students, sandwiches));
 });

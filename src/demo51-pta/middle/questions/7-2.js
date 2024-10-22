@@ -1,5 +1,6 @@
 // 7-2 或运算的最小翻转次数
 // https://pintia.cn/problem-sets/1740639867689107456/exam/problems/type/7?problemSetProblemId=1740640113873649664&page=0
+// 重点：要补位，用 padStart
 
 function fn(a, b, c) {}
 

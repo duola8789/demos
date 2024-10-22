@@ -6,6 +6,7 @@ function removeLetter(s) {
   const inStackMap = {};
   const stack = [];
 
+  // afbecfcd
   for (let i = 0; i < len; i++) {
     const cur = s[i];
     if (!countMap[cur]) {

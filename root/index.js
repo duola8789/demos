@@ -1,39 +1,22 @@
-class MyQueue {
-  constructor() {
-    this.stack = [];
-    this.helpStck = [];
-  }
+function fn(rooms) {
+  const visited = {
+    0: true,
+  };
 
-  move() {
-    if (this.helpStck.length === 0) {
-      while (this.stack.length > 0) {
-        this.helpStck.push(this.stack.pop());
+  function dfs(keys) {
+    for (let i = 0; i < keys.length; i++) {
+      const key = keys[i];
+      if (!visited[key]) {
+        if (rooms[key]) {
+          visited[key] = true;
+          dfs(rooms[key]);
+        }
       }
     }
   }
 
-  push(item) {
-    this.stack.push(item);
-    return null;
-  }
+  dfs(rooms[0]);
 
-  pop() {
-    this.move();
-    return this.helpStck.pop();
-  }
-
-  peak() {
-    this.move();
-    return this.helpStck[this.helpStck.length - 1];
-  }
-
-  empty() {
-    return this.stack.length === 0 && this.helpStck.length === 0;
-  }
+  return Object.keys(visited) === rooms.length;
 }
-
-const myQueue = new MyQueue();
-myQueue.push(1);
-myQueue.pop();
-myQueue.peak();
-myQueue.empty();
+console.log(fn([[1], [2], [3]]));
