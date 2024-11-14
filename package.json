@@ -19,10 +19,10 @@
   "version": "1.0.0",
   "scripts": {
     "prettier": "prettier --write 'src/**/*.{html,ts,js,css,scss}'",
-    "render": "node src/demo52-freeMarker/render.js"
+    "render-ftl": "node src/demo52-freeMarker/render.js & npx http-server ./src/demo52-freeMarker/output -o -p 8080"
   },
   "repository": {
-    "type": "git",
+    "type": "git",`
     "url": "git+https://github.com/duola8789/demos.git"
   },
   "author": "",

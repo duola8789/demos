@@ -4,43 +4,44 @@ const Freemarker = require('freemarker');
 const { exec } = require('child_process');
 
 const freemarker = new Freemarker({ root: __dirname });
+const folderPath = path.join(__dirname, 'template');
 
-const args = process.argv.slice(2) || []; // 获取传入的参数
-const targetFile = args[0] || 'notify'; // 获取第一个参数
+function renderFile(filePath, fileName) {
+  const fullFileName = `${fileName}.html`;
+  const outputPath = path.join(__dirname, 'output', fullFileName);
 
-console.log(targetFile);
-
-const inputPath = path.join(__dirname, `${targetFile}.ftl`);
-const outputPath = path.join(__dirname, 'output', 'index.html');
-
-// 确保 output 目录存在
-if (!fs.existsSync(path.dirname(outputPath))) {
-  fs.mkdirSync(path.dirname(outputPath), { recursive: true });
+  freemarker.renderFile(filePath, {}, (err, result) => {
+    if (err) {
+      throw new Error(err);
+    }
+    fs.writeFile(outputPath, result, err => {
+      if (err) {
+        return console.error('写入文件时出错:', err);
+      }
+      console.log('写入文件完成: ', fullFileName);
+    });
+  });
 }
 
-// 启动 http-server
-exec(`npx http-server ${path.dirname(outputPath)} -o -p 8080`, (err, stdout, stderr) => {
-  if (err) {
-    console.error(`启动 http-server 时出错: ${err}`);
-    return;
-  }
-  console.log(`http-server 输出: ${stdout}`);
-  console.error(`http-server 错误: ${stderr}`);
-});
+try {
+  // 读取目录内容
+  const files = fs.readdirSync(folderPath);
 
-fs.watchFile(inputPath, (curr, prev) => {
-  if (curr.mtime !== prev.mtime) {
-    console.log(`${inputPath} 文件内容发生了变化 -- ${new Date().toLocaleString()}`);
-    freemarker.renderFile(inputPath, {}, (err, result) => {
-      if (err) {
-        throw new Error(err);
-      }
+  // 输出目录中的文件和子目录名称
+  files.forEach(filename => {
+    const filePath = path.join(__dirname, 'template', filename);
+    renderFile(filePath, filename.split('.')[0]);
+  });
+} catch (err) {
+  console.error('无法读取目录:', err);
+}
 
-      fs.writeFile(outputPath, result, err => {
-        if (err) {
-          return console.error('写入文件时出错:', err);
-        }
-      });
-    });
+fs.watch(folderPath, (eventType, filename) => {
+  if (eventType === 'change') {
+    console.log(`文件 ${filename} 发生了 ${eventType} 变化`);
+    const filePath = path.join(__dirname, 'template', filename);
+    renderFile(filePath, filename.split('.')[0]);
   }
 });
+
+console.log(`正在监视文件夹: ${folderPath}`);
