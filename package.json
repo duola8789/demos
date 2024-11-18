@@ -22,7 +22,7 @@
     "render-ftl": "node src/demo52-freeMarker/render.js & npx http-server ./src/demo52-freeMarker/output -o -p 8080"
   },
   "repository": {
-    "type": "git",`
+    "type": "git",
     "url": "git+https://github.com/duola8789/demos.git"
   },
   "author": "",
