@@ -28,10 +28,10 @@
 
 <html>
     <body>
-        <div style="width: 100%; height: 100%; background: #f6f6f6; overflow: hidden">
+        <div style="width: 100%; height: 99%; background: #f6f6f6; padding: 1px">
             <div style="width:700px; max-width: 90%; margin: 40px auto;background: #fff;padding: 32px 24px 24px 24px;font-family: Helvetica, 'Microsoft YaHei', Arial, sans-serif;font-size: 18px;line-height: 26px;color: #272e47;font-weight: 400; box-sizing: border-box">
-                <div style="text-align: center; padding: 10px; margin-bottom: 24px">
-                    <img alt="logo" src="https://vr.leadsnavi.com/img/mail/logo.png" style="max-width: unset; width: 164px" />
+                <div style="width: 164px; height:24px; margin: 0 auto 34px;">
+                    <img src="https://vr.leadsnavi.com/img/mail/logo.png" style="width: 164px; height:24px;" />
                 </div>
                 <div>
                     <div style="font-weight: 600; font-size: 20px; padding-left: 8px">${notificationName}:</div>
